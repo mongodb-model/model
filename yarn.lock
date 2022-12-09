@@ -1032,6 +1032,20 @@
     socket.io-redis "6.1.1"
     vitest "0.25.1"
 
+"@mongodb-model/template@^0.0.100001":
+  version "0.0.100001"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/template/-/template-0.0.100001.tgz#2994f6476eab21e479338c28c555acd6a4a22f67"
+  integrity sha512-jBLrT4q926ApjHX3rZhYWlfyOW/J95CaU+6V0i9smgo6eYk+reKRVtfiKZeqNPSThc9pkLnbUV+RzEQZ9JVmvQ==
+  dependencies:
+    "@mongodb-model/db-schema" "^0.0.0"
+    "@mongodb-model/socket" "^0.0.10000"
+    dotenv "16.0.3"
+    express "4.18.2"
+    ioredis "5.2.4"
+    mongodb "4.11.0"
+    socket.io-redis "6.1.1"
+    vitest "0.25.1"
+
 "@socket.io/component-emitter@~3.1.0":
   version "3.1.0"
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz"

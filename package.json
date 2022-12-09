@@ -50,7 +50,7 @@
     "@mongodb-model/model": "^0.0.0",
     "@mongodb-model/schema": "^0.0.0",
     "@mongodb-model/tcp-controller": "^0.0.1000",
-    "@mongodb-model/template": "^0.0.10000",
+    "@mongodb-model/template": "^0.0.100001",
     "dotenv": "^16.0.3",
     "global": "^4.4.0",
     "mongodb": "^4.12.1",

@@ -201,5 +201,5 @@ User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
 #### CLI screenshot (terminal)
 
 
-![cli](/public/images/cli.png "Model CLI")
+![cli](https://www.mongodb-model.com/frontend/img/cli/cli.png "Model CLI")
 

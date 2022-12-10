@@ -206,27 +206,19 @@ User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
 
 ![cli](https://www.mongodb-model.com/frontend/img/cli/cli.png "Model CLI")
 
+
+
+
+
+
+
+
 #### Official Website
 [https://www.mongodb-model.com](https://www.mongodb-model.com)
 
-#### Author's Website
-[Ericson S. Weah](https://www.ericsonsweah.com)
 
-#### Author's Blog
-[Ericson S. Weah](https://www.ericonsweah.dev)
-#### Author's Github
-[Ericson Weah ](https://github.com/ericsonweah)
-
-#### Author's LinkedIn
-[Ericson Weah ](https://www.linkedin.com/in/ericson-weah-b03600210)
-
-#### Author's Facebook
-[Ericson Weah ](https://www.facebook.com/Eric.S.Weah)
-
-#### Author's Twitter
-[Ericson Weah ](https://twitter.com/EricsonWeah1)
-
-#### Author's Instagram
-[Ericson Weah ](https://www.instagram.com/ericsonweah/)
-
+#### Author's Info
+Website|NPM|Github|Gitlab|Blog|LinkedIn|Facebook|Twitter|Instagram|
+--- | --- | --- | --- | --- | --- | --- |--- |--- |
+[Website](https://www.ericsonsweah.com/dashboard)|[NPM](https://www.npmjs.com/org/mongodb-model)|[Github](https://github.com/ericsonweah)|[Gitlab](https://gitlab.com/ericsonweah)|[Blog](https://www.ericonsweah.dev)|[LinkedIn](https://www.linkedin.com/in/ericson-weah-b03600210)|[Facebook](https://www.facebook.com/Eric.S.Weah)|[Twitter](https://twitter.com/EricsonWeah1)|[Instagram](https://www.instagram.com/ericsonweah/)|
 

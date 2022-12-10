@@ -209,9 +209,24 @@ User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
 #### Official Website
 [https://www.mongodb-model.com](https://www.mongodb-model.com)
 
-#### Author Website
+#### Author's Website
 [Ericson S. Weah](https://www.ericsonsweah.com)
-#### Author Github
+
+#### Author's Blog
+[Ericson S. Weah](https://www.ericonsweah.dev)
+#### Author's Github
 [Ericson Weah ](https://github.com/ericsonweah)
+
+#### Author's LinkedIn
+[Ericson Weah ](https://www.linkedin.com/in/ericson-weah-b03600210)
+
+#### Author's Facebook
+[Ericson Weah ](https://www.facebook.com/Eric.S.Weah)
+
+#### Author's Twitter
+[Ericson Weah ](https://twitter.com/EricsonWeah1)
+
+#### Author's Instagram
+[Ericson Weah ](https://www.instagram.com/ericsonweah/)
 
 

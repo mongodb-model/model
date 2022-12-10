@@ -5,30 +5,51 @@
 ### Installation
 
 ```bash
-$ yarn add @mongodb-model/app 
+$ yarn add @mongodb-model/model
 
 ```
  or 
 
 ```bash
 
-$ npm i @mongodb-model/app
+$ npm i @mongodb-model/model
 
 ```
 
 ### Simple Usage Example
 
-```bash
- const Base = require('@mongodb-model/app');
- const base = new Base();
- base.apiGet();
- base.on('apiGet', data => console.log(data));
- base.on('apiGet-error', error => console.error(error));
+#### Basic Event base CRUD
+
+```javascript
+const Model = require('@mongodb-model/model');
+const User = new Model({collection: 'users'});
+    
+// query (create query)
+const userData = {firstname: 'John', lastname: 'Doe', email: 'john.doe@mail.com'};
+User.create(userData);
+
+// Listen for the 'create' event because model emitted 'create' event when the 'create' (User.create(userData)) method was called and successully created a new user with the userData.
+User.on('create', user => console.log('new user created', user));
+
+// Listen for the 'create-error' event because model emitted 'create-error' event when the 'create' (User.create(userData)) method was called and failed to create a new user with the userData.
+User.on('create-error', error => console.log('new user creation error', error));
  
 ```
-or 
-```bash
- class MyWonderfulClass extends require('@mongodb-model/app') {
+
+#### Making api request (http request)
+```javascript
+ const Model = require('@mongodb-model/model');
+ const model = new Model();
+ model.apiGet(); //model.apiGet(your api endpoint)
+ model.on('apiGet', data => console.log(data));
+ model.on('apiGet-error', error => console.error(error));
+ 
+```
+
+#### By extension
+
+```javascript
+ class MyWonderfulClass extends require('@mongodb-model/model') {
 
     constructor(...arrayOfObjects) {
 
@@ -47,4 +68,138 @@ or
  };
  
 ```
+
+#### Detailed explanation with first contructor parameter object
+```javascript
+ const Model = require('@mongodb-model/model');
+                
+// Usage 
+const YourCustomModel = new Model({db: 'your_database_name', collection: 'your_collection_name', url: 'your_database_url'})
+                
+// No constructor Parameter provided: 
+ const User = new Model;
+// Default collection is 'users'
+// Default database name is your .env DATABASE_NAME 
+// Default database url is your .env DATABASE_URL or 'mongodb://localhost:27017'
+                
+// Constructor first parameter object with only collection key
+const User = new Model({collection: 'users'});
+// Default database name is your .env DATABASE_NAME 
+// Default database url is your .env DATABASE_URL or 'mongodb://localhost:27017'
+                
+// Connecting to multiple databases
+const BlogUser = new Model({db: 'blog', collection: 'users'})
+const WorkChat = new Model({db: 'work', collection: 'chats'})
+const ForumUser = new Model({db: 'forum', collection: 'users'})
+
+
+// query (create query using ForumUser)
+const userData = {firstname: 'John', lastname: 'Doe', email: 'john.doe@mail.com'};
+ForumUser.create(userData);
+
+ForumUser.on('create', user => console.log('new user created', user));
+ForumUser.on('create-error', error => console.log('new user creation error', error));
+ 
+```
+
+
+#### Detailed explanation with all other contructor parameter objects
+```javascript
+const Model = require('@mongodb-model/model');
+  
+const User = new Model({},{title: 'Cool Users', age: 25, fullName: () => 'User Full Name', Post: class Post {}});
+
+// The User model now has the following added to its prototype and they are bounded to it: title,age, fullName, post
+// So now we can do things like the following: 
+            
+const title = User.title 
+const age = User.age 
+const fullname = User.fullName();
+const FirstPost = new User.Post 
+            
+// Or using object destructuring 
+const {title, age, fullName, Post} = User
+ 
+```
+
+
+
+#### Event base CRUD
+```javascript
+const Model = require('@mongodb-model/model');
+const User = new Model({collection: 'users'});
+
+// Read (reall all)
+User.all();
+User.on('all', users => console.log('all users', users));
+User.on('all-error', error => console.log('error in getting all users', error));
+
+// Create
+const userData = {firstname: 'John', lastname: 'Doe', email: 'john.doe@mail.com'};
+
+User.create(userData);
+User.on('create', user => console.log('new user created', user));
+User.on('create-error', error => console.log('new user creation error', error));
+
+
+// find, takes exact same parametters as the pure mongodb find method.
+User.find({_id: '633050cf3a5f6ed0d6c482e7'});
+User.on('find', user => console.log('found user', user));
+User.on('find-error', error => console.log('error in finding user', error));
+
+// update, takes exact same parametters as the pure mongodb updateOne method.
+User.update({_id: '633050cf3a5f6ed0d6c482e7'},{firstname: 'New First Name'});
+User.on('update', user => console.log('updated user', user));
+User.on('update-error', error => console.log('error in updating user', error));
+
+
+// delete, takes exact same parametters as the pure mongodb deleteOne method.
+User.delete({_id: '633050cf3a5f6ed0d6c482e7'});
+User.on('delete', user => console.log('deleted user', user));
+User.on('delete-error', error => console.log('error in deleting user', error));
+ 
+```
+
+
+#### Promise base CRUD
+```javascript
+const Model = require('@mongodb-model/model');
+const User = new Model({collection: 'users'});
+
+// Read (reall all)
+User.awaitAll()
+.then(users => console.log('all users', users))
+.catch(error => console.log('finding all users eror', error));
+
+
+// Create
+const userData = {firstname: 'John', lastname: 'Doe', email: 'john.doe@mail.com'};
+
+User.awaitCreate(userData)
+.then(user => console.log('new user created', user));
+.catch(error => console.log('new user creation error', error));
+
+
+// awaitFind, takes exact same parametters as the pure mongodb find method.
+User.awaitFind({_id: '633050cf3a5f6ed0d6c482e7'})
+.then(user => console.log('found user', user));
+.catch(error => console.log('error in finding user', error));
+
+// awaitUpdate, takes exact same parametters as the pure mongodb updateOne method.
+User.awaitUpdate({_id: '633050cf3a5f6ed0d6c482e7'},{firstname: 'New First Name'})
+.then( user => console.log('updated user', user));
+.catch(error => console.log('error in updating user', error));
+
+
+// awaitDelete, takes exact same parametters as the pure mongodb deleteOne method.
+User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
+.then( user => console.log('deleted user', user));
+.catch(error => console.log('error in deleting user', error));
+ 
+```
+
+#### CLI screenshot (terminal)
+
+
+![cli](/public/images/cli.png "Model CLI")
 

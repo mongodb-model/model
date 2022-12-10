@@ -52,7 +52,6 @@
     "@mongodb-model/tcp-controller": "^0.0.1000",
     "@mongodb-model/template": "^0.0.100001",
     "dotenv": "^16.0.3",
-    "global": "^4.4.0",
     "mongodb": "^4.12.1",
     "vitest": "^0.25.3"
   }

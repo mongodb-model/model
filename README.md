@@ -1,6 +1,10 @@
-# DB Query
+# Mongodb Model 
 
- Standalone base module extending the NodeJs Transform API with few other functionalities added
+Model is very simple yet very powerful tool for interacting with
+mongodb database and making internal or external API calls. Under the hood model is a wrapper for the 
+nodejs mongodb driver. It also extracts away the complexities commonly encountered in NodeJs Mongodb
+driver or Mongoose.js. It is also a duplex stream, specifically a Transform stream. Primarily it uses
+full power of the Nodejs mongodb driver and of the NodeJs Transform Stream API. In other words, everything you can do with mongodb NodeJs driver, Mongoose.js and NodeJs Transform API you can do with model! Model is centrally very highly event driven. It is compatible with mongoose.js.
 
 ### Installation
 
@@ -199,7 +203,6 @@ User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
 ```
 
 #### CLI screenshot (terminal)
-
 
 ![cli](https://www.mongodb-model.com/frontend/img/cli/cli.png "Model CLI")
 

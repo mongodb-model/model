@@ -207,10 +207,10 @@ User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
 ![cli](https://www.mongodb-model.com/frontend/img/cli/cli.png "Model CLI")
 
 #### Official Website
-[https://wwww.mongodb-model.com](https://wwww.mongodb-model.com)
+[https://www.mongodb-model.com](https://www.mongodb-model.com)
 
 #### Author Website
-[Ericson S. Weah](https://wwww.ericsonsweah.com)
+[Ericson S. Weah](https://www.ericsonsweah.com)
 #### Author Github
 [Ericson Weah ](https://github.com/ericsonweah)
 

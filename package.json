@@ -39,6 +39,7 @@
     "@mongodb-model/db-callback": "^0.0.0",
     "@mongodb-model/db-migrate": "^0.0.100011",
     "@mongodb-model/db-migration": "^0.0.0",
+    "@mongodb-model/db-promise": "^0.0.1000010",
     "@mongodb-model/db-query": "^0.0.10000",
     "@mongodb-model/db-query-validator": "^0.0.0",
     "@mongodb-model/db-schema": "^0.0.0",

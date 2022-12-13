@@ -871,6 +871,14 @@
     mongodb "4.11.0"
     vitest "0.25.1"
 
+"@mongodb-model/db-promise@^0.0.1000010":
+  version "0.0.1000010"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-promise/-/db-promise-0.0.1000010.tgz#4a6d2db76c89cf7564418f10aca1c3d108d1906f"
+  integrity sha512-wuwKgEfZ5wcWp0xKmqvI2F1JkxgEihuqSsGS75HDoLeYHv4KiHljwWxkrUqBacvGwon4oJLoVEeE9KmMLO9guQ==
+  dependencies:
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+
 "@mongodb-model/db-query-validator@^0.0.0":
   version "0.0.0"
   resolved "https://registry.npmjs.org/@mongodb-model/db-query-validator/-/db-query-validator-0.0.0.tgz"

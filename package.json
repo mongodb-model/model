@@ -1,6 +1,6 @@
 {
   "name": "@mongodb-model/model",
-  "version": "0.0.100016",
+  "version": "0.0.100017",
   "description": "mongodb model",
   "main": "index.js",
   "bin": {

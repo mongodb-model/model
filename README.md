@@ -72,7 +72,6 @@ User.on('create-error', error => console.log('new user creation error', error));
  };
  
 ```
-
 #### Detailed explanation with first contructor parameter object
 ```javascript
  const Model = require('@mongodb-model/model');
@@ -96,7 +95,6 @@ const BlogUser = new Model({db: 'blog', collection: 'users'})
 const WorkChat = new Model({db: 'work', collection: 'chats'})
 const ForumUser = new Model({db: 'forum', collection: 'users'})
 
-
 // query (create query using ForumUser)
 const userData = {firstname: 'John', lastname: 'Doe', email: 'john.doe@mail.com'};
 ForumUser.create(userData);
@@ -105,7 +103,6 @@ ForumUser.on('create', user => console.log('new user created', user));
 ForumUser.on('create-error', error => console.log('new user creation error', error));
  
 ```
-
 
 #### Detailed explanation with all other contructor parameter objects
 ```javascript
@@ -126,8 +123,6 @@ const {title, age, fullName, Post} = User
  
 ```
 
-
-
 #### Event base CRUD
 ```javascript
 const Model = require('@mongodb-model/model');
@@ -145,7 +140,6 @@ User.create(userData);
 User.on('create', user => console.log('new user created', user));
 User.on('create-error', error => console.log('new user creation error', error));
 
-
 // find, takes exact same parametters as the pure mongodb find method.
 User.find({_id: '633050cf3a5f6ed0d6c482e7'});
 User.on('find', user => console.log('found user', user));
@@ -156,14 +150,12 @@ User.update({_id: '633050cf3a5f6ed0d6c482e7'},{firstname: 'New First Name'});
 User.on('update', user => console.log('updated user', user));
 User.on('update-error', error => console.log('error in updating user', error));
 
-
 // delete, takes exact same parametters as the pure mongodb deleteOne method.
 User.delete({_id: '633050cf3a5f6ed0d6c482e7'});
 User.on('delete', user => console.log('deleted user', user));
 User.on('delete-error', error => console.log('error in deleting user', error));
  
 ```
-
 
 #### Promise base CRUD
 ```javascript
@@ -173,12 +165,10 @@ const User = new Model({collection: 'users'});
 // Read (reall all) : this way of querying can be done with all "awaitMethods" on the model. 
 const action = User.awaitAll()
 
-
 // option 1:
 action
 .then(users => console.log('all users', users))
 .catch(error => console.log('finding all users eror', error));
-
 
 // option 2
 User.on('all', users => console.log('all user', users))
@@ -188,20 +178,12 @@ User.on('all-error', error => console.log('Error getting all users', error))
 User.on('awaitAll', users => console.log('all users', users))
 User.on('awaitAll-error', error => console.log('Error getting all users', error))
 
-
-
-
-
-
-
 // Create
 const userData = {firstname: 'John', lastname: 'Doe', email: 'john.doe@mail.com'};
 
 User.awaitCreate(userData)
 .then(user => console.log('new user created', user));
 .catch(error => console.log('new user creation error', error));
-
-
 
 // awaitFind, takes exact same parametters as the pure mongodb find method.
 User.awaitFind({_id: '633050cf3a5f6ed0d6c482e7'})
@@ -213,14 +195,12 @@ User.awaitUpdate({_id: '633050cf3a5f6ed0d6c482e7'},{firstname: 'New First Name'}
 .then( user => console.log('updated user', user));
 .catch(error => console.log('error in updating user', error));
 
-
 // awaitDelete, takes exact same parametters as the pure mongodb deleteOne method.
 User.awaitDelete({_id: '633050cf3a5f6ed0d6c482e7'});
 .then( user => console.log('deleted user', user));
 .catch(error => console.log('error in deleting user', error));
  
 ```
-
 
 #### CLI example
 ```bash
@@ -233,12 +213,9 @@ model make:model User
 const DB = require('@mongodb-model/model');
 const db = new DB();
 
-
-
 // The following functions are available on db, the DB instance, as methods.
 // The majority of them, especially the ones with name very similar to the Mongodb native driver methods, are actually the corresponding 
 // mongodb native driver methods. In other words, they take the exact same arguments as the corresponding  native mongodb driver methods
-
 
 createCollection(collectionName = 'users');
 dropCollection(collectionName = 'users');
@@ -270,7 +247,6 @@ firstByLastName(lastname, collectionName = 'users');
 findByQuery(query = {}, projection = {}, collectionName = 'users');
 firstByQuery(query = {}, collectionName = 'users');
 firstByToken(token, collectionName = 'users')
-
 
 awaitCeateCollection(collectionName = 'users');
 awaitDropCollection(collectionName = 'users');
@@ -415,10 +391,8 @@ module.exports = User;
 
 ![cli](https://www.mongodb-model.com/frontend/img/cli/cli.png "Model CLI")
 
-
 #### Official Website
 [https://www.mongodb-model.com](https://www.mongodb-model.com)
-
 
 #### Author's Info
 Website|NPM|Github|Gitlab|Blog|LinkedIn|Facebook|Twitter|Instagram|

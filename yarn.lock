@@ -936,6 +936,11 @@
     dotenv "16.0.3"
     vitest "0.25.1"
 
+"@mongodb-model/man@^0.0.10000":
+  version "0.0.10000"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/man/-/man-0.0.10000.tgz#65593e7aa8093a70fbaa0dc8059f53114e7326a6"
+  integrity sha512-642E/WcrLWfn77lnPneLWdGJYhmDR/JzUY5UFdJ2J2TFS1hRZvw3fC3N/QZJmSTxci3XighuAo+Udozeeu0F/A==
+
 "@mongodb-model/method@^0.0.0":
   version "0.0.0"
   resolved "https://registry.npmjs.org/@mongodb-model/method/-/method-0.0.0.tgz"

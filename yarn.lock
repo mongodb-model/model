@@ -936,10 +936,10 @@
     dotenv "16.0.3"
     vitest "0.25.1"
 
-"@mongodb-model/man@^0.0.10000":
-  version "0.0.10000"
-  resolved "https://registry.yarnpkg.com/@mongodb-model/man/-/man-0.0.10000.tgz#65593e7aa8093a70fbaa0dc8059f53114e7326a6"
-  integrity sha512-642E/WcrLWfn77lnPneLWdGJYhmDR/JzUY5UFdJ2J2TFS1hRZvw3fC3N/QZJmSTxci3XighuAo+Udozeeu0F/A==
+"@mongodb-model/man@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/man/-/man-0.0.1.tgz#0725cd2c30e94b30ffe19fe9caa71752f04f9a4e"
+  integrity sha512-M5rX6SBEY2f8ppmh56ACZpvlziW+hbc+L9R5FvLpAR0hyCEKgVv06oIKMlAvDBM8aRICnHCF98QrltWEwNzOXQ==
 
 "@mongodb-model/method@^0.0.0":
   version "0.0.0"

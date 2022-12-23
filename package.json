@@ -46,7 +46,7 @@
     "@mongodb-model/error": "^0.0.0",
     "@mongodb-model/http-controller": "^0.0.1000",
     "@mongodb-model/lib": "^0.0.10000",
-    "@mongodb-model/man": "^0.0.10000",
+    "@mongodb-model/man": "^0.0.1",
     "@mongodb-model/method": "^0.0.100012",
     "@mongodb-model/model": "^0.0.0",
     "@mongodb-model/schema": "^0.0.0",

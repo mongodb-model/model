@@ -8,6 +8,10 @@ full power of the Nodejs mongodb driver and of the NodeJs Transform Stream API. 
 
 ### Installation
 
+ <br />
+
+#### 1. install model 
+
 ```bash
 $ yarn add @mongodb-model/model
 
@@ -20,7 +24,25 @@ $ npm i @mongodb-model/model
 
 ```
 
+#### 2. add .env file in your project root directory with at least these two environment variables
+ *** No need for installing dotenv npm package ***
+```bash
+
+DATABASE_NAME='Your Mongodb Database Name'
+DATABASE_URL='Your Mongodb Database URL'
+
+## Something like this: 
+
+DATABASE_NAME='my_app'
+DATABASE_URL='mongodb://localhost:27017'
+
+```
+
+#### 3. Make sure you have mongodb server running if you are using mongodb server locally.
+ <br />
+
 ### Simple Usage Examples
+ <br />
 
 #### Basic Event base CRUD
 
@@ -389,7 +411,7 @@ module.exports = User;
 ```
 #### CLI screenshot (terminal)
 
-![cli](https://www.mongodb-model.com/frontend/img/cli/cli.png "Model CLI")
+![cli](https://www.mongodb-model.com/frontend/img/cli/cli-terminal-screenshot.png "Model CLI")
 
 #### Official Website
 [https://www.mongodb-model.com](https://www.mongodb-model.com)

@@ -19,7 +19,7 @@
     "url": "git+https://github.com/mongodb-model/model.git"
   },
   "keywords": [
-    "mongodb-model",
+    "mongodb",
     "model",
     "stream",
     "duplex",
@@ -48,6 +48,7 @@
     "@mongodb-model/lib": "^0.0.10000",
     "@mongodb-model/man": "^0.0.1",
     "@mongodb-model/method": "^0.0.100012",
+    "@mongodb-model/model": "^0.0.0",
     "@mongodb-model/schema": "^0.0.0",
     "@mongodb-model/tcp-controller": "^0.0.1000",
     "@mongodb-model/template": "^0.0.100001",

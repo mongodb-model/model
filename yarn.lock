@@ -807,6 +807,25 @@
     mongodb "4.11.0"
     vitest "0.25.1"
 
+"@mongodb-model/app@file:../app":
+  version "0.0.100021"
+  resolved "file:../app"
+  dependencies:
+    "@mongodb-model/couleurs" "^0.0.0"
+    "@mongodb-model/db-callback" "^0.0.0"
+    "@mongodb-model/db-migrate" "^0.0.100011"
+    "@mongodb-model/db-migration" "^0.0.0"
+    "@mongodb-model/db-promise" "^0.0.10000"
+    "@mongodb-model/db-query" "^0.0.10000"
+    "@mongodb-model/db-query-validator" "^0.0.0"
+    "@mongodb-model/error" "^0.0.0"
+    "@mongodb-model/http-controller" "^0.0.1000"
+    "@mongodb-model/man" "^0.0.0"
+    "@mongodb-model/method" "^0.0.100012"
+    "@mongodb-model/schema" "^0.0.0"
+    "@mongodb-model/tcp-controller" "^0.0.1000"
+    "@mongodb-model/template" "^0.0.0"
+
 "@mongodb-model/base@^0.0.10000":
   version "0.0.10000"
   resolved "https://registry.npmjs.org/@mongodb-model/base/-/base-0.0.10000.tgz"
@@ -876,6 +895,16 @@
     mongodb "4.11.0"
     vitest "0.25.1"
 
+"@mongodb-model/db-migrate@^0.0.100011":
+  version "0.0.100011"
+  resolved "https://registry.npmjs.org/@mongodb-model/db-migrate/-/db-migrate-0.0.100011.tgz"
+  integrity sha512-5/Ft7PrpejsabLHmoyAGT0873bngJB2Bwjhg0FKMPSpiHV+m+Y2PMgaVywsiY4DXi7qj7HL0+onsPxo0x/On+A==
+  dependencies:
+    "@mongodb-model/app" "^0.0.100010"
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+    vitest "0.25.1"
+
 "@mongodb-model/db-migration@^0.0.0":
   version "0.0.0"
   resolved "https://registry.npmjs.org/@mongodb-model/db-migration/-/db-migration-0.0.0.tgz"
@@ -926,7 +955,7 @@
     vitest "0.25.1"
 
 "@mongodb-model/db-query@file:../db-query":
-  version "0.0.100001"
+  version "0.0.0"
   resolved "file:../db-query"
   dependencies:
     dotenv "16.0.3"
@@ -946,7 +975,7 @@
     dotenv "16.0.3"
     vitest "0.25.1"
 
-"@mongodb-model/http-controller@file:../http-controller":
+"@mongodb-model/http-controller@^0.0.1000", "@mongodb-model/http-controller@file:../http-controller":
   version "0.0.1000"
   resolved "file:../http-controller"
   dependencies:
@@ -984,7 +1013,7 @@
     mongodb "4.11.0"
     vitest "0.25.1"
 
-"@mongodb-model/method@file:../method":
+"@mongodb-model/method@^0.0.100012", "@mongodb-model/method@file:../method":
   version "0.0.100012"
   resolved "file:../method"
   dependencies:
@@ -1011,7 +1040,7 @@
     dotenv "16.0.3"
     socket.io "4.5.3"
 
-"@mongodb-model/tcp-controller@file:../tcp-controller":
+"@mongodb-model/tcp-controller@^0.0.1000", "@mongodb-model/tcp-controller@file:../tcp-controller":
   version "0.0.1000"
   resolved "file:../tcp-controller"
   dependencies:

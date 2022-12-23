@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/mongodb-model/model#readme",
   "dependencies": {
+    "@mongodb-model/app": "file:../app",
     "@mongodb-model/base": "file:../base",
     "@mongodb-model/cli": "file:../cli",
     "@mongodb-model/couleurs": "file:../couleurs",

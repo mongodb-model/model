@@ -119,62 +119,64 @@ class CLI extends require("../base") {
             `);
     }
   }
-  command() {this.init()}
+  command() {
+    // this.init()
+  }
   init() {
-    const {BIRed} = new Couleur
-    if(!this.commands(2) || this.commands(2).trim().length === 0){
-      new Man({ command: this.commands(2) }).man("man");
-    }else{
-      switch (this.commands(2)) {
-        case "h":
-          new Man({ command: this.commands(2) }).man("man");
-          break;
-        case "help":
-          new Man({ command: this.commands(2) }).man("man");
-          break;
-        case "--help":
-          new Man({ command: this.commands(2) }).man("man");
-          break;
-        case "-h":
-          new Man({ command: this.commands(2) }).man("man");
-          break;
-        case "man":
-          new Man({ command: this.commands(2) }).man("man");
-          break;
-        case "--man":
-          new Man({ command: this.commands(2) }).man("man");
-          break;
-        case "method":
-          new MethodCommand().method()
-          break;
-        case "models":
-          new ModelCommand().list()
-          break;
-        case "make:model":
-          new ModelCommand().makeModel();
-          // console.log('make:model', new ModelCommand);
-          break;
-        case "make:schema":
-          new SchemaCommand().makeSchema();
-          break;
-        case "make:migration":
-          new MigrationCommand().makeMigration()
-          break;
-        case "migrate":
-          new MigrateCommand().migrate();
-          break;
-        case "--model=":
-            console.log('--model=')
-          break;
-        case "-M":
-            console.log('-M')
-          break;
-        default:
-          // new Man({ command: this.commands(2) }).man("man");
-          console.log(BIRed(`${this.commands(2)} is not command`));
-          break;
-      }
-    }
+    // const {BIRed} = new Couleur
+    // if(!this.commands(2) || this.commands(2).trim().length === 0){
+    //   new Man({ command: this.commands(2) }).man("man");
+    // }else{
+    //   switch (this.commands(2)) {
+    //     case "h":
+    //       new Man({ command: this.commands(2) }).man("man");
+    //       break;
+    //     case "help":
+    //       new Man({ command: this.commands(2) }).man("man");
+    //       break;
+    //     case "--help":
+    //       new Man({ command: this.commands(2) }).man("man");
+    //       break;
+    //     case "-h":
+    //       new Man({ command: this.commands(2) }).man("man");
+    //       break;
+    //     case "man":
+    //       new Man({ command: this.commands(2) }).man("man");
+    //       break;
+    //     case "--man":
+    //       new Man({ command: this.commands(2) }).man("man");
+    //       break;
+    //     case "method":
+    //       new MethodCommand().method()
+    //       break;
+    //     case "models":
+    //       new ModelCommand().list()
+    //       break;
+    //     case "make:model":
+    //       new ModelCommand().makeModel();
+    //       // console.log('make:model', new ModelCommand);
+    //       break;
+    //     case "make:schema":
+    //       new SchemaCommand().makeSchema();
+    //       break;
+    //     case "make:migration":
+    //       new MigrationCommand().makeMigration()
+    //       break;
+    //     case "migrate":
+    //       new MigrateCommand().migrate();
+    //       break;
+    //     case "--model=":
+    //         console.log('--model=')
+    //       break;
+    //     case "-M":
+    //         console.log('-M')
+    //       break;
+    //     default:
+    //       // new Man({ command: this.commands(2) }).man("man");
+    //       console.log(BIRed(`${this.commands(2)} is not command`));
+    //       break;
+    //   }
+    // }
    
   }
   /**

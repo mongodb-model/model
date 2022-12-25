@@ -38,6 +38,8 @@
     "@mongodb-model/cli": "file:../cli",
     "@mongodb-model/couleurs": "file:../couleurs",
     "@mongodb-model/db-callback": "file:../db-callback",
+    "@mongodb-model/db-migrate": "file:../db-migrate",
+    "@mongodb-model/db-migration": "file:../db-migration",
     "@mongodb-model/db-promise": "file:../db-promise",
     "@mongodb-model/db-query": "file:../db-query",
     "@mongodb-model/db-query-validator": "file:../db-query-validator",

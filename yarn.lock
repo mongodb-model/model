@@ -753,6 +753,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.16.12.tgz#86c4fdd7c0d65fe9dcbe138fbe72720658ec3b88"
   integrity sha512-0LacmiIW+X0/LOLMZqYtZ7d4uY9fxYABAYhSSOu+OGQVBqH4N5eIYgkT7bBFnR4Nm3qo6qS3RpHKVrDASqj/uQ==
 
+"@esbuild/android-arm@0.15.18":
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/@esbuild/android-arm/-/android-arm-0.15.18.tgz#266d40b8fdcf87962df8af05b76219bc786b4f80"
+  integrity sha512-5GT+kcs2WVGjVs7+boataCkO5Fg0y4kCjzkB5bAip7H4jfnOS3dA6KPiww9W1OEKTKeAcUVhdZGvgI65OXmUnw==
+
 "@esbuild/android-arm@0.16.12":
   version "0.16.12"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm/-/android-arm-0.16.12.tgz#15e33bb1c8c2f560fbb27cda227c0fa22d83d0ef"
@@ -797,6 +802,11 @@
   version "0.16.12"
   resolved "https://registry.yarnpkg.com/@esbuild/linux-ia32/-/linux-ia32-0.16.12.tgz#132e61b2124eee6033bf7f0d5b312c02524d39db"
   integrity sha512-JFDuNDTTfgD1LJg7wHA42o2uAO/9VzHYK0leAVnCQE/FdMB599YMH73ux+nS0xGr79pv/BK+hrmdRin3iLgQjg==
+
+"@esbuild/linux-loong64@0.15.18":
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.18.tgz#128b76ecb9be48b60cf5cfc1c63a4f00691a3239"
+  integrity sha512-L4jVKS82XVhw2nvzLg/19ClLWg0y27ulRwuP7lcyL6AbUWB5aPglXY3M21mauDQMDfRLs8cQmeT03r/+X3cZYQ==
 
 "@esbuild/linux-loong64@0.16.12":
   version "0.16.12"
@@ -858,6 +868,159 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.16.12.tgz#31197bb509049b63c059c4808ac58e66fdff7479"
   integrity sha512-iPYKN78t3op2+erv2frW568j1q0RpqX6JOLZ7oPPaAV1VaF7dDstOrNw37PVOYoTWE11pV4A1XUitpdEFNIsPg==
 
+"@mongodb-model/base-model@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/base-model/-/base-model-0.0.10.tgz#8bc396e9069fc9aed131682f12104116996cbc65"
+  integrity sha512-S7DJ+PNl8DoFN6CRIn3ytDD1CtsVWLKuLa/ohAwVRUiZA9f+8fyJA+PV+GY8LjyZGxNDRDmmVFNnSvcQI3CTAg==
+
+"@mongodb-model/base@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/base/-/base-0.0.10.tgz#8f46d61996f424717c2176415c26e6123000569f"
+  integrity sha512-dKkq8eIxmLM3gDdpfAPLdyL5zzIMgOodCr4gvMzq/+GTedewkK8jNKSPysvffz2LrKu/v6pyZ4fQK4y/vb9twA==
+
+"@mongodb-model/cli@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/cli/-/cli-0.0.10.tgz#f7dc9d2872ddb19232ac9595f10f7787b6d6082e"
+  integrity sha512-c2rvjyLpKrLBEcl3z5FLVGSW+MIL0M2tz3teK6ot6D8eqHFD8lSj4mszfwjBsR3EL09SK8jio2KlimFFhSL6Ow==
+
+"@mongodb-model/controller@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/controller/-/controller-0.0.10.tgz#62ace96bfb00f635180b9f855ca29e9f10cc467d"
+  integrity sha512-v1zQZWLqXwll+GfMHV+vDnHtm01USN6jOJrubcLw46Muige4NmTE0iEb9Y55gsjxPY2+cNQ8AC1APPKs9z8NFg==
+  dependencies:
+    dotenv "16.0.3"
+    vitest "0.25.1"
+
+"@mongodb-model/couleurs@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/couleurs/-/couleurs-0.0.10.tgz#3d581f7aed3b5be077c2dbcd595fe7fbd634bef3"
+  integrity sha512-jMTmkz8UkvSgzrzZW7Xls0/IVcV9lpOVggeSMmcx0lHfFKHXc6gbq/kAFmQJt4D1xIDTuW6JaTY3vGKFadwyUw==
+
+"@mongodb-model/db-callback@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-callback/-/db-callback-0.0.10.tgz#038d3921ce6b9c9765e3e3e89920386bb3213fa0"
+  integrity sha512-/7ec8fkDMwpYHbFzF1Y2cRo9F+FFuUR8QuAzbj27MTFHHxuIrjuu8KLzL47jTfLWy4K48kaKi4NojywiQMPnXA==
+  dependencies:
+    "@mongodb-model/db-query" "^0.0.10"
+    "@mongodb-model/db-query-validator" "^0.0.10"
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+
+"@mongodb-model/db-migrate@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-migrate/-/db-migrate-0.0.10.tgz#d8a6bfca0b28e1edb09cfd52413848b941515030"
+  integrity sha512-kRVGIAbBrA3MykjI9QZGH9ivOjFlQnOSzzsyyc0eaSHIdtCcC9wAks3iyV7wnRTQcJeVxr0GEA+OQzAlfG5aug==
+  dependencies:
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+    vitest "0.25.1"
+
+"@mongodb-model/db-migration@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-migration/-/db-migration-0.0.10.tgz#2735a344369023e2acb5a88e4e03338f6be0b15a"
+  integrity sha512-rzeMpRug7fkDKq8PnYfTT0j/s/oUsi6U0IqU4CB5cAgI7Zj2JMrj4L9HYXKMSp2Bq3B9is/qBYI5tAtXlgs8WQ==
+  dependencies:
+    dotenv "16.0.3"
+    vitest "0.25.1"
+
+"@mongodb-model/db-promise@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-promise/-/db-promise-0.0.10.tgz#882cef20349663bf987b38d76d676a6102d9446e"
+  integrity sha512-ALKZqnCE/5L9jzKiI9woWla/pgwThhFvSB3xcqcJGXf1QfJumzJIjV93u63I9tZO0JC/CjLfCa9De8XG2de8iQ==
+  dependencies:
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+
+"@mongodb-model/db-query-validator@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-query-validator/-/db-query-validator-0.0.10.tgz#e6f86967d13775000dc35f9e5b00e5f77de9122a"
+  integrity sha512-DHYWv42Gsnw0QlFMHhVopAYQWj8qZYp7FMMrJh2eCu9H53HabpEhXazDNNzQgYlVIu1bzcIB3MsTs/GUuf/fTw==
+  dependencies:
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+
+"@mongodb-model/db-query@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-query/-/db-query-0.0.10.tgz#288c487bae6c3013404a9561bfd59c1ad0207aa9"
+  integrity sha512-5bXpDNWPhSQbz0UvyF2d+DJJ3vFlpCBfnT1ciEfnW0pHPkDwKRCyDJdiSN/Tz5IGo+vyU3ipv7ypudM02H5GIA==
+  dependencies:
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+
+"@mongodb-model/db-schema@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/db-schema/-/db-schema-0.0.10.tgz#a006011d2cce10931c3ba75958b1117eb767bc1a"
+  integrity sha512-fFxUD2gs/8Tu39pUA0tXf3wvMTQ2eCEOY7I6ROKlXnt/qRHGH+OizzgczomHev8kbmnET0C/kJTQF+vuRjBpIg==
+  dependencies:
+    dotenv "16.0.3"
+    vitest "0.25.1"
+
+"@mongodb-model/error@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/error/-/error-0.0.10.tgz#47e5ca2db1d5d87844e2b5536f6524223e789b0a"
+  integrity sha512-ftmfrhhjOoniI76b5Lx7OOjiWPw+YHQ2FpcWOEMHNCIyoXPPFp3nf+aBBgyTOKZP1SQlm0jthQweCHrTSHPXVQ==
+  dependencies:
+    dotenv "16.0.3"
+    vitest "0.25.1"
+
+"@mongodb-model/http-controller@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/http-controller/-/http-controller-0.0.1.tgz#d61a9eb8be6abdb853b90620e00d736ffb954ce9"
+  integrity sha512-pB8xfPOf0/jgIjvelMfAXjVfBBDFGsiAhmoOoiYjVTvqyLLbOcgdip85KNAIa7Q7oE+t1eE5mTlfO9tYMdNlAA==
+  dependencies:
+    "@mongodb-model/controller" "^0.0.10"
+    "@mongodb-model/couleurs" "^0.0.10"
+    dotenv "16.0.3"
+    vitest "0.25.1"
+
+"@mongodb-model/lib@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/lib/-/lib-0.0.10.tgz#785da7c45c46da8696d9bace28effe154e5aba45"
+  integrity sha512-yN3ubdD+0RVpo70oe7M8ydz5hMWnb52Yj2HKVVKBYP6GM9dF9oSEsd7umdDdGyH4O8Gor5a2of6JzbmKu+m24w==
+
+"@mongodb-model/man@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/man/-/man-0.0.10.tgz#c4d0917a8c65a1b456d719836a2e408fc0e9588f"
+  integrity sha512-lASNZpyBXArfR4I3NtgaZqtnpgJ0lCWWcypLHtmghasbGWobaf8sdINU8rrYMfdbgduOaCkPGNK10F/ohb05lg==
+
+"@mongodb-model/method@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/method/-/method-0.0.10.tgz#200462a216f3b8f68d26d8b9c2aef17bbb2c81be"
+  integrity sha512-XHaYxPeYwlOjHQxnWe2CdRoFuI1YJ3iszUCLJhnngmBZ4PGITRr6j4/+SeFYfBRPdGSmBVcKKHY8w2sUwNhsHQ==
+  dependencies:
+    "@mongodb-model/base-model" "^0.0.10"
+    "@mongodb-model/db-callback" "^0.0.10"
+    "@mongodb-model/db-query" "^0.0.10"
+    "@mongodb-model/db-query-validator" "^0.0.10"
+    dotenv "16.0.3"
+    mongodb "4.11.0"
+    vitest "0.25.1"
+
+"@mongodb-model/schema@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/schema/-/schema-0.0.10.tgz#069d0d70f9de7cfbbb18a383aab388be1570ecb1"
+  integrity sha512-cWqLLdt3LQuP/VkdK9VEcsqTFb8jfksCnxBR+sB+oKyz4lLVn+hO3TNrBXTdIgkeb7ErNzfEjM4jhE+Z8zYD0w==
+  dependencies:
+    dotenv "16.0.3"
+    vitest "0.25.1"
+
+"@mongodb-model/tcp-controller@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/tcp-controller/-/tcp-controller-0.0.10.tgz#87726f71c327e4ad6cc52e283c3d720c61a176b3"
+  integrity sha512-eWRGI64lqW9lfX8RcAy1mlUXyYBiJQ0WlRsPJrkfMjnBB1OmlP4DjA0WZ7m+VELhAoIZMMr/4IbFAU7wKUjTHA==
+  dependencies:
+    "@mongodb-model/controller" "^0.0.10"
+    "@mongodb-model/couleurs" "^0.0.10"
+    dotenv "^16.0.3"
+    vitest "^0.25.3"
+
+"@mongodb-model/template@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@mongodb-model/template/-/template-0.0.11.tgz#9ff32d109d39c886733a1f0e25f03d0defcd41e4"
+  integrity sha512-TObN+0DOMZHBDqoRfSl09AzmXjjBJ+bxKPRUjDr5j0X5uCLAW/OyKff4Zjp3tKaj6Ssk7mWB6PB2ual0oo4UMg==
+  dependencies:
+    dotenv "^16.0.3"
+
 "@types/chai-subset@^1.3.3":
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/@types/chai-subset/-/chai-subset-1.3.3.tgz#97893814e92abd2c534de422cb377e0e0bdaac94"
@@ -865,7 +1028,7 @@
   dependencies:
     "@types/chai" "*"
 
-"@types/chai@*", "@types/chai@^4.3.4":
+"@types/chai@*", "@types/chai@^4.3.3", "@types/chai@^4.3.4":
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.4.tgz#e913e8175db8307d78b4e8fa690408ba6b65dee4"
   integrity sha512-KnRanxnpfpjUTqTCXslZSEdLfXExwgNxYPdiO2WGUj8+HDjFi8R3k5RVKPeSCzLjCcshCAtVO2QBbVuAV4kTnw==
@@ -893,7 +1056,7 @@ acorn-walk@^8.2.0:
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.2.0.tgz#741210f2e2426454508853a2f44d0ab83b7f69c1"
   integrity sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==
 
-acorn@^8.8.1:
+acorn@^8.8.0, acorn@^8.8.1:
   version "8.8.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.8.1.tgz#0a3f9cbecc4ec3bea6f0a80b66ae8dd2da250b73"
   integrity sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==
@@ -928,7 +1091,7 @@ buffer@^5.6.0:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
 
-chai@^4.3.7:
+chai@^4.3.6, chai@^4.3.7:
   version "4.3.7"
   resolved "https://registry.yarnpkg.com/chai/-/chai-4.3.7.tgz#ec63f6df01829088e8bf55fca839bcd464a8ec51"
   integrity sha512-HLnAzZ2iupm25PlN0xFreAlBA5zaBSv3og0DdeGA4Ar6h6rJ3A0rolRUKJhSF2V10GZKDgWF/VmAEsNWjCRB+A==
@@ -960,10 +1123,143 @@ deep-eql@^4.1.2:
   dependencies:
     type-detect "^4.0.0"
 
-dotenv@^16.0.3:
+denque@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/denque/-/denque-2.1.0.tgz#e93e1a6569fb5e66f16a3c2a2964617d349d6ab1"
+  integrity sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==
+
+dotenv@16.0.3, dotenv@^16.0.3:
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
   integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+
+esbuild-android-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-android-64/-/esbuild-android-64-0.15.18.tgz#20a7ae1416c8eaade917fb2453c1259302c637a5"
+  integrity sha512-wnpt3OXRhcjfIDSZu9bnzT4/TNTDsOUvip0foZOUBG7QbSt//w3QV4FInVJxNhKc/ErhUxc5z4QjHtMi7/TbgA==
+
+esbuild-android-arm64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-android-arm64/-/esbuild-android-arm64-0.15.18.tgz#9cc0ec60581d6ad267568f29cf4895ffdd9f2f04"
+  integrity sha512-G4xu89B8FCzav9XU8EjsXacCKSG2FT7wW9J6hOc18soEHJdtWu03L3TQDGf0geNxfLTtxENKBzMSq9LlbjS8OQ==
+
+esbuild-darwin-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-darwin-64/-/esbuild-darwin-64-0.15.18.tgz#428e1730ea819d500808f220fbc5207aea6d4410"
+  integrity sha512-2WAvs95uPnVJPuYKP0Eqx+Dl/jaYseZEUUT1sjg97TJa4oBtbAKnPnl3b5M9l51/nbx7+QAEtuummJZW0sBEmg==
+
+esbuild-darwin-arm64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.15.18.tgz#b6dfc7799115a2917f35970bfbc93ae50256b337"
+  integrity sha512-tKPSxcTJ5OmNb1btVikATJ8NftlyNlc8BVNtyT/UAr62JFOhwHlnoPrhYWz09akBLHI9nElFVfWSTSRsrZiDUA==
+
+esbuild-freebsd-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-freebsd-64/-/esbuild-freebsd-64-0.15.18.tgz#4e190d9c2d1e67164619ae30a438be87d5eedaf2"
+  integrity sha512-TT3uBUxkteAjR1QbsmvSsjpKjOX6UkCstr8nMr+q7zi3NuZ1oIpa8U41Y8I8dJH2fJgdC3Dj3CXO5biLQpfdZA==
+
+esbuild-freebsd-arm64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.15.18.tgz#18a4c0344ee23bd5a6d06d18c76e2fd6d3f91635"
+  integrity sha512-R/oVr+X3Tkh+S0+tL41wRMbdWtpWB8hEAMsOXDumSSa6qJR89U0S/PpLXrGF7Wk/JykfpWNokERUpCeHDl47wA==
+
+esbuild-linux-32@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-32/-/esbuild-linux-32-0.15.18.tgz#9a329731ee079b12262b793fb84eea762e82e0ce"
+  integrity sha512-lphF3HiCSYtaa9p1DtXndiQEeQDKPl9eN/XNoBf2amEghugNuqXNZA/ZovthNE2aa4EN43WroO0B85xVSjYkbg==
+
+esbuild-linux-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-64/-/esbuild-linux-64-0.15.18.tgz#532738075397b994467b514e524aeb520c191b6c"
+  integrity sha512-hNSeP97IviD7oxLKFuii5sDPJ+QHeiFTFLoLm7NZQligur8poNOWGIgpQ7Qf8Balb69hptMZzyOBIPtY09GZYw==
+
+esbuild-linux-arm64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-arm64/-/esbuild-linux-arm64-0.15.18.tgz#5372e7993ac2da8f06b2ba313710d722b7a86e5d"
+  integrity sha512-54qr8kg/6ilcxd+0V3h9rjT4qmjc0CccMVWrjOEM/pEcUzt8X62HfBSeZfT2ECpM7104mk4yfQXkosY8Quptug==
+
+esbuild-linux-arm@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-arm/-/esbuild-linux-arm-0.15.18.tgz#e734aaf259a2e3d109d4886c9e81ec0f2fd9a9cc"
+  integrity sha512-UH779gstRblS4aoS2qpMl3wjg7U0j+ygu3GjIeTonCcN79ZvpPee12Qun3vcdxX+37O5LFxz39XeW2I9bybMVA==
+
+esbuild-linux-mips64le@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.15.18.tgz#c0487c14a9371a84eb08fab0e1d7b045a77105eb"
+  integrity sha512-Mk6Ppwzzz3YbMl/ZZL2P0q1tnYqh/trYZ1VfNP47C31yT0K8t9s7Z077QrDA/guU60tGNp2GOwCQnp+DYv7bxQ==
+
+esbuild-linux-ppc64le@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.15.18.tgz#af048ad94eed0ce32f6d5a873f7abe9115012507"
+  integrity sha512-b0XkN4pL9WUulPTa/VKHx2wLCgvIAbgwABGnKMY19WhKZPT+8BxhZdqz6EgkqCLld7X5qiCY2F/bfpUUlnFZ9w==
+
+esbuild-linux-riscv64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-riscv64/-/esbuild-linux-riscv64-0.15.18.tgz#423ed4e5927bd77f842bd566972178f424d455e6"
+  integrity sha512-ba2COaoF5wL6VLZWn04k+ACZjZ6NYniMSQStodFKH/Pu6RxzQqzsmjR1t9QC89VYJxBeyVPTaHuBMCejl3O/xg==
+
+esbuild-linux-s390x@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-linux-s390x/-/esbuild-linux-s390x-0.15.18.tgz#21d21eaa962a183bfb76312e5a01cc5ae48ce8eb"
+  integrity sha512-VbpGuXEl5FCs1wDVp93O8UIzl3ZrglgnSQ+Hu79g7hZu6te6/YHgVJxCM2SqfIila0J3k0csfnf8VD2W7u2kzQ==
+
+esbuild-netbsd-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-netbsd-64/-/esbuild-netbsd-64-0.15.18.tgz#ae75682f60d08560b1fe9482bfe0173e5110b998"
+  integrity sha512-98ukeCdvdX7wr1vUYQzKo4kQ0N2p27H7I11maINv73fVEXt2kyh4K4m9f35U1K43Xc2QGXlzAw0K9yoU7JUjOg==
+
+esbuild-openbsd-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-openbsd-64/-/esbuild-openbsd-64-0.15.18.tgz#79591a90aa3b03e4863f93beec0d2bab2853d0a8"
+  integrity sha512-yK5NCcH31Uae076AyQAXeJzt/vxIo9+omZRKj1pauhk3ITuADzuOx5N2fdHrAKPxN+zH3w96uFKlY7yIn490xQ==
+
+esbuild-sunos-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-sunos-64/-/esbuild-sunos-64-0.15.18.tgz#fd528aa5da5374b7e1e93d36ef9b07c3dfed2971"
+  integrity sha512-On22LLFlBeLNj/YF3FT+cXcyKPEI263nflYlAhz5crxtp3yRG1Ugfr7ITyxmCmjm4vbN/dGrb/B7w7U8yJR9yw==
+
+esbuild-windows-32@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-windows-32/-/esbuild-windows-32-0.15.18.tgz#0e92b66ecdf5435a76813c4bc5ccda0696f4efc3"
+  integrity sha512-o+eyLu2MjVny/nt+E0uPnBxYuJHBvho8vWsC2lV61A7wwTWC3jkN2w36jtA+yv1UgYkHRihPuQsL23hsCYGcOQ==
+
+esbuild-windows-64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-windows-64/-/esbuild-windows-64-0.15.18.tgz#0fc761d785414284fc408e7914226d33f82420d0"
+  integrity sha512-qinug1iTTaIIrCorAUjR0fcBk24fjzEedFYhhispP8Oc7SFvs+XeW3YpAKiKp8dRpizl4YYAhxMjlftAMJiaUw==
+
+esbuild-windows-arm64@0.15.18:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild-windows-arm64/-/esbuild-windows-arm64-0.15.18.tgz#5b5bdc56d341d0922ee94965c89ee120a6a86eb7"
+  integrity sha512-q9bsYzegpZcLziq0zgUi5KqGVtfhjxGbnksaBFYmWLxeV/S1fK4OLdq2DFYnXcLMjlZw2L0jLsk1eGoB522WXQ==
+
+esbuild@^0.15.9:
+  version "0.15.18"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.15.18.tgz#ea894adaf3fbc036d32320a00d4d6e4978a2f36d"
+  integrity sha512-x/R72SmW3sSFRm5zrrIjAhCeQSAWoni3CmHEqfQrZIQTM3lVCdehdwuIqaOtfC2slvpdlLa62GYoN8SxT23m6Q==
+  optionalDependencies:
+    "@esbuild/android-arm" "0.15.18"
+    "@esbuild/linux-loong64" "0.15.18"
+    esbuild-android-64 "0.15.18"
+    esbuild-android-arm64 "0.15.18"
+    esbuild-darwin-64 "0.15.18"
+    esbuild-darwin-arm64 "0.15.18"
+    esbuild-freebsd-64 "0.15.18"
+    esbuild-freebsd-arm64 "0.15.18"
+    esbuild-linux-32 "0.15.18"
+    esbuild-linux-64 "0.15.18"
+    esbuild-linux-arm "0.15.18"
+    esbuild-linux-arm64 "0.15.18"
+    esbuild-linux-mips64le "0.15.18"
+    esbuild-linux-ppc64le "0.15.18"
+    esbuild-linux-riscv64 "0.15.18"
+    esbuild-linux-s390x "0.15.18"
+    esbuild-netbsd-64 "0.15.18"
+    esbuild-openbsd-64 "0.15.18"
+    esbuild-sunos-64 "0.15.18"
+    esbuild-windows-32 "0.15.18"
+    esbuild-windows-64 "0.15.18"
+    esbuild-windows-arm64 "0.15.18"
 
 esbuild@^0.16.3:
   version "0.16.12"
@@ -1064,6 +1360,19 @@ mongodb-connection-string-url@^2.5.4:
     "@types/whatwg-url" "^8.2.1"
     whatwg-url "^11.0.0"
 
+mongodb@4.11.0:
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-4.11.0.tgz#d28fdc7509f24d0d274f456529441fa3e570415c"
+  integrity sha512-9l9n4Nk2BYZzljW3vHah3Z0rfS5npKw6ktnkmFgTcnzaXH1DRm3pDl6VMHu84EVb1lzmSaJC4OzWZqTkB5i2wg==
+  dependencies:
+    bson "^4.7.0"
+    denque "^2.1.0"
+    mongodb-connection-string-url "^2.5.4"
+    socks "^2.7.1"
+  optionalDependencies:
+    "@aws-sdk/credential-providers" "^3.186.0"
+    saslprep "^1.0.3"
+
 mongodb@^4.12.1:
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-4.13.0.tgz#2aa832b827e2891eb2e52e8235c201cbb4701ed2"
@@ -1101,7 +1410,7 @@ picocolors@^1.0.0:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
   integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
 
-postcss@^8.4.20:
+postcss@^8.4.18, postcss@^8.4.20:
   version "8.4.20"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.20.tgz#64c52f509644cecad8567e949f4081d98349dc56"
   integrity sha512-6Q04AXR1212bXr5fh03u8aAwbLxAQNGQ/Q1LNa0VfOI06ZAlhPHtQvE4OIdpj4kLThXilalPnmDSOD65DcHt+g==
@@ -1123,6 +1432,13 @@ resolve@^1.22.1:
     is-core-module "^2.9.0"
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
+
+rollup@^2.79.1:
+  version "2.79.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.79.1.tgz#bedee8faef7c9f93a2647ac0108748f497f081c7"
+  integrity sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==
+  optionalDependencies:
+    fsevents "~2.3.2"
 
 rollup@^3.7.0:
   version "3.9.0"
@@ -1167,6 +1483,13 @@ sparse-bitfield@^3.0.3:
   integrity sha512-kvzhi7vqKTfkh0PZU+2D2PIllw2ymqJKujUcyPMd9Y75Nv4nPbGJZXNhxsgdQab2BmlDct1YnfQCguEvHr7VsQ==
   dependencies:
     memory-pager "^1.0.2"
+
+strip-literal@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/strip-literal/-/strip-literal-0.4.2.tgz#4f9fa6c38bb157b924e9ace7155ebf8a2342cbcf"
+  integrity sha512-pv48ybn4iE1O9RLgCAN0iU4Xv7RlBTiit6DKmMiErbs9x1wH6vXBs45tWc0H5wUIF6TLTrKweqkmYF/iraQKNw==
+  dependencies:
+    acorn "^8.8.0"
 
 strip-literal@^1.0.0:
   version "1.0.0"
@@ -1227,6 +1550,18 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
+vite@^3.0.0:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-3.2.5.tgz#dee5678172a8a0ab3e547ad4148c3d547f90e86a"
+  integrity sha512-4mVEpXpSOgrssFZAOmGIr85wPHKvaDAcXqxVxVRZhljkJOMZi1ibLibzjLHzJvcok8BMguLc7g1W6W/GqZbLdQ==
+  dependencies:
+    esbuild "^0.15.9"
+    postcss "^8.4.18"
+    resolve "^1.22.1"
+    rollup "^2.79.1"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
 "vite@^3.0.0 || ^4.0.0":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/vite/-/vite-4.0.3.tgz#de27ad3f263a03ae9419cdc8bc07721eadcba8b9"
@@ -1238,6 +1573,26 @@ uuid@^8.3.2:
     rollup "^3.7.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vitest@0.25.1:
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.25.1.tgz#4eafca68fabab22b6099451ab3fcaac33290a4ed"
+  integrity sha512-eH74h6MkuEgsqR4mAQZeMK9O0PROiKY+i+1GMz/fBi5A3L2ml5U7JQs7LfPU7+uWUziZyLHagl+rkyfR8SLhlA==
+  dependencies:
+    "@types/chai" "^4.3.3"
+    "@types/chai-subset" "^1.3.3"
+    "@types/node" "*"
+    acorn "^8.8.0"
+    acorn-walk "^8.2.0"
+    chai "^4.3.6"
+    debug "^4.3.4"
+    local-pkg "^0.4.2"
+    source-map "^0.6.1"
+    strip-literal "^0.4.2"
+    tinybench "^2.3.1"
+    tinypool "^0.3.0"
+    tinyspy "^1.0.2"
+    vite "^3.0.0"
 
 vitest@^0.25.3:
   version "0.25.8"

@@ -22,6 +22,7 @@ const Method = require("@mongodb-model/method");
 
 
 const MongoTransform = require("../");
+const App = require("@mongodb-model/app");
 const Model = require("../src/cli");
 const Schema = require("@mongodb-model/schema");
 const Migration = require("@mongodb-model/db-migration");

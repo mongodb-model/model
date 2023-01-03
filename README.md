@@ -305,7 +305,7 @@ awaitFirstByToken(token, collectionName = 'users')
 ```javascript
 'use strict';
 
-const Model = require('@mongodb-model/model');
+const Model = require('@mongodb-model/base-model');
 
 /*
 |--------------------------------------------------------------------------------

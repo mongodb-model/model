@@ -1,0 +1,22 @@
+{
+  "name": "helpers",
+  "version": "0.0.0",
+  "description": "helpers",
+  "main": "index.js",
+  "bin": {
+    "helpers": "bin/index.js"
+  },
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test --globals"
+  },
+  "keywords": [
+    "helpers"
+  ],
+  "author": "Ericson S. Weah",
+  "license": "ISC"
+}

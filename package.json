@@ -1,0 +1,50 @@
+{
+  "name": "base-model",
+  "version": "0.0.0",
+  "description": "base model",
+  "main": "index.js",
+  "bin": {
+    "base-model": "bin/index.js"
+  },
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "vitest --globals",
+    "coverage": "vitest run --coverage",
+    "environment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mongodb-model/mongo.git"
+  },
+  "keywords": [
+    "base",
+    "model",
+    "mongodb",
+    "transform",
+    "eventEmitter",
+    "database"
+  ],
+  "author": "Ericson S. Weah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mongodb-model/mongo/issues"
+  },
+  "homepage": "https://github.com/mongodb-model/mongo#readme",
+  "devDependencies": {
+    "vitest": "^0.31.0",
+    "jest": "^29.5.0"
+  
+  },
+  "dependencies": {
+    "@socket.io/redis-adapter": "^8.2.1",
+    "mongodb": "^5.5.0",
+    "redis": "^4.6.6",
+    "socket.io": "^4.6.1",
+    "socket.io-client": "^4.6.1",
+    "dotenv": "^16.0.3"
+  }
+}

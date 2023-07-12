@@ -2168,8 +2168,6 @@ async validate(document = { full: true, repair: true },fns = () => {})
 async ensureIndex(keys = {}, options = {}, commitQuorum = 1 || 'string', fns = () => {}) 
 async estimatedDocumentCount(options = {}, fns = () => {}) 
 
-
-// Add  => done 
 async lastById(id="645b9cf776b7fb46975316d9", fns = () => {}, options = { sort: {_id: -1}, projection: {}})
 async lastByEmail(email = 'ericson.weah@gmail.com',  fns = () => {}, options = { sort: {_id: -1}, projection: {}})
 async lastByToken(token = '645b9cf776b7fb46975316d9', fns = () => {}, options = { sort: {_id: -1}, projection: {}})  

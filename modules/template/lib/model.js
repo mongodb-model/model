@@ -12,7 +12,7 @@ require('dotenv').config()
 |
 */
 
-const Model = require('base-model');
+const Model = require('@mongodb-model/model');
 
 class ${option.model} extends Model{
 

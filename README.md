@@ -2234,7 +2234,7 @@ module.exports = {
 ```javascript
 'use strict';
 
-const Model = require('@mongodb-model/base-model');
+const Model = require('@mongodb-model/model');
 
 /*
 |--------------------------------------------------------------------------------

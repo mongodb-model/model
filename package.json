@@ -1,43 +1,14 @@
 {
-  "name": "base-model",
-  "version": "0.0.0",
-  "description": "base model",
+  "name": "@mongodb-model/model",
+  "version": "0.0.10",
+  "description": "MongoDB Model",
   "main": "index.js",
   "bin": {
-    "base-model": "bin/index.js"
+    "model": "bin/index.js"
   },
   "directories": {
     "doc": "docs",
-    "lib": "lib",
-    "test": "test"
-  },
-  "scripts": {
-    "test": "vitest --globals",
-    "coverage": "vitest run --coverage",
-    "environment": "node"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/mongodb-model/mongo.git"
-  },
-  "keywords": [
-    "base",
-    "model",
-    "mongodb",
-    "transform",
-    "eventEmitter",
-    "database"
-  ],
-  "author": "Ericson S. Weah",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mongodb-model/mongo/issues"
-  },
-  "homepage": "https://github.com/mongodb-model/mongo#readme",
-  "devDependencies": {
-    "vitest": "^0.31.0",
-    "jest": "^29.5.0"
-  
+    "lib": "lib"
   },
   "dependencies": {
     "@socket.io/redis-adapter": "^8.2.1",
@@ -46,5 +17,34 @@
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "dotenv": "^16.0.3"
-  }
+  },
+  "devDependencies": {
+    "vitest": "^0.31.0",
+    "jest": "^29.5.0"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mongodb-model/model.git"
+  },
+  "keywords": [
+    "MongoDB",
+    "Model",
+    "EventEmitter",
+    "Stream",
+    "Transform",
+    "Database",
+    "Duplex",
+    "TCP",
+    "HTTP",
+    "Realtime"
+  ],
+  "author": "Ericson S. Weah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mongodb-model/model/issues"
+  },
+  "homepage": "https://github.com/mongodb-model/model#readme"
 }

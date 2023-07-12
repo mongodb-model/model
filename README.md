@@ -222,22 +222,21 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
 1. Using Promise
    * Using the **create** method 
       ```javascript 
-        const options = {projection: {firstname: 1, lastname: 1, email: 1, phone: 1, sort: {_id: -1}}};
+        const userData = {firstname: 'John', lastname: 'Doe'}; 
 
-        User.find({lastname: 'Doe'}, options,(error, users) => {
-            if(error) return console.log('error finding all users', error);
-            console.log('all users found', users);
-        });
+        User.create(userData)
+            .then(result => console.log('user created successfully:' + result));
+            .catch(err => console.log('error creating user: ' + err));
       ```
 
    * Using the **insertOne** Method 
       ```javascript 
-        const options = {projection: {firstname: 1, lastname: 1, email: 1, phone: 1, sort: {_id: -1}}};
+        const userData = {firstname: 'John', lastname: 'Doe'}; 
 
-        User.find({lastname: 'Doe'}, options,(error, users) => {
-            if(error) return console.log('error finding all users', error);
-            console.log('all users found', users);
-        });
+        User.insertOne(userData).
+            .then(result => console.log('user created successfully'));
+            .catch(err => console.log('error creating user: ' + err));
+      ```
       ```
 2. Using Callback
    * Using the **create** method 
@@ -266,8 +265,8 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
 
         User.create(userData);
 
-        User.on('create', user => console.log('user', user));
-        User.on('create-error', error => console.log('error', error));
+        User.on('create', user => console.log('user created', user));
+        User.on('create-error', error => console.log('error creating user', error));
       ```
 
    * Using the **insertOne** Method 
@@ -276,8 +275,8 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
         
         User.insertOne(userData);
 
-        User.on('insertOne', user => console.log('user', user));
-        User.on('insertOne-error', error => console.log('error', error));
+        User.on('insertOne', user => console.log('user inserted', user));
+        User.on('insertOne-error', error => console.log('error inserting user', error));
       ```
 
 #### READ 
@@ -287,23 +286,23 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
    * Using the **all** method 
       ```javascript 
         User.all()
-            .then(users => console.log('users', users))
-            .catch(error => console.log('error', error));
+            .then(users => console.log('users found', users))
+            .catch(error => console.log('error finding users', error));
       ```
 
    * Using the **find** Method 
       ```javascript 
        User.find()
-            .then(users => console.log('users', users))
-            .catch(error => console.log('error', error));
+            .then(users => console.log('users found', users))
+            .catch(error => console.log('error finding users', error));
       ```
 
 
    * Using the **findById** Method 
       ```javascript 
        User.findById('645e4d81c050a750429b4421')
-            .then(user => console.log('user', user))
-            .catch(error => console.log('error', error));
+            .then(user => console.log('user by id', user))
+            .catch(error => console.log('error finding user by id', error));
       ```
 
     * Using the **lastByEmail** Method 

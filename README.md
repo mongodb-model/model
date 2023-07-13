@@ -20,7 +20,7 @@ $ npm i @mongodb-model/model
 
 ```
 
-#### 2. add .env file in your project root directory with at least these two environment variables
+#### 2. add .env file in your project root directory with these environment variables (at least the first two: DATABASE_NAME and DATABASE_URL, DATABASE_)
  *** No need for installing dotenv npm package ***
 ```bash
 DATABASE_NAME='Your Mongodb Database Name'

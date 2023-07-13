@@ -40,7 +40,7 @@ const { IRed } = new Couleurs();
  * @returns {Function} - The generated method.
  */
 
-const collectionMethod = (Observable, client = new Client()) =>
+const collectionMethod = (Observable, client = new Client(Observable.url)) =>
 (method = 'find', fn = () => {}, toArray = false, event = 'find') => async (...args) => {
   try {
     let result;

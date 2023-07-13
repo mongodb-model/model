@@ -6,8 +6,6 @@ Model is an exceptional and dynamic tool that excels in facilitating seamless in
 
  <br />
 
-#### 1. install model 
-
 ```bash
 $ yarn add @mongodb-model/model
 
@@ -19,8 +17,119 @@ $ yarn add @mongodb-model/model
 $ npm i @mongodb-model/model
 
 ```
+### That's it: Start Using it 
+Instantiate the Model class by providing an object with your database URL and collection name as keys. <ins> ***This will give you the corresponding collection model!***</ins>
+ ```javascript 
+  const Model = require('@mongodb-model/model');
+  const User = new Model({url: 'mongodb://localhost:27017/model', collection: 'users'});
+ ```
+ By initializing the Model class, the database connection process is automated, eliminating the need for manual handling. The instantiation of the Model class seamlessly takes care of the database connection. ***Additionally, using a schema is entirely optional!***
+* CREATE
+  * Use Promise
 
-#### 2. add .env file in your project root directory with these environment variables (at least the first two: DATABASE_NAME and DATABASE_URL, DATABASE_)
+    ```javascript 
+      User.insertOne({firstname: 'John', lastname: 'Doe', email: 'john.doe@gmail.com', username: 'johndoe'});
+          .then(result => console.log('user inserted', result))
+          .catch(error => console.log('error inserting user', error));
+    ```
+
+   * Or Use Event
+
+      ```javascript 
+      User.insertOne({firstname: 'John', lastname: 'Doe', email: 'john.doe@gmail.com', username: 'johndoe'});
+      User.on('insertOne', result => console.log('user inserted', result));
+      User.on('insertOne-error', error => console.log('error inserting user', error));
+      ```
+
+   * Or Use Callback
+
+      ```javascript 
+        User.insertOne({firstname: 'John', lastname: 'Doe', email: 'john.doe@gmail.com', username: 'johndoe'},{},(error, users) => {
+            if(error) return console.log('error inserting user', error);
+            console.log('user inserted', result);
+        });
+      ```
+* READ
+  * Use Promise
+
+    ```javascript 
+      User.find()
+          .then(users => console.log('users found', users))
+          .catch(error => console.log('error finding users', error));
+    ```
+
+   * Or Use Event
+
+      ```javascript 
+      User.find();
+      User.on('find', users => console.log('users found', users));
+      User.on('find-error', users => console.log('error finding users', users));
+      ```
+
+   * Or Use Callback
+
+      ```javascript 
+        User.find({},{},(error, users) => {
+            if(error) return console.log('error finding users', error);
+            console.log('users found', users);
+        });
+      ```
+* UPDATE
+  * Use Promise
+
+    ```javascript 
+      User.updateOne({username: 'johndoe'},{email: 'johndoe@gmail.com'})
+          .then(result => console.log('user updated', result))
+          .catch(error => console.log('error updating', error));
+    ```
+
+   * Or Use Event
+
+      ```javascript 
+      User.updateOne({username: 'johndoe'},{email: 'johndoe@gmail.com'});
+      User.on('updateOne', result => console.log('user updated', result));
+      User.on('updateOne-error', error => console.log('error updating', error));
+      ```
+
+   * Or Use Callback
+
+      ```javascript 
+        User.updateOne({username: 'johndoe'},{email: 'johndoe@gmail.com'},{},(error, result) => {
+            if(error) return console.log('error updating', error);
+            console.log('user updated', result);
+        });
+      ```
+* DELETE
+  * Use Promise
+
+    ```javascript 
+      User.deleteOne({username: 'johndoe'})
+          .then(result => console.log('user deleted', result))
+          .catch(error => console.log('error deleting user', error));
+    ```
+
+   * Or Use Event
+
+      ```javascript 
+      User.deleteOne({username: 'johndoe'});
+      User.on('deleteOne', result => console.log('user deleted', result));
+      User.on('deleteOne-error', error => console.log('error deleting user', error));
+      ```
+
+   * Or Use Callback
+
+      ```javascript 
+        User.deleteOne({username: 'johndoe'},{},(error, result) => {
+            if(error) return console.log('error deleting user', error);
+            console.log('user deleted', result);
+        });
+      ```
+  <ins>**That's it! It's that simple!**</ins>
+
+
+
+===================================   A MORE DETAILED EXPLANATION ===============================================
+#### 1. add .env file in your project root directory with these environment variables (at least the first two: DATABASE_NAME and DATABASE_URL, DATABASE_)
  *** No need for installing dotenv npm package ***
 ```bash
 DATABASE_NAME='Your Mongodb Database Name'
@@ -37,7 +146,11 @@ JSON_FAKER_URL='https://jsonplaceholder.typicode.com/'
 BUCKET_NAME='myGridFSBucket'
 
 ```
-#### 3. Make sure you have mongodb server running if you are using mongodb server locally.
+
+#### 2. Make sure you have mongodb server running if you are using mongodb server locally.
+
+<ins> NOTE: The .env file is not required. It is completely optional. It only helps instantiate the MongoDB Model by passing the object with only one key: the collection name as shown in the rest of this documentation. </ins> 
+
  <br />
 
 ### **Start using it**

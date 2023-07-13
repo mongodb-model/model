@@ -128,7 +128,7 @@ Instantiate the Model class by providing an object with your database URL and co
 
 
 
-===================================   A MORE DETAILED EXPLANATION ===============================================
+### A MORE DETAILED EXPLANATION 
 #### 1. add .env file in your project root directory with these environment variables (at least the first two: DATABASE_NAME and DATABASE_URL, DATABASE_)
  *** No need for installing dotenv npm package ***
 ```bash

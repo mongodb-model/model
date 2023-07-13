@@ -7,7 +7,6 @@
     "model": "bin/index.js"
   },
   "directories": {
-    "doc": "docs",
     "lib": "lib"
   },
   "dependencies": {

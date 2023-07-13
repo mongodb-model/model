@@ -662,7 +662,7 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
 
     * Using the **deleteByUsername** Method 
       ```javascript 
-        User.deleteByUsername({username: 'johndoe'});
+        User.deleteByUsername('johndoe');
         User.on('deleteByUsername', result => console.log('user deleted by username', result));
         User.on('deleteByUsername-error', error => console.log('error deleting user by username', error));
       ```
@@ -2345,8 +2345,6 @@ module.exports = User;
 #### Official Website
 [https://www.mongodb-model.com](https://www.mongodb-model.com)
 
-#### Author's Info
-Website|Main Dev|Other Site|NPM|Github|Gitlab|Blog|LinkedIn|Facebook|Twitter|Instagram|
---- | --- | --- | --- | --- | --- | --- |--- |--- |--- |--- |
-[Website](https://www.ericsonsweah.dev)|[Main Dev](https://www.ericsonweah.dev)|[Other Site](https://www.ericsonsweah.com/dashboard)|[NPM](https://www.npmjs.com/org/mongodb-model)|[Github](https://github.com/ericsonweah)|[Gitlab](https://gitlab.com/ericsonweah)|[Blog](https://www.ericsonweah.com)|[LinkedIn](https://www.linkedin.com/in/ericson-weah-b03600210)|[Facebook](https://www.facebook.com/Eric.S.Weah)|[Twitter](https://twitter.com/EricsonWeah1)|[Instagram](https://www.instagram.com/ericsonweah/)|
+<!-- #### Author's Info
+
 

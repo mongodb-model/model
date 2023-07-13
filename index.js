@@ -1098,7 +1098,6 @@ async firstByEmail(email = 'ericson.weah@gmail.com', options = {},fns = () => {}
   // Check if the options is provided and is an object
   if (options && !isObject(options)) return 'Invalid options';
 
-
   // // Check if the options are provided and are an object
   // if (options && !isObject(options)) return 'Invalid options';
   

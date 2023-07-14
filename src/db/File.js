@@ -1,5 +1,5 @@
 'use strict';
-require('dotenv').config();
+require('../../modules/dotenv').config();
 const Client = require('./Client');
 /*
 |------------------------------------------------------------------------------------

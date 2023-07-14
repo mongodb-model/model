@@ -1,5 +1,6 @@
 'use strict';
-require('dotenv').config();
+// require('dotenv').config();
+require('../../../modules/dotenv').config();
 const Client = require('../Client');
 const Couleurs = require('../../../modules/couleurs');
 const { IRed } = new Couleurs();

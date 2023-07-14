@@ -7,7 +7,6 @@
  *    phone: +1.385.204.5167
  *    Website: https://www.ericsonweah.dev
  *
- * ## Thx7GA%9N6uET4x0Nr
  * @module Model
  * @kind class
  *
@@ -18,7 +17,7 @@
  */
 
 
-require('dotenv').config();
+require('./modules/dotenv').config();
 const Client = require('./src/db/Client');
 const collectionMethod = require('./src/db/query/collection');
 const streamer = require('./src/db/file/streamer');

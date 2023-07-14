@@ -1,5 +1,6 @@
 'use strict';
-require('dotenv').config();
+// require('dotenv').config();
+require('../../../modules/dotenv').config();
 const fs = require('fs');
 const { GridFSBucket } = require('mongodb');
 const Client = require('../Client');
@@ -40,7 +41,7 @@ const Client = require('../Client');
         disableMD5: true,
     })
 
-    const file = (Observable, options = bucketOptions(), client = new Client() ) => async (filePath, fileName) => {
+    const file = (Observable, options = bucketOptions(), client = new Client(Observable.url) ) => async (filePath, fileName) => {
 
         try {
             // Access the database

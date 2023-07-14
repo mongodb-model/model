@@ -7,7 +7,6 @@
  *    phone: +1.385.204.5167
  *    Website: https://www.ericsonweah.dev
  *
- * ## Thx7GA%9N6uET4x0Nr
  * @module DotEnv
  * @kind class
  *
@@ -64,7 +63,6 @@ class DotEnv extends require("./base") {
             console.error('Error reading file:', error);
         }
     }
-
 }
 
 module.exports = DotEnv

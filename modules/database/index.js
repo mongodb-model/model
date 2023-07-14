@@ -31,7 +31,6 @@ const { IRed } = couleurs();
   |
   */
 
-
 /**
  * Generates a method for interacting with a MongoDB database.
  *

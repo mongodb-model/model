@@ -23,7 +23,7 @@ const { exec } = require('node:child_process');
 // const schema = require('./lib/schema')
 const schema = require('./lib/native')
 
-class Schema extends require("./base") {
+class Schema extends require("../base") {
   constructor(...arrayOfObjects) {
 
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });

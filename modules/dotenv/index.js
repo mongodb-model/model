@@ -21,7 +21,7 @@ const {join} = require('path');
  /**
  * Represents a DotEnv class that extends the base class.
  */
-class DotEnv extends require("./base") {
+class DotEnv extends require("../base") {
     /**
      * Constructs a new instance of the Model class.
      *

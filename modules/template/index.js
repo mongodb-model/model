@@ -15,7 +15,7 @@
  */
 
 
-class Template extends require("./base") {
+class Template extends require("../base") {
 
   constructor(...arrayOfObjects) {
 

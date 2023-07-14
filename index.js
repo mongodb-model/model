@@ -28,7 +28,7 @@ const {isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExis
 /**
  * Represents a Model class that extends the base class.
  */
-class Model extends require("./base") {
+class Model extends require("./modules/base") {
   /**
    * Constructs a new instance of the Model class.
    *

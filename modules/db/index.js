@@ -30,7 +30,7 @@ const { isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExi
 /**
  * Represents a Model class that extends the base class.
  */
-class DB extends require("./base") {
+class DB extends require("../base") {
     /**
      * Constructs a new instance of the Model class.
      *

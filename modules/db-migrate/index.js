@@ -26,7 +26,7 @@ const Couleurs = require('../couleurs')
 const {Green, Red, Blue, BBlue} = new Couleurs
 
 
-class Migrate extends require("./base") {
+class Migrate extends require("../base") {
   constructor(options = {}) {
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
 

@@ -24,7 +24,7 @@ const Callback = require('../db-callback');
 const CallbackQuery = require('../db-query');
 const CallbackQueryValidator = require('../db-query-validator');
 
-class Method extends require("./base") {
+class Method extends require("../base") {
   constructor(options = {}) {
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
 

@@ -16,7 +16,7 @@
 
 const { createReadStream, createWriteStream, promises } = require("fs");
 
-class Schema extends require("./base") {
+class Schema extends require("../base") {
   constructor(options = {}) {
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
 

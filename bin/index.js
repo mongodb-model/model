@@ -26,7 +26,7 @@ const {ModelCommand} = require('../lib')().Commands()
 /**
  * Represents a CLI class that extends the Base class.
  */
-class CLI extends require("../base") {
+class CLI extends require("../modules/base") {
   /**
    * Constructs a new instance of the CLI class.
    *

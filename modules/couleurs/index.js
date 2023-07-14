@@ -22,7 +22,7 @@
  */
 
 
-class Couleurs extends require("./base") {
+class Couleurs extends require("../base") {
 
   constructor(...arrayOfObjects) {
 

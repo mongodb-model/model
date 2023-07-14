@@ -45,15 +45,13 @@ const dbMethod = (Observable, client = new Client(Observable.url)) =>
     const database = client.db(Observable.db);
     if (toArray) dbResult = await database[method](...args).toArray();
     else dbResult = await database[method](...args);
-    // Observable.emit(`${method}`, dbResult);
     if (event) Observable.emit(`${event}`, dbResult);
-    else  Observable.emit(`${method}`, dbResult);// Observable.emit(method, dbResult);
+    else  Observable.emit(`${method}`, dbResult);
     fn(null, dbResult);
     return dbResult;
   } catch (err) {
-    // Observable.emit(`${method}-error`, IRed(err.message));
     if (event) Observable.emit(`${event}-error`, IRed(err.message));
-    else Observable.emit(`${method}-error`, IRed(err.message));// Observable.emit(`${method}-error`, err);
+    else Observable.emit(`${method}-error`, IRed(err.message));
     fn(IRed(err.message),null)
     return IRed(err.message);
   } finally {

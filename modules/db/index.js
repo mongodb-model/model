@@ -52,9 +52,8 @@ class DB extends require("../base") {
         this.autoinvoker(DB);
 
         // Add methods from other classes if they do not already exist
-        // Example: this.methodizer(...classList);
-        // Example: this.methodizeProperty(require('./src/db/query')());
-
+        this.methodizer(/**ClassList*/);
+    
         // Set the maximum number of event listeners to infinity
         this.setMaxListeners(Infinity);
     }
@@ -91,15 +90,15 @@ class DB extends require("../base") {
     }
 
 
-    // /**
-    //  * Sets up a change stream to watch for changes in the database.
-    //  *
-    //  * @returns {Promise} - A Promise that resolves to the change stream.
-    //  */
-    // async watch() {
-    //   const fn = dbMethod(this)('watch');
-    //   return fn();
-    // }
+    /**
+     * Sets up a change stream to watch for changes in the database.
+     *
+     * @returns {Promise} - A Promise that resolves to the change stream.
+     */
+    async watch(fns = () => {}) {
+      const fn = dbMethod(this)('watch', fns, false, 'watch');
+      return fn();
+    }
 
 
     /**

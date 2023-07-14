@@ -274,24 +274,22 @@ errorNotification(command) {
   }
 }
 
-  init(){
-    this.commands();
-  }
-  /**
-   * @name autoinvoked
-   * @function
-   *
-   * @param {Object|Function|Class} className the class whose methods to be bound to it
-   *
-   * @description auto sets the list of methods to be auto invoked
-   *
-   * @return does not return anything
-   *
-   */
+/**
+ * Initializes the class by calling the 'commands' method.
+ */
+init() {
+  this.commands();
+}
 
-     autoinvoked() {
-      return ["init"];
-    }
+/**
+ * Provides an array of method names to be automatically invoked when the class is instantiated.
+ *
+ * @returns {Array} An array of method names to be auto-invoked.
+ */
+autoinvoked() {
+  return ["init"];
+}
+
 
 }
 

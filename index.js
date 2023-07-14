@@ -2321,77 +2321,115 @@ async lastByName(name = 'name', fns = () => {}, options = { sort: {_id: -1}, pro
   // Execute the query with the provided parameters
   return fn({ name }, options);
 }
-objectId(string = '6476fe3e6e636c2f079eca69'){
+
+/**
+ * Creates a new ObjectId instance from a string.
+ *
+ * @param {string} [string='6476fe3e6e636c2f079eca69'] - The string representation of the ObjectId.
+ * @returns {ObjectId} The new ObjectId instance.
+ */
+objectId(string = '6476fe3e6e636c2f079eca69') {
   return new ObjectId(string);
 }
-async saveFile(filePath, fileName){
-  if(fileExists(filePath)) return streamer(this)(filePath, fileName);
+
+
+/**
+ * Saves a file to the specified path with the given file name.
+ *
+ * @param {string} filePath - The path where the file will be saved.
+ * @param {string} fileName - The name of the file to be saved.
+ * @throws {TypeError} If either the filePath or fileName does not exist.
+ * @returns {Promise} A promise that resolves when the file is saved successfully.
+ */
+async saveFile(filePath, fileName) {
+  if (fileExists(filePath)) {
+    return streamer(this)(filePath, fileName);
+  }
   throw new TypeError(`Either ${filePath} or ${fileName} does not exist`);
 }
 
-createManyFromJsonFile(path, options, fn = () => {}){
+
+/**
+ * Creates multiple instances of the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for creating the instances.
+ * @param {Function} [fn=() => {}] - An optional callback function called for each created instance.
+ * @returns {Array} An array of the created instances.
+ */
+createManyFromJsonFile(path, options, fn = () => {}) {
   const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
   return this.createMany(data, options, fn);
 }
-createOneFromJsonFile(path, options, fn = () => {}){
+
+
+/**
+ * Creates a single instance of the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for creating the instance.
+ * @param {Function} [fn=() => {}] - An optional callback function called after the instance is created.
+ * @returns {Object} The created instance.
+ */
+createOneFromJsonFile(path, options, fn = () => {}) {
   const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
   return this.createOne(data, options, fn);
 }
 
-insertManyFromJsonFile(path, options, fn = () => {}){
+
+/**
+ * Inserts multiple records into the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for inserting the records.
+ * @param {Function} [fn=() => {}] - An optional callback function called for each inserted record.
+ * @returns {Array} An array of the inserted records.
+ */
+insertManyFromJsonFile(path, options, fn = () => {}) {
   const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
   return this.insertMany(data, options, fn);
 }
-insertOneFromJsonFile(path, options, fn = () => {}){
+
+
+
+/**
+ * Inserts a single record into the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for inserting the record.
+ * @param {Function} [fn=() => {}] - An optional callback function called after the record is inserted.
+ * @returns {Object} The inserted record.
+ */
+insertOneFromJsonFile(path, options, fn = () => {}) {
   const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
   return this.insertOne(data, options, fn);
 }
 
-belongsToReferencial(Model, foreignKey = 'userId', ownerkey){
-  const filter = {};
-  filter[foreignKey] = '645e4d81c050a750429b4418'
-  return Model.findOne(filter)
-}
 
+/**
+ * Configures the class with the specified options for database connection, URL, collection, and database name.
+ */
+config() {
+  const checkPortNumbers = string => string.endsWith('27017') || string.endsWith('27018') || string.endsWith('27019');
+  const checkHostString = string => string.startsWith('localhost:') || string.startsWith('127.0.0.1:');
+  const urlArray = url => url.split('/').filter(el => el.trim().length !== 0);
+  const isUrlArrayLengthOK = url => urlArray(url).length === 3;
+  const checkNetworkString = string => checkHostString(string) && checkPortNumbers(string);
+  const isUrlLocalhost = url => isUrlArrayLengthOK(url) ? urlArray(url).find(el => checkNetworkString(el)) !== undefined : false;
+  const getDatabaseNameFromUrl = url => url.split('/').filter(el => el.trim().length !== 0).pop();
 
-
-  /**
-   * 
-   * Returns information on the query plan for the following methods:
-    aggregate(),count(),find(),remove(),distinct(), findAndModify()
-   */
-  // async explain(method  = () => {}) {}
-
-  config() {
-    const checkPortNumbers = string => string.endsWith('27017') || string.endsWith('27018') || string.endsWith('27019');
-    const checkHostString = string => string.startsWith('localhost:') || string.startsWith('127.0.0.1:')
-    const urlArray = url => url.split('/').filter(el => el.trim().length !== 0);
-    const isUrlArrayLengthOK = url => (urlArray(url).length === 3)
-    const checkNetworkString = string => checkHostString(string) && checkPortNumbers(string);
-    const isUrlLocalhost = url => isUrlArrayLengthOK(url) ? urlArray(url).find(el => checkNetworkString(el) ) !== undefined ? true: false : false
-    const getDatabaseNameFromUrl = url => url.split('/').filter(el => el.trim().length !== 0).pop()
-  
-    
-    // if (!this.connection) this.connection = process.env.DATABASE_CONNECTION || 'mongodb://127.0.0.1:27017/'
-    // if (this.connection && this.url && this.db) this.url = `${this.connection}/${this.db}`
-    if (!this.url) this.url = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/test'
-    if (!this.collection) this.collection = 'users';
-    if (!this.faker_url) this.faker_url = process.env.JSON_FAKER_URL || 'https://jsonplaceholder.typicode.com/'
-    if (!this.db) {
-      if(isUrlLocalhost(this.url))this.db = getDatabaseNameFromUrl(this.url)
-     else this.db = process.env.DATABASE_NAME || 'test'
+  if (!this.url) this.url = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/test';
+  if (!this.collection) this.collection = 'users';
+  if (!this.faker_url) this.faker_url = process.env.JSON_FAKER_URL || 'https://jsonplaceholder.typicode.com/';
+  if (!this.db) {
+    if (isUrlLocalhost(this.url)) {
+      this.db = getDatabaseNameFromUrl(this.url);
+    } else {
+      this.db = process.env.DATABASE_NAME || 'test';
     }
-    // if(!this.url) this.url = `${process.env.DATABASE_CONNECTION}/${process.env.DATABASE_NAME}`
+  }
 }
-//    config() {
-//     if (!this.db) this.db = process.env.DATABASE_NAME
-//     if (!this.connection) this.connection = process.env.DATABASE_CONNECTION
-//     if (this.connection && this.url && this.db) this.url = `${this.connection}/${this.db}`
-//     if (!this.url) this.url = process.env.DATABASE_URL
-//     if (!this.collection) this.collection = 'users';
-//     if (!this.faker_url) this.faker_url = process.env.JSON_FAKER_URL
-//     // if(!this.url) this.url = `${process.env.DATABASE_CONNECTION}/${process.env.DATABASE_NAME}`
-// }
+
   /**
    * @name autoinvoked
    * @function

@@ -452,14 +452,10 @@ class Man extends require("../base") {
     const commands = {
         '\x1b[36mman\x1b[0m': '                  model man page: [\x1b[36mman\x1b[0m] ',
         '\x1b[36m--help\x1b[0m or \x1b[36m-h\x1b[0m': '         Help: [\x1b[36m--help\x1b[0m|\x1b[36m-h\x1b[0m\x1b[0m\x1b[0m]',
-        '\x1b[36m--list\x1b[0m or \x1b[36m-l\x1b[0m ': '        List methods:  [\x1b[36mmethod\x1b[0m\x1b[0m][\x1b[36m--list\x1b[0m|\x1b[36m-l\x1b[0m]',
-        '\x1b[36m--name\x1b[0m or \x1b[36m-n\x1b[0m': '         Get method by name: \x1b[36mmethod \x1b[0m[\x1b[36m--name=\x1b[0m\x1b[0m|\x1b[36m--name \x1b[0m]\x1b[0mmethod_name',
         '\x1b[36mmake:model\x1b[0m': '           Make model: [\x1b[36mmake:model\x1b[0m\x1b[0m\x1b[0m] model_name',
         '\x1b[36mmake:migration\x1b[0m': '       Make migration: [\x1b[36mmake:migration\x1b[0m\x1b[0m] migration_name',
         '\x1b[36mmake:schema\x1b[0m': '          Make schema: [\x1b[36mmake:schema\x1b[0m\x1b[0m\x1b[0m] schema_name',
-        '\x1b[36m--model\x1b[0m or \x1b[36m-M\x1b[0m ': '       Make model: \x1b[0m[\x1b[36m--model=\x1b[0m|\x1b[36m--model\x1b[0m|\x1b[36m-M\x1b[0m] model_name',
-        '\x1b[36m--migration\x1b[0m or \x1b[36m-m\x1b[0m': '    Make migration: [\x1b[36mmake:model\x1b[0m\x1b[0m\x1b[0m|\x1b[36m--model=\x1b[0m|\x1b[36m--model\x1b[0m|\x1b[36m-M\x1b[0m\x1b[0m] model_name \x1b[0m[\x1b[36m--migration\x1b[0m|\x1b[36m-m\x1b[0m]',
-        '\x1b[36m--migrate\x1b[0m ': '           Migrate: [\x1b[36m--schema=\x1b[0m|\x1b[36m-s\x1b[0m]schema_name'
+        '\x1b[36mmigrate\x1b[0m ': '             Migrate: [\x1b[36m--schema=\x1b[0m|\x1b[36m-s\x1b[0m]schema_name'
 
  
        
@@ -475,22 +471,31 @@ class Man extends require("../base") {
 
 \x1b[36mSYPNOSIS\x1b[0m
 \x1b[36mmodel\x1b[0m [\x1b[36mman\x1b[0m|\x1b[36m--help\x1b[0m|\x1b[36m-h\x1b[0m|\x1b[36mhelp\x1b[0m]
-\x1b[36mmodel\x1b[0m [\x1b[36mmethod\x1b[0m\x1b[0m][\x1b[36m--list\x1b[0m|\x1b[36m-l\x1b[0m]\x1b[0m[\x1b[0m\x1b[36m--name=\x1b[0m|\x1b[36m--name\x1b[0m|\x1b[36m-n\x1b[0m] method_name\x1b[0m [\x1b[36m--info\x1b[0m|\x1b[36m-i\x1b[0m]
-\x1b[36mmodel\x1b[0m [\x1b[36mmake:model\x1b[0m|\x1b[36m--model=\x1b[0m|\x1b[36m--model\x1b[0m|\x1b[36m-M\x1b[0m\x1b[0m\x1b[0m\x1b[0m] model_name
-\x1b[36mmodel\x1b[0m [\x1b[36mmake:schema\x1b[0m|\x1b[36m--schema=\x1b[0m|\x1b[36m--schema\x1b[0m|\x1b[36m-s\x1b[0m\x1b[0m\x1b[0m] schema_name
-\x1b[36mmodel\x1b[0m [\x1b[36mmake:migration\x1b[0m|\x1b[36m--migration=\x1b[0m|\x1b[36m--migration\x1b[0m|\x1b[36m-m\x1b[0m\x1b[0m\x1b[0m] migration_name \x1b[0m
-\x1b[36mmodel\x1b[0m [\x1b[36mmigrate\x1b[0m|\x1b[36m--migrate=\x1b[0m|\x1b[36m-m\x1b[0m\x1b[0m\x1b[0m]\x1b[0m[\x1b[36m--schema=\x1b[0m|\x1b[36m-s\x1b[0m] schema_name
+\x1b[36mmodel\x1b[0m [\x1b[36mmake:model\x1b[0m\x1b[0m\x1b[0m\x1b[0m\x1b[0m] model_name
+\x1b[36mmodel\x1b[0m [\x1b[36mmake:schema\x1b[0m\x1b[0m] schema_name
+\x1b[36mmodel\x1b[0m [\x1b[36mmake:migration\x1b[0m|\x1b[36m--migration=\x1b[0m\x1b[0m\x1b[0m\x1b[0m] migration_name \x1b[0m
+\x1b[36mmodel\x1b[0m [\x1b[36mmigrate\x1b[0m|\x1b[36m--schema=\x1b[0m\x1b[0m] schema_name
 
 
 \x1b[36mDESCRIPTION\x1b[0m
-Model (short for mongodb model) and its usage details. Almost every aspect of model can be viewed or studied right here
-from the command line interface. Model is very simple yet very powerful tool for interacting with
-mongodb database and making internal or external API calls. Model is not an ORM! Under the hood it is a wrapper for the 
-native mongodb nodejs driver. It also extracts away the complexities commonly encountered in mongodb
-native nodejs driver or mongoose.js. It is also a duplex stream, specifically  the nodejs native transform stream. It uses the
-full power of the mongodb native nodejs driver and of the native nodejs transform stream API. In other words, everything
-you can do with native mongodb nodejs driver and native nodejs transform API you can do with model! 
-Model is very highly event driven. It is compatible with mongoose.js`
+Model (short for MongoDB Model) is a versatile and efficient tool for interacting with a 
+MongoDB database and facilitating internal or external API calls. It is important to note
+that Model is not an ORM (Object-Relational Mapping) but rather a wrapper for the native 
+MongoDB Node.js driver. By doing so, it simplifies the usage of the MongoDB native Node.js 
+driver and alleviates common complexities associated with it, as well as with Mongoose.js.
+
+Model operates as a duplex stream, specifically utilizing the Node.js native transform stream.
+This allows it to harness the full power of the MongoDB native Node.js driver and the native
+Node.js transform stream API. Put simply, any operation achievable with the native MongoDB 
+Node.js driver and the native Node.js transform API can also be accomplished using Model.
+
+An inherent strength of Model lies in its highly event-driven nature. It seamlessly integrates
+with Mongoose.js, ensuring compatibility and enhancing its capabilities.
+
+In summary, Model provides a straightforward yet powerful means of interacting with MongoDB databases,
+making API calls, and working with data streams. It simplifies the usage of the native MongoDB Node.js
+driver and the Node.js transform stream API, while being fully compatible with Mongoose.js.
+`
     //this.horizontalLine()
     this.centered(`\x1b[32mMODEL COMMANDS AND USAGE MANUAL\x1b[0m`)
     //this.horizontalLine()

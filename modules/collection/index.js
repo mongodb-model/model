@@ -1,9 +1,9 @@
 'use strict';
-// require('dotenv').config();
-require('../../../modules/dotenv').config();
-const Client = require('../Client');
-const Couleurs = require('../../../modules/couleurs');
-const { IRed } = new Couleurs();
+
+require('../dotenv').config();
+const Client = require('../client');
+const couleurs = require('../couleurs');
+const { IRed } =  couleurs();
 /*
 |------------------------------------------------------------------------------------
 | Universal Module Definition (UMD)

@@ -18,16 +18,15 @@
 
 
 require('./modules/dotenv').config();
-const Client = require('./src/db/Client');
-const collectionMethod = require('./src/db/query/collection');
-const streamer = require('./src/db/file/streamer');
+const Client = require('./modules/client');
+const collectionMethod = require('./modules/collection');
+const streamer = require('./modules/streamer');
 
 const {ObjectId} = require('mongodb');
 const {isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExists} = require('./modules/helpers')();
 
 /**
- * Represents a Model class that extends the base class.
- */
+ * Represents a Model class that extends the base class. */
 class Model extends require("./modules/base") {
   /**
    * Constructs a new instance of the Model class.

@@ -1,6 +1,5 @@
 'use strict';
-// require('dotenv').config();
-require('../../modules/dotenv').config();
+require('../dotenv').config();
 /*
 |------------------------------------------------------------------------------------
 | Universal Module Definition (UMD)

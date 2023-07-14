@@ -28,8 +28,6 @@ exports.readdirRecursive = async function readdirRecursive(dirPath, files = []){
                 }else{
                     // files.push(path.join(__dirname, dirPath, "/", file)) 
                     files.push(path.join( dirPath, "/", file)) 
-                  
-                  
                 }
             }
         }

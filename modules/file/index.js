@@ -1,9 +1,6 @@
 'use strict';
-// require('dotenv').config();
-require('../../../modules/dotenv').config();
-const fs = require('fs');
-const { GridFSBucket } = require('mongodb');
-const Client = require('../Client');
+require('../dotenv').config();
+const Client = require('../client');
 /*
 |------------------------------------------------------------------------------------
 | Universal Module Definition (UMD)
@@ -33,44 +30,29 @@ const Client = require('../Client');
     |
     */
     
-    const bucketOptions = ()=> ({
-        bucketName: process.env.BUCKET_NAME || 'myGridFSBucket',
-        chunkSizeBytes: 512 * 1024, // 512 KB
-        writeConcern: { w: 'majority', wtimeout: 10000 },
-        readPreference: 'secondary',
-        disableMD5: true,
-    })
+    class File extends require("mongodb").GridFSBucket {
+       
+        constructor(database = new Client().db(process.env.DATABASE_NAME) , options = {
+            bucketName: process.env.BUCKET_NAME || 'myGridFSBucket',
+            chunkSizeBytes: 512 * 1024, // 512 KB
+            writeConcern: { w: 'majority', wtimeout: 10000 },
+            readPreference: 'secondary',
+            disableMD5: true,
+          }, ...arrayOfObjects) {
 
-    const file = (Observable, options = bucketOptions(), client = new Client(Observable.url) ) => async (filePath, fileName) => {
-
-        try {
-            // Access the database
-            const database = client.db(Observable.db);
-            // Create a new GridFSBucket instance
-            const bucket = new GridFSBucket(database, options);
-
-            // Read the file from disk
-            const fileStream = fs.createReadStream(filePath);
-
-            // Create a file upload stream
-            const uploadStream = bucket.openUploadStream(fileName);
-
-            // Pipe the file stream to the upload stream
-            fileStream.pipe(uploadStream);
-
-            // Wait for the upload to finish
-            await new Promise((resolve, reject) => {
-                uploadStream.on('error', reject);
-                uploadStream.on('finish', resolve);
-            });
-            console.log('File saved successfully!');
-        } catch (error) {
-            console.error('Error saving file:', error);
-        } finally {
-            // Close the MongoClient connection
-            await client.close();
+          super(database, options);
+    
+          arrayOfObjects.forEach(option => {
+            if (Object.keys(option).length > 0) {
+              Object.keys(option).forEach((key) => {
+                if (!this[key]) this[key] = option[key];
+              });
+            }
+          });
+          this.setMaxListeners(Infinity);
         }
-    }
+      }
+
     /*
     |----------------------------------------------------------------------------------
     | EXPORTS MODULE IN NODEJS ENVIRONMENTS
@@ -78,12 +60,12 @@ const Client = require('../Client');
     |
     | The module is exported using an if/else statement. If the module object is defined and
     | has an exports property, then the module is being used in Node.js and we export 
-    | the file object by assigning it to module.exports
+    | the File object by assigning it to module.exports
     |
     |
     */
-
-    if (typeof module !== 'undefined' && module.exports) module.exports = file;
+    
+    if (typeof module !== 'undefined' && module.exports)  module.exports = File;
 
     /*
     |----------------------------------------------------------------------------------------
@@ -92,9 +74,9 @@ const Client = require('../Client');
     |
     | If module is not defined or does not have an exports property, then the module is being used
     | in the browser and we attach the myModule object to the global object (which is the window object
-    | in the browser) by assigning it to global.file.
+    | in the browser) by assigning it to global.File.
     |
     */
 
-    else global.file = file;
+    else global.File = File;
 })(this)

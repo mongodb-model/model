@@ -61,9 +61,11 @@ const { join } = require('path');
         static config() {
             if (!existsSync(join(process.cwd(), '.env'))) return;
             try {
-                for (let line of readFileSync(join(process.cwd(), '.env'), 'utf8').split('\n')) {
-                    if (!process.env[line.split('=')[0]]) {
+                const dataArray = readFileSync(join(process.cwd(), '.env'), 'utf8').split('\n').filter(el => el.trim().length > 0);
+                for (let line of dataArray) {
+                    if (! process.env[`${line.split('=')[0]}`]) {
                         process.env[`${line.split('=')[0]}`] = Array.from(line.split('=')[1]).filter(el => el !== "'" && el !== `"`).join('');
+                       
                     }
                 }
             } catch (error) {

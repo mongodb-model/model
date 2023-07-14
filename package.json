@@ -1,7 +1,7 @@
 {
   "name": "@mongodb-model/model",
-  "version": "0.0.10011",
-  "description": "MongoDB Model",
+  "version": "0.0.10012",
+  "description": "Mongodb Model",
   "main": "index.js",
   "bin": {
     "model": "bin/index.js"
@@ -28,18 +28,15 @@
     "url": "git+ssh://git@github.com/mongodb-model/model.git"
   },
   "keywords": [
-    "MongoDB",
+    "Mongodb",
     "Model",
-    "EventEmitter",
     "Stream",
     "Transform",
-    "Database",
-    "Duplex",
     "TCP",
     "HTTP",
-    "Realtime"
+    "APIs"
   ],
-  "author": "Ericson S. Weah",
+  "author": "Ericson S. Weah <ericson.weah@gmail.com> (https://www.ericsonweah.com/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mongodb-model/model/issues"

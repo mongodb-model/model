@@ -334,7 +334,6 @@ class Base extends require("stream").Transform {
           fn(error.message || error, null, null);
         });
       });
-
       req.write(JSON.stringify(data));
       req.end();
     });

@@ -16,10 +16,10 @@
  * @classdesc Model class
  */
 
-
 require('./modules/dotenv').config();
 const Client = require('./modules/client');
 const collectionMethod = require('./modules/collection');
+const dbMethod = require('./modules/database');
 const streamer = require('./modules/streamer');
 
 const {ObjectId} = require('mongodb');
@@ -116,6 +116,26 @@ fake(collection = this.collection, faker_url = this.faker_url) {
       console.error(err);
     });
 }
+
+    /**
+ * Creates a collection with the given name and options.
+ *
+ * @param {string} [name='users'] - The name of the collection to create.
+ * @param {Object} [options={}] - The options for creating the collection.
+ * @returns {Promise} - A Promise that resolves to the created collection.
+ */
+    async createCollection(name = 'users', options = {}, fns = () => { }) {
+      // Check if the name is provided and is a string
+      if (name && !isString(name)) return 'Invalid name';
+
+      // Check if the options are provided and are an object
+      if (options && !isObject(options)) return 'Invalid options';
+
+      const fn = dbMethod(this)('createCollection', fns);
+
+      return fn(name, options);
+  }
+
 
 
 /**

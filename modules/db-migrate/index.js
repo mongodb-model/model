@@ -21,9 +21,9 @@ const {join } = require('node:path');
 const {mkdir} = promises
 const {existsSync, lstatSync} = require('fs')
 // const Model = require('../base-model')
-const Model = require('../../../base-model')
-const Couleurs = require('../couleurs')
-const {Green, Red, Blue, BBlue} = new Couleurs
+const Model = require('../../')
+const couleurs = require('../couleurs')
+const {Green, Red, Blue, BBlue} = couleurs()
 
 
 class Migrate extends require("../base") {

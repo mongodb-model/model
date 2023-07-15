@@ -1,6 +1,5 @@
 require('../../dotenv').config()
 module.exports = (option = {}) => `'use strict';
-require('../../dotenv').config()
 /*
 |--------------------------------------------------------------------------------
 | ${option.model} Model

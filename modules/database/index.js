@@ -50,10 +50,10 @@ const dbMethod = (Observable, client = new Client(Observable.url)) =>
     fn(null, dbResult);
     return dbResult;
   } catch (err) {
-    if (event) Observable.emit(`${event}-error`, IRed(err.message));
-    else Observable.emit(`${method}-error`, IRed(err.message));
-    fn(IRed(err.message),null)
-    return IRed(err.message);
+    if (event) Observable.emit(`${event}-error`, IRed(`${err.message}`));
+    else Observable.emit(`${method}-error`, IRed(`${err.message}`));
+    fn(IRed(`${err.message}`),null)
+    return IRed(`${err.message}`);
   } finally {
     await client.close();
   }

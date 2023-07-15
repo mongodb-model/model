@@ -2448,10 +2448,6 @@ config() {
 
 module.exports =  Model;
 
-
-
-
-
  
 
 

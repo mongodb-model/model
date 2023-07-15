@@ -110,7 +110,7 @@ class DB extends require("../base") {
     async runCommand(command =  {} | 'string', fns = () =>{}) {
         const fn = dbMethod(this)('runCommand', fns);
         return fn(command);
-    }// todo : fix runCommand is not a method issure
+    }// todo : fix runCommand is not a method issue
 
 
     // /**
@@ -208,15 +208,34 @@ class DB extends require("../base") {
      */
     async createView(view, source, pipeline, fns = () => {}) {
         return this.command({ create: view, viewOn: source, pipeline }, fns);
-    }
+    }// done
 
     // Database methods
-    // async currentOp() { }
-    // async fsyncLock() { }
-    // async fsyncUnlock() { }
-    // async getCollectionInfos(filter, nameOnly, authorizedCollections) { }
-    // async getLogComponents() { }
-    // async getName() { }
+    async currentOp(operations = false || {}, fns = () => {}) {
+        const fn = dbMethod(this)('currentOp', fns);
+        return fn(operations);
+     }// todo : fix currentOp is not a method issue
+    async fsyncLock(fns = () => {}) { 
+        const fn = dbMethod(this)('fsyncLock', fns);
+        return fn();
+    }// todo : fix fsyncLock is not a method issue
+    async fsyncUnlock(fns = () => {}) { 
+        const fn = dbMethod(this)('fsyncUnlock', fns);
+        return fn();
+    }// todo : fix fsyncUnlock is not a method issue
+    async getCollectionInfos(filter = {}, nameOnly = true, authorizedCollections = true, fns = () => {}) {
+        const fn = dbMethod(this)('getCollectionInfos', fns, true, 'getCollectionInfos');
+        return fn(filter, nameOnly, authorizedCollections);
+    }// todo : fix getCollectionInfos is not a method issue
+    async getLogComponents(fns = () => {}) {
+        const fn = dbMethod(this)('getLogComponents', fns);
+        return fn();
+     }
+     async getName(fns = () => {}) {
+        const fn = dbMethod(this)('getName', fns);
+        return fn();
+     }
+    
     // async getProfilingStatus() { }
     // async getReplicationInfo() { }
     // async getSiblingDB(database = 'apps') { }
@@ -224,7 +243,11 @@ class DB extends require("../base") {
     // async help() { }
     // async hostInfo() { }
     // async killOp(opid = '1233') { }
-    // async listCommands() { }
+
+    async listCommands(fns = () => {}) {
+        const fn = dbMethod(this)('listCommands', fns);
+        return fn();
+    }
     // async logout() { }
     // async printCollectionStats() { }
     // async printReplicationInfo() { }
@@ -241,7 +264,9 @@ class DB extends require("../base") {
     // async setProfilingLevel(level = 'int', options = {} || 'int') { }
     // async shutdownServer(options = { force: true, timeoutSecs: 1000 }) { }
     // async stats(scale) { }
+
     // async version() { }
+
     // async watch(pipeline = [], options = {}) { }
     // //User Management methods 
     // async auth(username = 'string', password = 'string')

@@ -608,6 +608,7 @@ class Base extends require("stream").Transform {
   }
 
 
+
   /**
    * Removes duplicate listeners for the specified event.
    *

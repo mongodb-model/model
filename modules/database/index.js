@@ -43,8 +43,8 @@ const dbMethod = (Observable, client = new Client(Observable.url)) =>
   try {
     let dbResult;
     const database = client.db(Observable.db);
-    if (toArray) dbResult = await database[method](...args).toArray();
-    else dbResult = await database[method](...args);
+    if (toArray) dbResult = await database[`${method}`](...args).toArray();
+    else dbResult = await database[`${method}`](...args);
     if (event) Observable.emit(`${event}`, dbResult);
     else  Observable.emit(`${method}`, dbResult);
     fn(null, dbResult);

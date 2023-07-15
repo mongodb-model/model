@@ -327,8 +327,6 @@ const User = new Model({collection: 'users'});
 
 Mongodb-model is designed to harness the full potential of the MongoDB Native Node.js Driver while offering a simplified experience. It seamlessly incorporates the underlying Mongodb Native Node.js Driver, offering an identical set of methods with consistent parameters. Moreover, when employing the callback style, Mongodb-model conveniently includes an extra callback function to facilitate seamless integration. With Mongodb-model, you can leverage the power of the MongoDB Native Node.js Driver without compromising on ease of use or functionality.
 
-
-
 #### CREATE 
 
 
@@ -781,6 +779,10 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
       ```
 
 ### *Using it in a framework*
+
+Integrating the Mongodb Model into your application framework brings numerous benefits. It allows you to leverage the flexibility and scalability of MongoDB while seamlessly integrating with your existing application infrastructure.
+
+By incorporating the Mongodb Model, you can take advantage of its intuitive methods and functions for data management. It provides an organized approach to defining models, handling data validations, and performing CRUD operations, making it easier to work with MongoDB within the context of your application framework.
 
 #### *Using it in Express*
 
@@ -1295,7 +1297,7 @@ Mongodb-model is designed to harness the full potential of the MongoDB Native No
 
 In today's interconnected world, applications often need to interact with external services and APIs to retrieve or manipulate data. Whether it's fetching weather information, integrating with social media platforms, or accessing internal microservices, the ability to make HTTP/HTTPS requests is a crucial aspect of modern application development.
 
- With mongodb-model, developers can harness the power of MongoDB's document-based data model while effortlessly integrating with various APIs to create dynamic and data-driven experiences.
+With mongodb-model, developers can harness the power of MongoDB's document-based data model while effortlessly integrating with various APIs to create dynamic and data-driven experiences.
 
 This section explores the mechanisms and best practices for making HTTP/HTTPS requests within the mongodb-model framework. We will delve into topics such as performing CRUD operations on external resources, handling authentication and authorization, managing request timeouts and retries, and efficiently processing API responses. By understanding these concepts, developers can extend the capabilities of their mongodb-model applications and leverage the vast array of services available through APIs. So, let's dive into the world of making HTTP/HTTPS requests with mongodb-model and unlock the potential for building truly interconnected applications.
 
@@ -1659,6 +1661,10 @@ To begin, we initialize the Model class, which automatically establishes a conne
         User.on('DELETE-error', error => console.log(error));
       ```
 ### *Making TCP Requests*  
+
+When working with Mongodb model, making TCP requests is a crucial aspect of communication between the client and the MongoDB server. TCP (Transmission Control Protocol) provides a reliable and ordered channel for transmitting data, ensuring the integrity and accuracy of the information exchanged.
+
+With the Mongodb model, you can easily make TCP requests to perform various operations on the MongoDB database. Whether it's inserting new data, updating existing records, or querying for specific information, the framework provides intuitive methods and functions to interact with the database using TCP/IP protocols.
 
 To begin, we initialize the Model class, which automatically establishes a connection with the database. Hence, manual database connection becomes unnecessary as it is handled by the instantiation process itself.
 

@@ -93,23 +93,36 @@ class DB extends require("../base") {
      * Sets up a change stream to watch for changes in the database.
      *
      * @returns {Promise} - A Promise that resolves to the change stream.
+     * 
+     * NoTE: For replica sets and sharded clusters only
      */
     async watch(pipeline = [], options = {}, fns = () => {}) {
       const fn = dbMethod(this)('watch', fns);
       return fn(pipeline, options);
     }
 
-
-    /**
+       /**
      * Executes a database command with the specified options.
      *
      * @param {Object} [options={ collStats: this.collection }] - The options for the command.
      * @returns {Promise} - A Promise that resolves to the result of the command.
      */
-    async runCommand(options = { collStats: this.collection }, fns = () =>{}) {
+    async runCommand(command =  {} | 'string', fns = () =>{}) {
         const fn = dbMethod(this)('runCommand', fns);
-        return fn(options);
-    }
+        return fn(command);
+    }// todo : fix runCommand is not a method issure
+
+
+    // /**
+    //  * Executes a database command with the specified options.
+    //  *
+    //  * @param {Object} [options={ collStats: this.collection }] - The options for the command.
+    //  * @returns {Promise} - A Promise that resolves to the result of the command.
+    //  */
+    // async runCommand(options = { collStats: this.collection }, fns = () =>{}) {
+    //     const fn = dbMethod(this)('runCommand', fns);
+    //     return fn(options);
+    // }
 
 
     /**
@@ -122,7 +135,7 @@ class DB extends require("../base") {
     async renameCollection(oldName = '', newName = '', fns = () => { }) {
         const fn = dbMethod(this)('renameCollection', fns);
         return fn(oldName, newName);
-    }
+    }// done 
 
 
     /**
@@ -133,7 +146,7 @@ class DB extends require("../base") {
      */
     async stats(options = {}, fns = () => { }) {
         return dbMethod(this)('stats', fns, false, 'stats')(options);
-    }
+    }// done
 
     /**
      * Retrieves a collection object for the specified collection name.
@@ -141,10 +154,10 @@ class DB extends require("../base") {
      * @param {string} [name='users'] - The name of the collection.
      * @returns {Promise} - A Promise that resolves to the collection object.
      */
-    async getCollection(name = 'users', fns = () => {}) {
+    async getCollection(name = this.collection, fns = () => {}) {
         const fn = dbMethod(this)('getCollection', fns);
         return fn(name);
-    }
+    }//todo: fixd getCollection is not a method issue
 
 
     /**
@@ -153,15 +166,15 @@ class DB extends require("../base") {
      * @param {string} [name=''] - The name of the collection to drop.
      * @returns {Promise} - A Promise that resolves once the collection has been dropped.
      */
-    async dropCollection(name = '', fns = () => {}) {
+    async dropCollection(name = this.collection, fns = () => {}) {
         const fn = dbMethod(this)('dropCollection', fns);
         return fn(name);
-    }
+    }//done
 
     async drop(name = this.collection, fns  = () => {}) {
         const fn = dbMethod(this)('dropCollection', fns, false, 'drop');
         return fn(name);
-    }
+    }// done 
 
 
     /**
@@ -172,7 +185,7 @@ class DB extends require("../base") {
     async dropDatabase(fns = () => {}) {
         const fn = dbMethod(this)('dropDatabase', fns);
         return fn();
-    }
+    }// done
 
     /**
      * Executes a database command with the specified options.
@@ -183,7 +196,7 @@ class DB extends require("../base") {
     async command(options = { ping: 1 }, fns = () => {}) {
         const fn = dbMethod(this)('command', fns);
         return fn(options);
-    }
+    }//done
 
     /**
      * Creates a view in the database based on the specified view name, source collection, and pipeline.

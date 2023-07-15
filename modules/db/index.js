@@ -19,7 +19,6 @@
 
 
 require('../dotenv').config();
-const Client = require('../client');
 const dbMethod = require('../database');
 const { ObjectId } = require('mongodb');
 const { isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExists } = require('../helpers')();
@@ -49,7 +48,7 @@ class DB extends require("../base") {
         this.autobind(DB);
 
         // Auto invoke methods of the model
-        this.autoinvoker(DB);
+        // this.autoinvoker();
 
         // Add methods from other classes if they do not already exist
         this.methodizer(/**ClassList*/);
@@ -95,9 +94,9 @@ class DB extends require("../base") {
      *
      * @returns {Promise} - A Promise that resolves to the change stream.
      */
-    async watch(fns = () => {}) {
-      const fn = dbMethod(this)('watch', fns, false, 'watch');
-      return fn();
+    async watch(pipeline = [], options = {}, fns = () => {}) {
+      const fn = dbMethod(this)('watch', fns);
+      return fn(pipeline, options);
     }
 
 
@@ -107,8 +106,8 @@ class DB extends require("../base") {
      * @param {Object} [options={ collStats: this.collection }] - The options for the command.
      * @returns {Promise} - A Promise that resolves to the result of the command.
      */
-    async runCommand(options = { collStats: this.collection }) {
-        const fn = dbMethod(this)('runCommand');
+    async runCommand(options = { collStats: this.collection }, fns = () =>{}) {
+        const fn = dbMethod(this)('runCommand', fns);
         return fn(options);
     }
 
@@ -142,8 +141,8 @@ class DB extends require("../base") {
      * @param {string} [name='users'] - The name of the collection.
      * @returns {Promise} - A Promise that resolves to the collection object.
      */
-    async getCollection(name = 'users') {
-        const fn = dbMethod(this)('collection');
+    async getCollection(name = 'users', fns = () => {}) {
+        const fn = dbMethod(this)('getCollection', fns);
         return fn(name);
     }
 
@@ -154,13 +153,13 @@ class DB extends require("../base") {
      * @param {string} [name=''] - The name of the collection to drop.
      * @returns {Promise} - A Promise that resolves once the collection has been dropped.
      */
-    async dropCollection(name = '') {
-        const fn = dbMethod(this)('dropCollection');
+    async dropCollection(name = '', fns = () => {}) {
+        const fn = dbMethod(this)('dropCollection', fns);
         return fn(name);
     }
 
-    async drop(name = this.collection) {
-        const fn = dbMethod(this)('dropCollection');
+    async drop(name = this.collection, fns  = () => {}) {
+        const fn = dbMethod(this)('dropCollection', fns, false, 'drop');
         return fn(name);
     }
 
@@ -170,8 +169,8 @@ class DB extends require("../base") {
      *
      * @returns {Promise} - A Promise that resolves once the database has been dropped.
      */
-    async dropDatabase() {
-        const fn = dbMethod(this)('dropDatabase');
+    async dropDatabase(fns = () => {}) {
+        const fn = dbMethod(this)('dropDatabase', fns);
         return fn();
     }
 
@@ -181,8 +180,8 @@ class DB extends require("../base") {
      * @param {Object} [options={ ping: 1 }] - The options for the command.
      * @returns {Promise} - A Promise that resolves with the result of the command.
      */
-    async command(options = { ping: 1 }) {
-        const fn = dbMethod(this)('command');
+    async command(options = { ping: 1 }, fns = () => {}) {
+        const fn = dbMethod(this)('command', fns);
         return fn(options);
     }
 
@@ -194,65 +193,65 @@ class DB extends require("../base") {
      * @param {Array} pipeline - The pipeline operations to apply when creating the view.
      * @returns {Promise} - A Promise that resolves once the view has been created.
      */
-    async createView(view, source, pipeline) {
-        return this.command({ create: view, viewOn: source, pipeline });
+    async createView(view, source, pipeline, fns = () => {}) {
+        return this.command({ create: view, viewOn: source, pipeline }, fns);
     }
 
     // Database methods
-    async currentOp() { }
-    async fsyncLock() { }
-    async fsyncUnlock() { }
-    async getCollectionInfos(filter, nameOnly, authorizedCollections) { }
-    async getLogComponents() { }
-    async getName() { }
-    async getProfilingStatus() { }
-    async getReplicationInfo() { }
-    async getSiblingDB(database = 'apps') { }
-    async hello() { }
-    async help() { }
-    async hostInfo() { }
-    async killOp(opid = '1233') { }
-    async listCommands() { }
-    async logout() { }
-    async printCollectionStats() { }
-    async printReplicationInfo() { }
-    async printSecondaryReplicationInfo() { }
-    async printShardingStatus() { }
-    async printSlaveReplicationInfo() { }
-    // Removed in mongoDB 5.0
-    async resetError() { }
-    async rotateCertificates(message) { }
-    async serverBuildInfo() { }
-    async serverCmdLineOpts() { }
-    async serverStatus() { }
-    async setLogLevel(level = 'int', component = 'string') { }
-    async setProfilingLevel(level = 'int', options = {} || 'int') { }
-    async shutdownServer(options = { force: true, timeoutSecs: 1000 }) { }
-    async stats(scale) { }
-    async version() { }
-    async watch(pipeline = [], options = {}) { }
-    //User Management methods 
-    async auth(username = 'string', password = 'string')
-    async changeUserPassword(username, password) { }
-    async createUser(user, writeConcern) { }
-    async dropUser(username, writeConcern) { }
-    async dropAllUsers(writeConcern) { }
-    async getUser(username, args) { }
-    async getUsers(options) { }
-    async grantRolesToUser(username, roles, writeConcern) { }
-    async removeUser(username) { }
-    async revokeRolesFromUser() { }
-    async updateUser(username, update, writeConcern) { }
-    async createRole(role, writeConcern) { }
-    async dropRole(rolename, writeConcern) { }
-    async dropAllRoles(writeConcern) { }
-    async getRole(rolename, args) { }
-    async getRoles() { }
-    async grantPrivilegesToRole(rolename, privileges, writeConcern) { }
-    async revokePrivilegesFromRole(rolename, privileges, writeConcern) { }
-    async grantRolesToRole(rolename, roles, writeConcern) { }
-    async revokeRolesFromRole(rolename, roles, writeConcern) { }
-    async updateRole(rolename, update, writeConcern) { }
+    // async currentOp() { }
+    // async fsyncLock() { }
+    // async fsyncUnlock() { }
+    // async getCollectionInfos(filter, nameOnly, authorizedCollections) { }
+    // async getLogComponents() { }
+    // async getName() { }
+    // async getProfilingStatus() { }
+    // async getReplicationInfo() { }
+    // async getSiblingDB(database = 'apps') { }
+    // async hello() { }
+    // async help() { }
+    // async hostInfo() { }
+    // async killOp(opid = '1233') { }
+    // async listCommands() { }
+    // async logout() { }
+    // async printCollectionStats() { }
+    // async printReplicationInfo() { }
+    // async printSecondaryReplicationInfo() { }
+    // async printShardingStatus() { }
+    // async printSlaveReplicationInfo() { }
+    // // Removed in mongoDB 5.0
+    // async resetError() { }
+    // async rotateCertificates(message) { }
+    // async serverBuildInfo() { }
+    // async serverCmdLineOpts() { }
+    // async serverStatus() { }
+    // async setLogLevel(level = 'int', component = 'string') { }
+    // async setProfilingLevel(level = 'int', options = {} || 'int') { }
+    // async shutdownServer(options = { force: true, timeoutSecs: 1000 }) { }
+    // async stats(scale) { }
+    // async version() { }
+    // async watch(pipeline = [], options = {}) { }
+    // //User Management methods 
+    // async auth(username = 'string', password = 'string')
+    // // async changeUserPassword(username, password) { }
+    // async createUser(user, writeConcern) { }
+    // async dropUser(username, writeConcern) { }
+    // async dropAllUsers(writeConcern) { }
+    // async getUser(username, args) { }
+    // async getUsers(options) { }
+    // async grantRolesToUser(username, roles, writeConcern) { }
+    // async removeUser(username) { }
+    // async revokeRolesFromUser() { }
+    // async updateUser(username, update, writeConcern) { }
+    // async createRole(role, writeConcern) { }
+    // async dropRole(rolename, writeConcern) { }
+    // async dropAllRoles(writeConcern) { }
+    // async getRole(rolename, args) { }
+    // async getRoles() { }
+    // async grantPrivilegesToRole(rolename, privileges, writeConcern) { }
+    // async revokePrivilegesFromRole(rolename, privileges, writeConcern) { }
+    // async grantRolesToRole(rolename, roles, writeConcern) { }
+    // async revokeRolesFromRole(rolename, roles, writeConcern) { }
+    // async updateRole(rolename, update, writeConcern) { }
 }
 
 module.exports = DB

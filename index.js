@@ -17,10 +17,10 @@
  */
 
 require('./modules/dotenv').config();
-const Client = require('./modules/client');
 const collectionMethod = require('./modules/collection');
 const dbMethod = require('./modules/database');
 const streamer = require('./modules/streamer');
+const DB = require('./modules/db');
 
 const {ObjectId} = require('mongodb');
 const {isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExists} = require('./modules/helpers')();
@@ -44,7 +44,7 @@ class Model extends require("./modules/base") {
         });
       }
     });
-
+    
     // Auto bind methods of the model
     this.autobind(Model);
 
@@ -52,7 +52,7 @@ class Model extends require("./modules/base") {
     this.autoinvoker(Model);
 
     // Add methods from other classes if they do not already exist
-    // Example: this.methodizer(...classList);
+    //this.methodizer();
     // Example: this.methodizeProperty(require('./src/db/query')());
 
     // Set the maximum number of event listeners to infinity
@@ -135,8 +135,6 @@ fake(collection = this.collection, faker_url = this.faker_url) {
 
       return fn(name, options);
   }
-
-
 
 /**
  * Asynchronously performs an aggregation operation on the collection using the specified pipeline and options.
@@ -869,7 +867,7 @@ async find(query = {}, options = {}, fns = () => {}) {
   
 
   // Obtain the collectionMethod  function with the current context (this) and the 'find' operation flag
-  const fn = collectionMethod(this, new Client(this.url))('find', fns, true);
+  const fn = collectionMethod(this)('find', fns, true);
 
   // Invoke the obtained function passing the query, options, and options, and return the result
   return fn(query, options);
@@ -2428,6 +2426,7 @@ config() {
       this.db = process.env.DATABASE_NAME || 'test';
     }
   }
+  this.DB = new DB({url: this.url, db: this.db, collection: this.collection});
 }
 
   /**

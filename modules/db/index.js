@@ -113,6 +113,18 @@ class DB extends require("../base") {
     }// todo : fix runCommand is not a method issue
 
 
+       /**
+     * Executes a database admin command with the specified options.
+     *
+     * @param {Object} [options={ collStats: this.collection }] - The options for the command.
+     * @returns {Promise} - A Promise that resolves to the result of the command.
+     */
+       async adminCommand(command =  {} | 'string', fns = () =>{}) {
+        const fn = dbMethod(this)('adminCommand', fns);
+        return fn(command);
+    }// todo : fix runCommand is not a method issue
+
+
     // /**
     //  * Executes a database command with the specified options.
     //  *
@@ -269,6 +281,84 @@ class DB extends require("../base") {
 
     // async watch(pipeline = [], options = {}) { }
     // //User Management methods 
+   
+    createCommandOptions (command, value){
+        return options => object => {
+            options[command] = value
+            return {
+                ...options,
+                ...object
+            }
+        }
+    }
+    options(options = {}, command = 'createUser', value = 'name', option = {}){
+         for(let key in options){
+            if(key === value){
+                option[command] = options[key];
+            }else{
+                option[key] = options[key];
+            }
+         }
+        return option
+    }
+
+    // User Management Commands
+  
+    async createUser(options = {name: 'newuser', pwd: 'password', customData: {}, roles: [], writeConcern: {}, authenticationRestrictions: [], mechanisms: [], digestPassword: false, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'createUser');
+        const createUserOptions = this.options(options, 'createUser');
+        return fn(createUserOptions);
+    
+    }// done
+
+    async updateUser(options = {name: 'newuser', pwd: 'password', customData: {}, roles: [], writeConcern: {}, authenticationRestrictions: [], mechanisms: [], digestPassword: false, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'updateUser');
+        const updateUserOptions = this.options(options, 'updateUser');
+        return fn(updateUserOptions);
+    
+    }
+    async dropAllUsersFromDatabase (options = {level:1, writeConcern: {},comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'dropAllUsersFromDatabase');
+        const dropAllUsersFromDatabaseOptions = this.options(options, 'dropAllUsersFromDatabase', 'level');
+        return fn(dropAllUsersFromDatabaseOptions);
+    }
+
+     
+    async dropUser(options = {name: 'newuser',  writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'dropUser');
+        const dropUserOptions = this.options(options, 'dropUser');
+        return fn(dropUserOptions);
+    
+    }// done
+
+    async grantRolesToUser(options = {name: 'newuser', roles: [],  writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'grantRolesToUser');
+        const grantRolesToUserOptions = this.options(options, 'grantRolesToUser');
+        return fn(grantRolesToUserOptions);
+    
+    }//done 
+
+    async revokeRolesFromUser(options = {name: 'newuser', roles: [],  writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'revokeRolesFromUser');
+        const revokeRolesFromUserOptions = this.options(options, 'revokeRolesFromUser');
+        return fn(revokeRolesFromUserOptions);
+    
+    }//done 
+
+    async usersInfo(options = {name: 'newuser', showCredentials: true, showCustomData: true, showPrivileges: true, showAuthenticationRestrictions: true, filter: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'usersInfo');
+        const usersInfoOptions = this.options(options, 'usersInfo');
+        return fn(usersInfoOptions);
+    
+    }// done
+
     // async auth(username = 'string', password = 'string')
     // // async changeUserPassword(username, password) { }
     // async createUser(user, writeConcern) { }

@@ -17,7 +17,7 @@ $ yarn add @mongodb-model/model
 $ npm i @mongodb-model/model
 
 ```
-### That's it: Start Using it 
+### That's it: start using it!
 Instantiate the Model class by providing an object with your database URL and collection name as keys. <ins> ***This will give you the corresponding collection model!***</ins>
  ```javascript 
   const Model = require('@mongodb-model/model');

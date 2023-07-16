@@ -5,8 +5,7 @@
  *    email: ericson.weah@ericsonweah.dev
  *    github: https://github.com/ericson-weah-dev
  *    phone: +1.385.204.5167
- *    Website: https://www.ericsonweah.dev
- *
+ *    Website: https://www.ericsonweah.dev *
  * @module Model
  * @kind class
  *

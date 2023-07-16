@@ -111,7 +111,129 @@ class DB extends require("../base") {
     // Geospatial Commands (removed for mongodb 5)
 
     //Query and Write Operation Commands
-    
+
+    async delete (options =  { 
+        collection: 'users',
+        deletes: [
+           {
+             q : {},
+             limit : 1,
+             collation: {},
+             hint: {} | ''
+           },
+        ],
+        comment: '',
+        let: {}, // Added in MongoDB 5.0
+        ordered: false,
+        writeConcern: {}
+     }, fns = ()=> {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'delete');
+        const deleteOptions = this.options(options, 'delete', 'collection');
+        return fn(deleteOptions);
+    }
+
+    async find(options = {
+        collection: 'users',
+        filter: {},
+        sort: {},
+        projection: {},
+        hint: {} |'',
+        skip: 0,
+        limit: 1,
+        batchSize: 101,
+        singleBatch: false,
+        comment: '',
+        maxTimeMS: 1000,
+        readConcern: {},
+        max: {},
+        min: {},
+        returnKey: false,
+        showRecordId: true,
+        tailable: true,
+        oplogReplay: true,
+        noCursorTimeout: true,
+        awaitData: true,
+        allowPartialResults: true,
+        collation: {},
+        allowDiskUse : true,
+        let: {} // Added in MongoDB 5.0
+     }, fns = ()=> {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'find');
+        const findOptions = this.options(options, 'find', 'collection');
+        return fn(findOptions);
+    }
+
+    async findAndModify(options =  {
+        collection: 'users',
+        query: {},
+        sort: {},
+        remove: true,
+        update: {} | [],
+        new: true,
+        fields: {},
+        upsert: true,
+        bypassDocumentValidation: true,
+        writeConcern: {},
+        collation: {},
+        arrayFilters: [],
+        hint: {} | '',
+        comment: '',
+        let: {} // Added in MongoDB 5.0
+      }, fns = ()=> {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'findAndModify');
+        const findAndModifyOptions = this.options(options, 'findAndModify', 'collection');
+        return fn(findAndModifyOptions);
+
+    }
+    async getMore(options = {getMore: 678960441858272731,collection: 'users',batchSize: 101,maxTimeMS: 1000,comment: ''}, fns = ()=> {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'getMore');
+        const getMoreOptions = this.options(options, 'getMore', 'collection');
+        return fn(getMoreOptions);
+    }// Todo
+
+    async insert(options =    {
+        collection: 'users',
+        documents: [],
+        ordered: true,
+        writeConcern: { },
+        bypassDocumentValidation: true,
+        comment: '',
+     }, fns = ()=> {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'insert');
+        const insertOptions = this.options(options, 'insert', 'collection');
+        return fn(insertOptions);
+    }
+
+    async update (options =  {
+        collection: 'users',
+        updates: [
+           {
+             q: {},
+             u: {} | [],
+             c: {}, // Added in MongoDB 5.0
+             upsert: true,
+             multi: true,
+             collation: {},
+             arrayFilters: [],
+             hint: {} | ''
+           },
+        ],
+        ordered: true,
+        writeConcern: {},
+        bypassDocumentValidation: true,
+        comment: '',
+        let: {} // Added in MongoDB 5.0
+     }, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'update');
+        const updateOptions = this.options(options, 'update', 'collection');
+        return fn(updateOptions);
+    }
     /**
  * Creates a collection with the given name and options.
  *

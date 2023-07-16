@@ -58,6 +58,60 @@ class DB extends require("../base") {
     }
 
 
+    // USER COMMANDS 
+
+    // Aggregation Commands
+
+    async aggregate(options = {collection: 1, pipeline: [],  explain: true, allowDiskUse: true, cursor: {}, maxTimeMS: 0, bypassDocumentValidation:true, readConcern: {},  collation: {},  hint: {} | '', comment: '',  writeConcern: {},  let: {}}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'aggregate');
+        const aggregateOptions = this.options(options, 'aggregate', 'collection');
+        return fn(aggregateOptions);
+    
+    }
+
+    async count(options = {collection: 'users', query: {},limit: 1, skip: 1, hint: '' | {}, readConcern: {},collation: {},comment: ''}, fns = ()=> {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'count');
+        const countOptions = this.options(options, 'count', 'collection');
+        return fn(countOptions);
+    }// done 
+
+    async distinct(options =  {collection: "users",key: "firstname",query: {},readConcern: {},collation: {},comment: ''}, fns = ()=> {}) {
+
+        const fn = dbMethod(this)('command', fns, false, 'distinct');
+        const distinctOptions = this.options(options, 'distinct', 'collection');
+        return fn(distinctOptions);
+    } // done 
+
+    async mapReduce (options =  {
+        collection: 'users',
+        map: () => {},
+        reduce: () => {},
+        finalize: '',
+        out: '' | {},
+        query: {},
+        sort: {},
+        limit: 1,
+        scope: {},
+        jsMode: false,
+        verbose: false,
+        bypassDocumentValidation: true,
+        collation: {},
+        writeConcern: {},
+        comment: ''
+      }, fns = ()=> {}) {
+
+        const fn = dbMethod(this)('command', fns, false, 'mapReduce');
+        const mapReduceOptions = this.options(options, 'mapReduce', 'collection');
+        return fn(mapReduceOptions);
+
+    }
+
+    // Geospatial Commands (removed for mongodb 5)
+
+    //Query and Write Operation Commands
+    
     /**
  * Creates a collection with the given name and options.
  *

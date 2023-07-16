@@ -359,6 +359,91 @@ class DB extends require("../base") {
     
     }// done
 
+
+    // Role Management Commands
+
+    async createRole(options = {name: 'new role', privileges: [], roles: [], authenticationRestrictions: [], writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'createRole');
+        const createRoleOptions = this.options(options, 'createRole');
+        return fn(createRoleOptions);
+    
+    }// done
+
+    async dropRole(options = {name: 'role', writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'dropRole');
+        const dropRoleOptions = this.options(options, 'dropRole');
+        return fn(dropRoleOptions);
+    
+    }// done
+
+
+    async dropAllRolesFromDatabase(options = {level: 1, writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'dropAllRolesFromDatabase');
+        const dropAllRolesFromDatabaseOptions = this.options(options, 'dropAllRolesFromDatabase', 'level');
+        return fn(dropAllRolesFromDatabaseOptions);
+    
+    }// done 
+
+    async grantPrivilegesToRole(options = {name: 'role', privileges: [], writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'grantPrivilegesToRole');
+        const grantPrivilegesToRoleOptions = this.options(options, 'grantPrivilegesToRole');
+        return fn(grantPrivilegesToRoleOptions);
+    
+    }
+
+    async grantRolesToRole(options = {name: 'role', roles: [], writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'grantRolesToRole');
+        const grantRolesToRoleOptions = this.options(options, 'grantRolesToRole');
+        return fn(grantRolesToRoleOptions);
+    }
+
+    async revokeRolesFromRole(options = {name: 'role', roles: [], writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'revokeRolesFromRole');
+        const revokeRolesFromRoleOptions = this.options(options, 'revokeRolesFromRole');
+        return fn(revokeRolesFromRoleOptions);
+    }
+
+    async invalidateUserCache(options = {level: 1}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'invalidateUserCache');
+        const invalidateUserCacheOptions = this.options(options, 'invalidateUserCache', 'level');
+        return fn(invalidateUserCacheOptions);
+    }
+
+    async revokePrivilegesFromRole(options = {name: 'role', privileges: [], writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'revokePrivilegesFromRole');
+        const revokePrivilegesFromRoleOptions = this.options(options, 'revokePrivilegesFromRole');
+        return fn(revokePrivilegesFromRoleOptions);
+    
+    }
+
+
+    async rolesInfo(options = {name: {role: 'role', db: 'app'}, showAuthenticationRestrictions: true, showBuiltinRoles: true, showPrivileges: true, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'rolesInfo');
+        const rolesInfoOptions = this.options(options, 'rolesInfo');
+        return fn(rolesInfoOptions);
+    
+    }
+
+    async updateRole(options = {name: 'new role', privileges: [], roles: [], authenticationRestrictions: [], writeConcern: {}, comment: ''}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false,  'updateRole');
+        const updateRoleOptions = this.options(options, 'updateRole');
+        return fn(updateRoleOptions);
+    
+    }
+
+
+
+
     // async auth(username = 'string', password = 'string')
     // // async changeUserPassword(username, password) { }
     // async createUser(user, writeConcern) { }

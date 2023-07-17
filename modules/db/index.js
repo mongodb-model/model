@@ -272,8 +272,107 @@ class DB extends require("../base") {
         const planCacheSetFilterOptions = this.options(options, 'planCacheSetFilter', 'collection');
         return fn(planCacheSetFilterOptions);
     }
+
+    // DATABASE OPERATIONS
+
+
+    // Authentication Commands
+    async authenticate(options = {authenticate: 1, user: "your_username", pwd: "your_password"}, fns = () => {}){
+        const fn = dbMethod(this)('command', fns, false, 'authenticate');
+        const authenticateOptions = this.options(options, 'authenticate', 'level');
+        // console.log(authenticateOptions)
+        return fn(authenticateOptions);
+    }//todo 
+
+    async logout(options = {level: 1}, fns = () => {}){
+        const fn = dbMethod(this)('command', fns, false, 'logout');
+        const logoutOptions = this.options(options, 'logout', 'level');
+        return fn(logoutOptions);
+    }
+
+    // Replication Commands 
+    async hello(options = {level: 1, saslSupportedMechs: "", comment: ''}, fns = () =>{}){
+        const fn = dbMethod(this)('command', fns, false, 'hello');
+        const helloOptions = this.options(options, 'hello', 'level');
+        return fn(helloOptions);
+    }// done
+
+    async replSetAbortPrimaryCatchUp (options = {level: 1}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetAbortPrimaryCatchUp');
+        const replSetAbortPrimaryCatchUpOptions = this.options(options, 'replSetAbortPrimaryCatchUp', 'level');
+        return fn(replSetAbortPrimaryCatchUpOptions);
+    }//done 
+
+
+    async replSetFreeze(options = {duration: 1}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetFreeze');
+        const replSetFreezeOptions = this.options(options, 'replSetFreeze', 'duration');
+        return fn(replSetFreezeOptions);
+    }// done
+
+    async replSetGetConfig(options =  {level: 1,commitmentStatus: true,comment: ''}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetGetConfig');
+        const replSetGetConfigOptions = this.options(options, 'replSetGetConfig', 'level');
+        return fn(replSetGetConfigOptions);
+    }
+
+    async replSetGetStatus(options = {status: 1}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetGetStatus');
+        const replSetGetStatusOptions = this.options(options, 'replSetGetStatus', 'status');
+        return fn(replSetGetStatusOptions);
+    }
+
+    async replSetInitiate(options = {config_document: {}}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetInitiate');
+        const replSetInitiateOptions = this.options(options, 'replSetInitiate', 'config_document');
+        // console.log(replSetInitiateOptions)
+        return fn(replSetInitiateOptions);
+    }
+    async replSetMaintenance( options = {status:  0}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetMaintenance');
+        const replSetMaintenanceOptions = this.options(options, 'replSetMaintenance', 'status');
+        return fn(replSetMaintenanceOptions);
+
+    }
+
+    async replSetReconfig( options = {new_config_document: {},force: false, maxTimeMS: 1000}, fns = () => {}){
+
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetReconfig');
+        const replSetReconfigOptions = this.options(options, 'replSetReconfig', 'new_config_document');
+        return fn(replSetReconfigOptions);
+    }
+
+    async replSetResizeOplog( options = {status: 1, size:  990, minRetentionHours: 1.5}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetResizeOplog');
+        const replSetResizeOplogOptions = this.options(options, 'replSetResizeOplog', 'status');
+        return fn(replSetResizeOplogOptions);
+
+    }
+
+    async replSetStepDown(options =  {wait: 120,secondaryCatchUpPeriodSecs: 10, force: false}, fns = () => {}) {
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetStepDown');
+        const replSetStepDownOptions = this.options(options, 'replSetStepDown', 'wait');
+        return fn(replSetStepDownOptions);
+    }
+
+    async replSetSyncFrom(options = {address: {}}, fns = () => {}) {
+
+
+        const fn = dbMethod(this)('command', fns, false, 'replSetSyncFrom');
+        const replSetSyncFromOptions = this.options(options, 'replSetSyncFrom', 'address');
+        return fn(replSetSyncFromOptions);
+    }
     /**
- * Creates a collection with the given name and options.
+ * Creates a collection with the given name and optikons.
  *
  * @param {string} [name='users'] - The name of the collection to create.
  * @param {Object} [options={}] - The options for creating the collection.

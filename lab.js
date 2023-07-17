@@ -6,8 +6,7 @@ const Model  = require('./')
 const model = new Model({collection:'users'})
 // Admin(model).listDatabases().then(console.log).catch(console.error)
 
-
-const DB  = require('./modules/db')
+const DB  = require('./modules/db');
 
 const db = new DB({collection:'users'});
 

@@ -291,6 +291,20 @@ async createIndexes(keyPatterns = [], options = {},fns = () => {}, commitQuorum 
   return fn(keyPatterns, options, commitQuorum);
 }
 
+async createSearchIndex(description  = 'string'){}
+async createSearchIndexes(descriptions = ['array of string']){}
+async dropSearchIndex(name) {}
+async estimatedDocumentCount(options = {}){}
+async indexExists(indexes, options = {}){}
+async initializeOrderedBulkOp(options = {}){}
+async initializeUnorderedBulkOp(options = {}){}
+async listIndexes(options = {}){}
+async listSearchIndexes(options = {}){}
+async options(options = { }){}
+async rename(newName, options = {}){}
+async updateSearchIndex(name, definition){}
+
+
 
 /**
  * Asynchronously retrieves the data size of the collection.

@@ -234,6 +234,44 @@ class DB extends require("../base") {
         const updateOptions = this.options(options, 'update', 'collection');
         return fn(updateOptions);
     }
+
+    // Query Plan Cache Commands
+
+    async planCacheClear(options = {collection: 'users', query: {}, sort: {}, projection: {}, comment: ''
+     }, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'planCacheClear');
+        const planCacheClearOptions = this.options(options, 'planCacheClear', 'collection');
+        return fn(planCacheClearOptions);
+    }
+
+    async planCacheClearFilters(options = {collection: 'users', query: {}, sort: {},projection: {}, collation: {},comment: ''}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'planCacheClearFilters');
+        const planCacheClearFiltersOptions = this.options(options, 'planCacheClearFilters', 'collection');
+        return fn(planCacheClearFiltersOptions);
+    }
+
+    async planCacheListFilters (options = {collection: 'users', comment: ''}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'planCacheListFilters');
+        const planCacheListFiltersOptions = this.options(options, 'planCacheListFilters', 'collection');
+        return fn(planCacheListFiltersOptions);
+    }
+    async planCacheSetFilter(options =  {
+        collection: 'users',
+        query: {},
+        sort: {},
+        projection:  {},
+        collation: {},
+        indexes: [],
+        comment: ''
+     }, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'planCacheSetFilter');
+        const planCacheSetFilterOptions = this.options(options, 'planCacheSetFilter', 'collection');
+        return fn(planCacheSetFilterOptions);
+    }
     /**
  * Creates a collection with the given name and options.
  *
@@ -616,6 +654,8 @@ class DB extends require("../base") {
         return fn(updateRoleOptions);
     
     }
+
+
 
 
 

@@ -371,6 +371,222 @@ class DB extends require("../base") {
         const replSetSyncFromOptions = this.options(options, 'replSetSyncFrom', 'address');
         return fn(replSetSyncFromOptions);
     }
+
+
+    // Sharding Commands
+
+    async abortReshardCollection(options = {collection: 'model.users'}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'abortReshardCollection');
+        const abortReshardCollectionOptions = this.options(options, 'abortReshardCollection', 'collection');
+
+        console.log(abortReshardCollectionOptions)
+        
+        return fn(abortReshardCollectionOptions);
+
+    }
+
+    // Administration Commands
+
+    async cloneCollectionAsCapped(options = {collection: 'users',toCollection: 'newusers',size: 1000,writeConcern: {},comment: ''}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'cloneCollectionAsCapped');
+        const cloneCollectionAsCappedOptions = this.options(options, 'cloneCollectionAsCapped', 'collection');
+        return fn(cloneCollectionAsCappedOptions);
+
+    }
+
+    async collMod(options = {collection: 'users', option1: 'value1', option2: 'value2'}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'collMod');
+        const collModOptions = this.options(options, 'collMod', 'collection');
+        return fn(collModOptions);
+
+    }
+
+async  compact(options = {collection: 'users', comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'compact');
+    const compactOptions = this.options(options, 'compact', 'collection');
+    return fn(compactOptions);
+}
+
+async compactStructuredEncryptionData(options = {collection: 'users', compactionTokens: {}}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'compactStructuredEncryptionData');
+    const compactStructuredEncryptionDataOptions = this.options(options, 'compactStructuredEncryptionData', 'collection');
+    return fn(compactStructuredEncryptionDataOptions);
+
+}
+
+//Do Not Run This Command In Sharded Clusters
+async convertToCapped(options = {collection: 'users', size: 190,writeConcern: {},comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'convertToCapped');
+    const convertToCappedOptions = this.options(options, 'convertToCapped', 'collection');
+    return fn(convertToCappedOptions);
+}
+
+async create(options =  {
+    create: 'users',
+    capped: false|true,
+    timeseries: {
+       timeField: 'timeField',
+       metaField: 'metaField',
+       granularity: 'seconds'
+    },
+    expireAfterSeconds: 1000,
+    clusteredIndex: {},  // Added in MongoDB 5.3
+    changeStreamPreAndPostImages: {},  // Added in MongoDB 6.0
+    autoIndexId: true|false,
+    size: 100,
+    max: 999999999,
+    storageEngine: {},
+    validator: {},
+    validationLevel: 'off',
+    validationAction: 'warn',
+    indexOptionDefaults: {},
+    viewOn: 'source collection',
+    pipeline: [],
+    collation: {},
+    writeConcern: {},
+    encryptedFields: {},
+    comment: ""
+  }, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'create');
+    const createOptions = this.options(options, 'create', 'collection');
+    return fn(createOptions);
+}
+
+async createIndexes(options = {collection: 'users',indexes: [{key: {},name: 'index_name',/** option, option,... */}],writeConcern: {},commitQuorum: 'majority',comment: ""}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'reateIndexes');
+    const reateIndexesOptions = this.options(options, 'reateIndexes', 'collection');
+    return fn(reateIndexesOptions);
+}
+async currentOp(){}
+async drop(options =  {collection: 'collection',writeConcern: {},comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'drop');
+    const dropOptions = this.options(options, 'drop', 'collection');
+    return fn(dropOptions);
+
+}
+
+async dropDatabase(options = {level: 1,writeConcern: {},comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'dropDatabase');
+    const dropDatabaseOptions = this.options(options, 'dropDatabase', 'level');
+    return fn(dropDatabaseOptions);
+}
+
+async dropConnections(options = {level: 1,hostAndPort : [ /*"host1:port1", "host2:port2", ... */],comment: ''}, fns = () => {}){
+
+
+    const fn = dbMethod(this)('command', fns, false, 'dropConnections');
+    const dropConnectionsOptions = this.options(options, 'dropConnections', 'level');
+    return fn(dropConnectionsOptions);
+
+}
+
+async dropIndexes( options = {collection: 'collection',index: {},writeConcern: {}, comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'dropIndexes');
+    const dropIndexesOptions = this.options(options, 'dropIndexes', 'collection');
+    return fn(dropIndexesOptions);
+
+}
+
+
+async filemd5(options =  {files_id: ObjectId("4f1f10e37671b50e4ecd2776"), root: "fs"}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'filemd5');
+    const filemd5Options = this.options(options, 'filemd5', 'files_id');
+    return fn(filemd5Options);
+
+}
+
+async fsync(options = {level: 1,lock: false,comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'fsync');
+    const fsyncOptions = this.options(options, 'fsync', 'level');
+    return fn(fsyncOptions);
+}
+
+async fsyncUnlock(options = {level: 1, comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'fsyncUnlock');
+    const fsyncUnlockOptions = this.options(options, 'fsyncUnlock', 'level');
+    return fn(fsyncUnlockOptions);
+}//todo
+
+async getAuditConfig(){}
+async getClusterParameter(){}
+
+async getDefaultRWConcern(){}
+
+async getParameter(){}
+
+async killCursors(options =  {collection: 'users',cursors: [/* <cursor id1>, ...*/ ], comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'killCursors');
+    const killCursorsOptions = this.options(options, 'killCursors', 'collection');
+    return fn(killCursorsOptions);
+}
+async killOp(){}
+
+async listCollections(options =    {level: 1, filter: {},nameOnly: false,authorizedCollections: false,comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'listCollections');
+    const listCollectionsOptions = this.options(options, 'listCollections', 'level');
+    return fn(listCollectionsOptions);
+}
+
+async listDatabases(){}
+
+async listIndexes(options = {collection: 'users',cursor: { batchSize: 1024 },comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'listIndexes');
+    const listIndexesOptions = this.options(options, 'listIndexes', 'collection');
+    return fn(listIndexesOptions);
+
+}
+async logRotate(){}
+
+async reIndex(options = {collection: 'users'}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'reIndex');
+    const reIndexOptions = this.options(options, 'reIndex', 'collection');
+    return fn(reIndexOptions);
+}
+async renameCollection(options = {collection: 'users',to: 'new collection name',dropTarget: true|false,writeConcern: {},comment: {}}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'renameCollection');
+    const renameCollectionOptions = this.options(options, 'renameCollection', 'collection');
+    return fn(renameCollectionOptions);
+}
+
+async rotateCertificates(options = {level: 1,message: 'optional log message'}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'rotateCertificates');
+    const rotateCertificatesOptions = this.options(options, 'rotateCertificates', 'level');
+    return fn(rotateCertificatesOptions);
+}
+async setAuditConfig(){}
+async setClusterParameter (){}
+async setFeatureCompatibilityVersion(){}
+
+async setIndexCommitQuorum(options =    {collection: 'users',indexNames: [ {} ],commitQuorum: 1 | '',comment: ''}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'setIndexCommitQuorum');
+    const setIndexCommitQuorumOptions = this.options(options, 'setIndexCommitQuorum', 'collection');
+    return fn(setIndexCommitQuorumOptions);
+}
+async setParameter(){}
+async setDefaultRWConcern(){}
+async setUserWriteBlockMode(){}
+async shutdown(){}
     /**
  * Creates a collection with the given name and optikons.
  *

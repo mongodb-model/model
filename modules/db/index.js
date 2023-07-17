@@ -19,7 +19,9 @@
 
 
 require('../dotenv').config();
+const { MongoClient } = require('mongodb');
 const dbMethod = require('../database');
+const admin = require('../admin');
 const { ObjectId } = require('mongodb');
 const { isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExists } = require('../helpers')();
 
@@ -59,6 +61,56 @@ class DB extends require("../base") {
 
 
     // USER COMMANDS 
+
+    
+
+    async buildInfo(options = {}, fns = () => {}){
+        const fn = admin(this)('buildInfo', fns);
+        return fn(options);
+    }
+    async listDatabases(options = {listDatabases: 1}, fns = () => {}){
+        const fn = admin(this)('listDatabases', fns);
+        return fn(options);
+    }
+
+    // async replSetGetStatus(options = {replSetGetStatus: 1}, fns = () => {}){
+    //     const fn = admin(this)('replSetGetStatus', fns);
+    //     return fn(options);
+    // }
+   
+    async serverInfo(options = {serverInfo: 1}, fns = () => {}){
+        const fn = admin(this)('serverInfo', fns);
+        return fn(options);
+    }
+
+
+    async ping(options = {ping: 1}, fns = () => {}){
+        const fn = admin(this)('ping', fns);
+        return fn(options);
+    }
+
+    async serverStatus(options = {serverStatus: 1}, fns = () => {}){
+        const fn = admin(this)('serverStatus', fns);
+        return fn(options);
+    }
+
+    async validateCollection(collection = 'users', options = {validateCollection: 1}, fns = () => {}){
+        const fn = admin(this)('validateCollection', fns);
+        return fn(collection,options);
+    }
+
+    async removeUser(username = 'users', options = {removeUser: 1}, fns = () => {}){
+        const fn = admin(this)('removeUser', fns);
+        return fn(username,options);
+    }
+
+    async adminCommand(command = 'users', options = {removeUser: 1}, fns = () => {}){
+        const fn = admin(this)('command', fns, 'adminCommand');
+        return fn(command,options);
+    }
+
+
+
 
     // Aggregation Commands
 
@@ -543,7 +595,6 @@ async listCollections(options =    {level: 1, filter: {},nameOnly: false,authori
     return fn(listCollectionsOptions);
 }
 
-async listDatabases(){}
 
 async listIndexes(options = {collection: 'users',cursor: { batchSize: 1024 },comment: ''}, fns = () => {}){
 
@@ -587,6 +638,8 @@ async setParameter(){}
 async setDefaultRWConcern(){}
 async setUserWriteBlockMode(){}
 async shutdown(){}
+
+// Diagnostic Commands
     /**
  * Creates a collection with the given name and optikons.
  *

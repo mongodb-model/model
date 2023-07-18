@@ -731,6 +731,70 @@ async validate(options = { collection: 'users', full: false, repair: false, meta
     const validateOptions = this.options(options, 'validate', 'collection');
     return fn(validateOptions);
 }
+
+// Free Monitoring Commands
+
+async setFreeMonitoring (){}
+
+// Auditing Commands 
+
+async logApplicationMessage(options = { message: 'get logs'}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'logApplicationMessage');
+    const logApplicationMessageOptions = this.options(options, 'logApplicationMessage', 'message');
+    return fn(logApplicationMessageOptions);
+
+}//todo logApplication
+
+
+// Session Commands
+
+async abortTransaction (){}
+async commitTransaction(){}
+
+async  startSession(options = {status: 1}, fns = () => {}) {
+
+    const fn = dbMethod(this)('command', fns, false, 'startSession');
+    const startSessionOptions = this.options(options, 'startSession', 'status');
+    return fn(startSessionOptions);
+}
+async endSessions(options = {command: [ /*{ id : <UUID> }, ...*/ ]}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'endSessions');
+    const endSessionsOptions = this.options(options, 'endSessions', 'command');
+    return fn(endSessionsOptions);
+
+}
+
+async killAllSessions(options = {command: [ /*{ user: <user>, db: <dbname> }, ... */]}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'killAllSessions');
+    const killAllSessionsOptions = this.options(options, 'killAllSessions', 'command');
+    return fn(killAllSessionsOptions);
+}
+
+async killAllSessionsByPattern(options = {pattern: [/* <pattern>, ... */]}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'killAllSessionsByPattern');
+    const killAllSessionsByPatternOptions = this.options(options, 'killAllSessionsByPattern', 'pattern');
+    return fn(killAllSessionsByPatternOptions);
+}
+
+async  killSessions(options = {command: [ /*{ id : <UUID> }, ...*/ ]}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, ' killSessions');
+    const  killSessionsOptions = this.options(options, ' killSessions', 'command');
+    return fn( killSessionsOptions);
+
+}
+
+async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'refreshSessions');
+    const refreshSessionsOptions = this.options(options, 'refreshSessions', 'command');
+    return fn(refreshSessionsOptions);
+}
+
     /**
  * Creates a collection with the given name and optikons.
  *

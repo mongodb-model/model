@@ -575,7 +575,6 @@ async fsyncUnlock(options = {level: 1, comment: ''}, fns = () => {}){
 
 async getAuditConfig(){}
 async getClusterParameter(){}
-
 async getDefaultRWConcern(){}
 
 async getParameter(){}
@@ -640,6 +639,98 @@ async setUserWriteBlockMode(){}
 async shutdown(){}
 
 // Diagnostic Commands
+
+async collStats(options =   {collection: 'users',scale: 1024}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'collStats');
+    const collStatsOptions = this.options(options, 'collStats', 'collection');
+    return fn(collStatsOptions);
+
+}
+
+async connPoolStats(options = {level: 1}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'connPoolStats');
+    const connPoolStatsOptions = this.options(options, 'connPoolStats', 'level');
+    return fn(connPoolStatsOptions);
+}
+
+async connectionStatus(options = {level: 1,showPrivileges: false}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'connectionStatus');
+    const connectionStatusOptions = this.options(options, 'connectionStatus', 'level');
+    return fn(connectionStatusOptions);
+}
+
+async datasize(options =  {collection: 'users',keyPattern: {},min: {},max: {},estimate: false}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'datasize');
+    const datasizeOptions = this.options(options, 'datasize', 'collection');
+    return fn(datasizeOptions);
+}
+async dbHash(options = {value: 1, collections: [ /*<collection1>, ... */]} , fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'dbHash');
+    const dbHashOptions = this.options(options, 'dbHash', 'value');
+    return fn(dbHashOptions);
+}
+async dbStats(options = {value: 1,scale: 1024,freeStorage: 1}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'dbStats');
+    const dbStatsOptions = this.options(options, 'dbStats', 'value');
+    return fn(dbStatsOptions);
+}
+
+async explain( options = {document: {},verbosity: 'allPlansExecution', comment: ''}, fns = () => {} ){
+
+    const fn = dbMethod(this)('command', fns, false, 'explain');
+    const explainOptions = this.options(options, 'explain', 'document');
+    return fn(explainOptions);
+}
+
+
+async getCmdLineOpts(){}
+async getLog(){}
+async hostInfo(){}
+
+async listCommands(options = {command: 1}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'listCommands');
+    const listCommandsOptions = this.options(options, 'listCommands', 'command');
+    return fn(listCommandsOptions);
+}
+
+async lockInfo(){}
+async ping(){}
+
+async profile(options =  {level: 0,slowms: 100,sampleRate: 1.0,filter: {/* <field1>: <expression1>, ... */}}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'profile');
+    const profileOptions = this.options(options, 'profile', 'level');
+    return fn(profileOptions);
+}
+
+// async getCmdLineOpts(options = {option: 1}, fns =  () => {}){
+
+//     const fn = dbMethod(this)('command', fns, false, 'getCmdLineOpts');
+//     const getCmdLineOptsOptions = this.options(options, 'getCmdLineOpts', 'option');
+//     return fn(getCmdLineOptsOptions);
+
+// }
+
+async top(options = {status: 1}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'top');
+    const topOptions = this.options(options, 'top', 'status');
+    return fn(topOptions);
+}
+
+async validate(options = { collection: 'users', full: false, repair: false, metadata: false}, fns = () => {}){
+
+    const fn = dbMethod(this)('command', fns, false, 'validate');
+    const validateOptions = this.options(options, 'validate', 'collection');
+    return fn(validateOptions);
+}
     /**
  * Creates a collection with the given name and optikons.
  *

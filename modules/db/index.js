@@ -17,7 +17,6 @@
  * @classdesc Model class
  */
 
-
 require('../dotenv').config();
 const { MongoClient } = require('mongodb');
 const dbMethod = require('../database');
@@ -343,6 +342,8 @@ class DB extends require("../base") {
     }
 
     // Replication Commands 
+
+    async appendOplogNote(){}
     async hello(options = {level: 1, saslSupportedMechs: "", comment: ''}, fns = () =>{}){
         const fn = dbMethod(this)('command', fns, false, 'hello');
         const helloOptions = this.options(options, 'hello', 'level');
@@ -364,12 +365,13 @@ class DB extends require("../base") {
         return fn(replSetFreezeOptions);
     }// done
 
-    async replSetGetConfig(options =  {level: 1,commitmentStatus: true,comment: ''}, fns = () => {}){
+    async replSetGetConfig(){}
+    // async replSetGetConfig(options =  {level: 1,commitmentStatus: true,comment: ''}, fns = () => {}){
 
-        const fn = dbMethod(this)('command', fns, false, 'replSetGetConfig');
-        const replSetGetConfigOptions = this.options(options, 'replSetGetConfig', 'level');
-        return fn(replSetGetConfigOptions);
-    }
+    //     const fn = dbMethod(this)('command', fns, false, 'replSetGetConfig');
+    //     const replSetGetConfigOptions = this.options(options, 'replSetGetConfig', 'level');
+    //     return fn(replSetGetConfigOptions);
+    // }
 
     async replSetGetStatus(options = {status: 1}, fns = () => {}){
 
@@ -401,42 +403,108 @@ class DB extends require("../base") {
         return fn(replSetReconfigOptions);
     }
 
-    async replSetResizeOplog( options = {status: 1, size:  990, minRetentionHours: 1.5}, fns = () => {}){
+    async  replSetResizeOplog (){}
+    // async replSetResizeOplog( options = {status: 1, size:  990, minRetentionHours: 1.5}, fns = () => {}){
 
-        const fn = dbMethod(this)('command', fns, false, 'replSetResizeOplog');
-        const replSetResizeOplogOptions = this.options(options, 'replSetResizeOplog', 'status');
-        return fn(replSetResizeOplogOptions);
+    //     const fn = dbMethod(this)('command', fns, false, 'replSetResizeOplog');
+    //     const replSetResizeOplogOptions = this.options(options, 'replSetResizeOplog', 'status');
+    //     return fn(replSetResizeOplogOptions);
 
-    }
+    // }
 
-    async replSetStepDown(options =  {wait: 120,secondaryCatchUpPeriodSecs: 10, force: false}, fns = () => {}) {
+    async replSetStepDown(){}
+    // async replSetStepDown(options =  {wait: 120,secondaryCatchUpPeriodSecs: 10, force: false}, fns = () => {}) {
 
-        const fn = dbMethod(this)('command', fns, false, 'replSetStepDown');
-        const replSetStepDownOptions = this.options(options, 'replSetStepDown', 'wait');
-        return fn(replSetStepDownOptions);
-    }
+    //     const fn = dbMethod(this)('command', fns, false, 'replSetStepDown');
+    //     const replSetStepDownOptions = this.options(options, 'replSetStepDown', 'wait');
+    //     return fn(replSetStepDownOptions);
+    // }
 
-    async replSetSyncFrom(options = {address: {}}, fns = () => {}) {
+    async replSetSyncFrom(){}
+    // async replSetSyncFrom(options = {address: {}}, fns = () => {}) {
 
 
-        const fn = dbMethod(this)('command', fns, false, 'replSetSyncFrom');
-        const replSetSyncFromOptions = this.options(options, 'replSetSyncFrom', 'address');
-        return fn(replSetSyncFromOptions);
-    }
+    //     const fn = dbMethod(this)('command', fns, false, 'replSetSyncFrom');
+    //     const replSetSyncFromOptions = this.options(options, 'replSetSyncFrom', 'address');
+    //     return fn(replSetSyncFromOptions);
+    // }
 
 
     // Sharding Commands
 
-    async abortReshardCollection(options = {collection: 'model.users'}, fns = () => {}){
+    async abortReshardCollection (){}
+    async addShard(){}
+    async addShardToZone(){}
+    async balancerCollectionStatus(){}
+    async balancerStart(){}
+    async balancerStatus(){}
+    async balancerStop(){}
+    async clearJumboFlag(){}
 
-        const fn = dbMethod(this)('command', fns, false, 'abortReshardCollection');
-        const abortReshardCollectionOptions = this.options(options, 'abortReshardCollection', 'collection');
+    async cleanupOrphaned(options = { namespace: "database.collection"}){
 
-        console.log(abortReshardCollectionOptions)
-        
-        return fn(abortReshardCollectionOptions);
-
+        const fn = dbMethod(this)('command', fns, false, 'cleanupOrphaned');
+        const cleanupOrphanedOptions = this.options(options, 'cleanupOrphaned', 'namespace');
+        return fn(cleanupOrphanedOptions);
     }
+    async cleanupReshardCollection (){}
+    async commitReshardCollection (){}
+    async configureCollectionBalancing(){}
+    async enableSharding(options = {database:  'model'}, fns = () => {}){
+        const fn = dbMethod(this)('command', fns, false, 'enableSharding');
+        const enableShardingOptions = this.options(options, 'enableSharding', 'database');
+        return fn(enableShardingOptions);
+    }
+
+    async isMaster(options  = {database: 'master'}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'isMaster');
+        const isMasterOptions = this.options(options, 'isMaster', 'database');
+        return fn(isMasterOptions);
+    }
+    async flushRouterConfig(){}
+    async getShardMap(string = "getShardMap", fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'getShardMap');
+        return fn('getShardMap');
+    }
+    // Use Hello
+    async isdbgrid(options  = {status: 1}, fns = () => {}){
+
+        const fn = dbMethod(this)('command', fns, false, 'isdbgrid');
+        const isdbgridOptions = this.options(options, 'isdbgrid', 'status');
+        return fn(isdbgridOptions);
+    }
+    async listShards(options = {status: 1}, fns = () => {}){
+
+
+        const fn = dbMethod(this)('runCommand', fns, false, 'listShards');
+        const listShardsOptions = this.options(options, 'listShards', 'status');
+        return fn(listShardsOptions);
+    }
+
+
+    // async listShards(options = {status: 1}, fns = () => {}){
+
+
+    // //     const fn = admin(this)('serverInfo', fns);
+    // // return fn(options);
+    //     const fn = admin(this)('command', fns);
+    //     const listShardsOptions = this.options(options, 'listShards', 'status');
+    //     return fn(listShardsOptions);
+    // }
+
+    
+    // async abortReshardCollection(options = {collection: 'model.users'}, fns = () => {}){
+
+    //     const fn = dbMethod(this)('command', fns, false, 'abortReshardCollection');
+    //     const abortReshardCollectionOptions = this.options(options, 'abortReshardCollection', 'collection');
+
+    //     console.log(abortReshardCollectionOptions)
+        
+    //     return fn(abortReshardCollectionOptions);
+
+    // }
 
     // Administration Commands
 
@@ -1177,10 +1245,6 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
         return fn(updateRoleOptions);
     
     }
-
-
-
-
 
 
     // async auth(username = 'string', password = 'string')

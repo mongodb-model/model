@@ -69,17 +69,27 @@ const fs = require('fs');
   }
   const fileExists = filePath => fs.existsSync(filePath);
   
-  const checkPortNumbers = string => string.endsWith('27017') || string.endsWith('27018') || string.endsWith('27019');
-  const checkHostString = string => string.startsWith('localhost:') || string.startsWith('127.0. 0.1:')
-  const urlArray = url => url.split('/').filter(el => el.trim().length !== 0);
-  const isUrlArrayLengthOK = url => urlArray(url).length  === 3
-  const checkNetworkString = string => checkHostString(string) && checkPortNumbers(string);
-  const isUrlLocalhost = url => isUrlArrayLengthOK(url) ? urlArray(url).find(el => checkNetworkString(el) ) !== undefined : false
+//   const checkPortNumbers = string => string.endsWith('27017') || string.endsWith('27018') || string.endsWith('27019');
+//   const checkHostString = string => string.startsWith('localhost:') || string.startsWith('127.0. 0.1:')
+//   const urlArray = url => url.split('/').filter(el => el.trim().length !== 0);
+//   const isUrlArrayLengthOK = url => urlArray(url).length  === 3
+//   const checkNetworkString = string => checkHostString(string) && checkPortNumbers(string);
+//   const isUrlLocalhost = url => isUrlArrayLengthOK(url) ? urlArray(url).find(el => checkNetworkString(el) ) !== undefined : false
 
-const getDatabaseNameFromUrl = url => url.split('/').filter(el => el.trim().length !== 0).pop()
+// const getDatabaseNameFromUrl = url => url.split('/').filter(el => el.trim().length !== 0).pop()
+
+
+
+const checkPortNumbers = string => string.endsWith('27017') || string.endsWith('27018') || string.endsWith('27019');
+  const checkHostString = string => string.startsWith('localhost:') || string.startsWith('127.0.0.1:');
+  const urlArray = url => url.split('/').filter(el => el.trim().length !== 0);
+  const isUrlArrayLengthOK = url => urlArray(url).length === 3;
+  const checkNetworkString = string => checkHostString(string) && checkPortNumbers(string);
+  const isUrlLocalhost = url => isUrlArrayLengthOK(url) ? urlArray(url).find(el => checkNetworkString(el)) !== undefined : false;
+  const getDatabaseNameFromUrl = url => url.split('/').filter(el => el.trim().length !== 0).pop();
     
     const helpers = () => ({
-      isValid,isObject, isArray, isString, isNumber, isValidObjectId, defaultStorageDirectory, fileExists
+      isValid,isObject, isArray, isString, isNumber, isValidObjectId, defaultStorageDirectory, fileExists, isUrlLocalhost, getDatabaseNameFromUrl
     })
 
     /*

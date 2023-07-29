@@ -1,0 +1,5 @@
+class CollectionMethods {
+    constructor() {
+        
+    }
+}

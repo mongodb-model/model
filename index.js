@@ -1058,7 +1058,6 @@ async validate(document = { full: true, repair: true },fns = () => {}) {
   // Check if the document is provided and is an object
   if (document && !isObject(document)) return 'Invalid document';
   
-
   // Obtain the collectionMethod  function with the current context (this) and the 'validate' operation flag
   const fn = collectionMethod (this)('validate', fns);
 

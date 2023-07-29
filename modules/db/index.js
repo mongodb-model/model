@@ -65,10 +65,13 @@ class DB extends require("../base") {
 
     async buildInfo(options = {}, fns = () => {}){
         const fn = admin(this)('buildInfo', fns);
+         // Check if the options are provided and are an object
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(options);
     }
     async listDatabases(options = {listDatabases: 1}, fns = () => {}){
         const fn = admin(this)('listDatabases', fns);
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(options);
     }
 
@@ -79,43 +82,49 @@ class DB extends require("../base") {
    
     async serverInfo(options = {serverInfo: 1}, fns = () => {}){
         const fn = admin(this)('serverInfo', fns);
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(options);
     }
 
 
     async ping(options = {ping: 1}, fns = () => {}){
         const fn = admin(this)('ping', fns);
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(options);
     }
 
     async serverStatus(options = {serverStatus: 1}, fns = () => {}){
         const fn = admin(this)('serverStatus', fns);
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(options);
     }
 
     async validateCollection(collection = 'users', options = {validateCollection: 1}, fns = () => {}){
         const fn = admin(this)('validateCollection', fns);
+
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(collection,options);
     }
 
     async removeUser(username = 'users', options = {removeUser: 1}, fns = () => {}){
         const fn = admin(this)('removeUser', fns);
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(username,options);
     }
 
     async adminCommand(command = 'users', options = {removeUser: 1}, fns = () => {}){
         const fn = admin(this)('command', fns, 'adminCommand');
+
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(command,options);
     }
-
-
-
 
     // Aggregation Commands
 
     async aggregate(options = {collection: 1, pipeline: [],  explain: true, allowDiskUse: true, cursor: {}, maxTimeMS: 0, bypassDocumentValidation:true, readConcern: {},  collation: {},  hint: {} | '', comment: '',  writeConcern: {},  let: {}}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'aggregate');
+        if (options && !isObject(options)) return 'Invalid options';
         const aggregateOptions = this.options(options, 'aggregate', 'collection');
         return fn(aggregateOptions);
     
@@ -124,6 +133,8 @@ class DB extends require("../base") {
     async count(options = {collection: 'users', query: {},limit: 1, skip: 1, hint: '' | {}, readConcern: {},collation: {},comment: ''}, fns = ()=> {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'count');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const countOptions = this.options(options, 'count', 'collection');
         return fn(countOptions);
     }// done 
@@ -131,6 +142,8 @@ class DB extends require("../base") {
     async distinct(options =  {collection: "users",key: "firstname",query: {},readConcern: {},collation: {},comment: ''}, fns = ()=> {}) {
 
         const fn = dbMethod(this)('command', fns, false, 'distinct');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const distinctOptions = this.options(options, 'distinct', 'collection');
         return fn(distinctOptions);
     } // done 
@@ -154,6 +167,8 @@ class DB extends require("../base") {
       }, fns = ()=> {}) {
 
         const fn = dbMethod(this)('command', fns, false, 'mapReduce');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const mapReduceOptions = this.options(options, 'mapReduce', 'collection');
         return fn(mapReduceOptions);
 
@@ -180,6 +195,8 @@ class DB extends require("../base") {
      }, fns = ()=> {}){
 
         const fn = dbMethod(this)('command', fns, false, 'delete');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const deleteOptions = this.options(options, 'delete', 'collection');
         return fn(deleteOptions);
     }
@@ -212,6 +229,8 @@ class DB extends require("../base") {
      }, fns = ()=> {}){
 
         const fn = dbMethod(this)('command', fns, false, 'find');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const findOptions = this.options(options, 'find', 'collection');
         return fn(findOptions);
     }
@@ -235,6 +254,8 @@ class DB extends require("../base") {
       }, fns = ()=> {}){
 
         const fn = dbMethod(this)('command', fns, false, 'findAndModify');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const findAndModifyOptions = this.options(options, 'findAndModify', 'collection');
         return fn(findAndModifyOptions);
 
@@ -242,6 +263,8 @@ class DB extends require("../base") {
     async getMore(options = {getMore: 678960441858272731,collection: 'users',batchSize: 101,maxTimeMS: 1000,comment: ''}, fns = ()=> {}){
 
         const fn = dbMethod(this)('command', fns, false, 'getMore');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const getMoreOptions = this.options(options, 'getMore', 'collection');
         return fn(getMoreOptions);
     }// Todo
@@ -256,6 +279,8 @@ class DB extends require("../base") {
      }, fns = ()=> {}){
 
         const fn = dbMethod(this)('command', fns, false, 'insert');
+
+       if (options && !isObject(options)) return 'Invalid options';
         const insertOptions = this.options(options, 'insert', 'collection');
         return fn(insertOptions);
     }
@@ -282,6 +307,8 @@ class DB extends require("../base") {
      }, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'update');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const updateOptions = this.options(options, 'update', 'collection');
         return fn(updateOptions);
     }
@@ -292,6 +319,8 @@ class DB extends require("../base") {
      }, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'planCacheClear');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const planCacheClearOptions = this.options(options, 'planCacheClear', 'collection');
         return fn(planCacheClearOptions);
     }
@@ -299,6 +328,8 @@ class DB extends require("../base") {
     async planCacheClearFilters(options = {collection: 'users', query: {}, sort: {},projection: {}, collation: {},comment: ''}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'planCacheClearFilters');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const planCacheClearFiltersOptions = this.options(options, 'planCacheClearFilters', 'collection');
         return fn(planCacheClearFiltersOptions);
     }
@@ -306,6 +337,8 @@ class DB extends require("../base") {
     async planCacheListFilters (options = {collection: 'users', comment: ''}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'planCacheListFilters');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const planCacheListFiltersOptions = this.options(options, 'planCacheListFilters', 'collection');
         return fn(planCacheListFiltersOptions);
     }
@@ -320,6 +353,8 @@ class DB extends require("../base") {
      }, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'planCacheSetFilter');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const planCacheSetFilterOptions = this.options(options, 'planCacheSetFilter', 'collection');
         return fn(planCacheSetFilterOptions);
     }
@@ -330,6 +365,8 @@ class DB extends require("../base") {
     // Authentication Commands
     async authenticate(options = {authenticate: 1, user: "your_username", pwd: "your_password"}, fns = () => {}){
         const fn = dbMethod(this)('command', fns, false, 'authenticate');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const authenticateOptions = this.options(options, 'authenticate', 'level');
         // console.log(authenticateOptions)
         return fn(authenticateOptions);
@@ -337,6 +374,8 @@ class DB extends require("../base") {
 
     async logout(options = {level: 1}, fns = () => {}){
         const fn = dbMethod(this)('command', fns, false, 'logout');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const logoutOptions = this.options(options, 'logout', 'level');
         return fn(logoutOptions);
     }
@@ -346,6 +385,8 @@ class DB extends require("../base") {
     async appendOplogNote(){}
     async hello(options = {level: 1, saslSupportedMechs: "", comment: ''}, fns = () =>{}){
         const fn = dbMethod(this)('command', fns, false, 'hello');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const helloOptions = this.options(options, 'hello', 'level');
         return fn(helloOptions);
     }// done
@@ -353,6 +394,8 @@ class DB extends require("../base") {
     async replSetAbortPrimaryCatchUp (options = {level: 1}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'replSetAbortPrimaryCatchUp');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const replSetAbortPrimaryCatchUpOptions = this.options(options, 'replSetAbortPrimaryCatchUp', 'level');
         return fn(replSetAbortPrimaryCatchUpOptions);
     }//done 
@@ -361,6 +404,8 @@ class DB extends require("../base") {
     async replSetFreeze(options = {duration: 1}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'replSetFreeze');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const replSetFreezeOptions = this.options(options, 'replSetFreeze', 'duration');
         return fn(replSetFreezeOptions);
     }// done
@@ -376,6 +421,8 @@ class DB extends require("../base") {
     async replSetGetStatus(options = {status: 1}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'replSetGetStatus');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const replSetGetStatusOptions = this.options(options, 'replSetGetStatus', 'status');
         return fn(replSetGetStatusOptions);
     }
@@ -383,6 +430,8 @@ class DB extends require("../base") {
     async replSetInitiate(options = {config_document: {}}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'replSetInitiate');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const replSetInitiateOptions = this.options(options, 'replSetInitiate', 'config_document');
         // console.log(replSetInitiateOptions)
         return fn(replSetInitiateOptions);
@@ -390,6 +439,8 @@ class DB extends require("../base") {
     async replSetMaintenance( options = {status:  0}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'replSetMaintenance');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const replSetMaintenanceOptions = this.options(options, 'replSetMaintenance', 'status');
         return fn(replSetMaintenanceOptions);
 
@@ -399,6 +450,8 @@ class DB extends require("../base") {
 
 
         const fn = dbMethod(this)('command', fns, false, 'replSetReconfig');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const replSetReconfigOptions = this.options(options, 'replSetReconfig', 'new_config_document');
         return fn(replSetReconfigOptions);
     }
@@ -444,6 +497,8 @@ class DB extends require("../base") {
     async cleanupOrphaned(options = { namespace: "database.collection"}){
 
         const fn = dbMethod(this)('command', fns, false, 'cleanupOrphaned');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const cleanupOrphanedOptions = this.options(options, 'cleanupOrphaned', 'namespace');
         return fn(cleanupOrphanedOptions);
     }
@@ -452,6 +507,8 @@ class DB extends require("../base") {
     async configureCollectionBalancing(){}
     async enableSharding(options = {database:  'model'}, fns = () => {}){
         const fn = dbMethod(this)('command', fns, false, 'enableSharding');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const enableShardingOptions = this.options(options, 'enableSharding', 'database');
         return fn(enableShardingOptions);
     }
@@ -459,6 +516,8 @@ class DB extends require("../base") {
     async isMaster(options  = {database: 'master'}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'isMaster');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const isMasterOptions = this.options(options, 'isMaster', 'database');
         return fn(isMasterOptions);
     }
@@ -472,6 +531,8 @@ class DB extends require("../base") {
     async isdbgrid(options  = {status: 1}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'isdbgrid');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const isdbgridOptions = this.options(options, 'isdbgrid', 'status');
         return fn(isdbgridOptions);
     }
@@ -479,6 +540,8 @@ class DB extends require("../base") {
 
 
         const fn = dbMethod(this)('runCommand', fns, false, 'listShards');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const listShardsOptions = this.options(options, 'listShards', 'status');
         return fn(listShardsOptions);
     }
@@ -511,6 +574,8 @@ class DB extends require("../base") {
     async cloneCollectionAsCapped(options = {collection: 'users',toCollection: 'newusers',size: 1000,writeConcern: {},comment: ''}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'cloneCollectionAsCapped');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const cloneCollectionAsCappedOptions = this.options(options, 'cloneCollectionAsCapped', 'collection');
         return fn(cloneCollectionAsCappedOptions);
 
@@ -519,6 +584,8 @@ class DB extends require("../base") {
     async collMod(options = {collection: 'users', option1: 'value1', option2: 'value2'}, fns = () => {}){
 
         const fn = dbMethod(this)('command', fns, false, 'collMod');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const collModOptions = this.options(options, 'collMod', 'collection');
         return fn(collModOptions);
 
@@ -527,6 +594,8 @@ class DB extends require("../base") {
 async  compact(options = {collection: 'users', comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'compact');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const compactOptions = this.options(options, 'compact', 'collection');
     return fn(compactOptions);
 }
@@ -534,6 +603,8 @@ async  compact(options = {collection: 'users', comment: ''}, fns = () => {}){
 async compactStructuredEncryptionData(options = {collection: 'users', compactionTokens: {}}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'compactStructuredEncryptionData');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const compactStructuredEncryptionDataOptions = this.options(options, 'compactStructuredEncryptionData', 'collection');
     return fn(compactStructuredEncryptionDataOptions);
 
@@ -543,6 +614,8 @@ async compactStructuredEncryptionData(options = {collection: 'users', compaction
 async convertToCapped(options = {collection: 'users', size: 190,writeConcern: {},comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'convertToCapped');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const convertToCappedOptions = this.options(options, 'convertToCapped', 'collection');
     return fn(convertToCappedOptions);
 }
@@ -575,6 +648,8 @@ async create(options =  {
   }, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'create');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const createOptions = this.options(options, 'create', 'collection');
     return fn(createOptions);
 }
@@ -582,6 +657,8 @@ async create(options =  {
 async createIndexes(options = {collection: 'users',indexes: [{key: {},name: 'index_name',/** option, option,... */}],writeConcern: {},commitQuorum: 'majority',comment: ""}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'reateIndexes');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const reateIndexesOptions = this.options(options, 'reateIndexes', 'collection');
     return fn(reateIndexesOptions);
 }
@@ -589,6 +666,8 @@ async currentOp(){}
 async drop(options =  {collection: 'collection',writeConcern: {},comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'drop');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const dropOptions = this.options(options, 'drop', 'collection');
     return fn(dropOptions);
 
@@ -597,6 +676,8 @@ async drop(options =  {collection: 'collection',writeConcern: {},comment: ''}, f
 async dropDatabase(options = {level: 1,writeConcern: {},comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'dropDatabase');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const dropDatabaseOptions = this.options(options, 'dropDatabase', 'level');
     return fn(dropDatabaseOptions);
 }
@@ -605,6 +686,8 @@ async dropConnections(options = {level: 1,hostAndPort : [ /*"host1:port1", "host
 
 
     const fn = dbMethod(this)('command', fns, false, 'dropConnections');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const dropConnectionsOptions = this.options(options, 'dropConnections', 'level');
     return fn(dropConnectionsOptions);
 
@@ -613,6 +696,8 @@ async dropConnections(options = {level: 1,hostAndPort : [ /*"host1:port1", "host
 async dropIndexes( options = {collection: 'collection',index: {},writeConcern: {}, comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'dropIndexes');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const dropIndexesOptions = this.options(options, 'dropIndexes', 'collection');
     return fn(dropIndexesOptions);
 
@@ -622,6 +707,8 @@ async dropIndexes( options = {collection: 'collection',index: {},writeConcern: {
 async filemd5(options =  {files_id: ObjectId("4f1f10e37671b50e4ecd2776"), root: "fs"}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'filemd5');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const filemd5Options = this.options(options, 'filemd5', 'files_id');
     return fn(filemd5Options);
 
@@ -630,6 +717,8 @@ async filemd5(options =  {files_id: ObjectId("4f1f10e37671b50e4ecd2776"), root: 
 async fsync(options = {level: 1,lock: false,comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'fsync');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const fsyncOptions = this.options(options, 'fsync', 'level');
     return fn(fsyncOptions);
 }
@@ -637,6 +726,8 @@ async fsync(options = {level: 1,lock: false,comment: ''}, fns = () => {}){
 async fsyncUnlock(options = {level: 1, comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'fsyncUnlock');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const fsyncUnlockOptions = this.options(options, 'fsyncUnlock', 'level');
     return fn(fsyncUnlockOptions);
 }//todo
@@ -650,6 +741,8 @@ async getParameter(){}
 async killCursors(options =  {collection: 'users',cursors: [/* <cursor id1>, ...*/ ], comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'killCursors');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const killCursorsOptions = this.options(options, 'killCursors', 'collection');
     return fn(killCursorsOptions);
 }
@@ -658,6 +751,8 @@ async killOp(){}
 async listCollections(options =    {level: 1, filter: {},nameOnly: false,authorizedCollections: false,comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'listCollections');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const listCollectionsOptions = this.options(options, 'listCollections', 'level');
     return fn(listCollectionsOptions);
 }
@@ -666,6 +761,8 @@ async listCollections(options =    {level: 1, filter: {},nameOnly: false,authori
 async listIndexes(options = {collection: 'users',cursor: { batchSize: 1024 },comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'listIndexes');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const listIndexesOptions = this.options(options, 'listIndexes', 'collection');
     return fn(listIndexesOptions);
 
@@ -675,12 +772,16 @@ async logRotate(){}
 async reIndex(options = {collection: 'users'}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'reIndex');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const reIndexOptions = this.options(options, 'reIndex', 'collection');
     return fn(reIndexOptions);
 }
 async renameCollection(options = {collection: 'users',to: 'new collection name',dropTarget: true|false,writeConcern: {},comment: {}}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'renameCollection');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const renameCollectionOptions = this.options(options, 'renameCollection', 'collection');
     return fn(renameCollectionOptions);
 }
@@ -688,6 +789,8 @@ async renameCollection(options = {collection: 'users',to: 'new collection name',
 async rotateCertificates(options = {level: 1,message: 'optional log message'}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'rotateCertificates');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const rotateCertificatesOptions = this.options(options, 'rotateCertificates', 'level');
     return fn(rotateCertificatesOptions);
 }
@@ -698,6 +801,8 @@ async setFeatureCompatibilityVersion(){}
 async setIndexCommitQuorum(options =    {collection: 'users',indexNames: [ {} ],commitQuorum: 1 | '',comment: ''}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'setIndexCommitQuorum');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const setIndexCommitQuorumOptions = this.options(options, 'setIndexCommitQuorum', 'collection');
     return fn(setIndexCommitQuorumOptions);
 }
@@ -711,6 +816,8 @@ async shutdown(){}
 async collStats(options =   {collection: 'users',scale: 1024}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'collStats');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const collStatsOptions = this.options(options, 'collStats', 'collection');
     return fn(collStatsOptions);
 
@@ -719,6 +826,8 @@ async collStats(options =   {collection: 'users',scale: 1024}, fns = () => {}){
 async connPoolStats(options = {level: 1}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'connPoolStats');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const connPoolStatsOptions = this.options(options, 'connPoolStats', 'level');
     return fn(connPoolStatsOptions);
 }
@@ -726,6 +835,8 @@ async connPoolStats(options = {level: 1}, fns = () => {}){
 async connectionStatus(options = {level: 1,showPrivileges: false}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'connectionStatus');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const connectionStatusOptions = this.options(options, 'connectionStatus', 'level');
     return fn(connectionStatusOptions);
 }
@@ -733,18 +844,24 @@ async connectionStatus(options = {level: 1,showPrivileges: false}, fns = () => {
 async datasize(options =  {collection: 'users',keyPattern: {},min: {},max: {},estimate: false}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'datasize');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const datasizeOptions = this.options(options, 'datasize', 'collection');
     return fn(datasizeOptions);
 }
 async dbHash(options = {value: 1, collections: [ /*<collection1>, ... */]} , fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'dbHash');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const dbHashOptions = this.options(options, 'dbHash', 'value');
     return fn(dbHashOptions);
 }
 async dbStats(options = {value: 1,scale: 1024,freeStorage: 1}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'dbStats');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const dbStatsOptions = this.options(options, 'dbStats', 'value');
     return fn(dbStatsOptions);
 }
@@ -752,6 +869,8 @@ async dbStats(options = {value: 1,scale: 1024,freeStorage: 1}, fns = () => {}){
 async explain( options = {document: {},verbosity: 'allPlansExecution', comment: ''}, fns = () => {} ){
 
     const fn = dbMethod(this)('command', fns, false, 'explain');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const explainOptions = this.options(options, 'explain', 'document');
     return fn(explainOptions);
 }
@@ -764,6 +883,8 @@ async hostInfo(){}
 async listCommands(options = {command: 1}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'listCommands');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const listCommandsOptions = this.options(options, 'listCommands', 'command');
     return fn(listCommandsOptions);
 }
@@ -774,6 +895,8 @@ async ping(){}
 async profile(options =  {level: 0,slowms: 100,sampleRate: 1.0,filter: {/* <field1>: <expression1>, ... */}}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'profile');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const profileOptions = this.options(options, 'profile', 'level');
     return fn(profileOptions);
 }
@@ -789,6 +912,8 @@ async profile(options =  {level: 0,slowms: 100,sampleRate: 1.0,filter: {/* <fiel
 async top(options = {status: 1}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'top');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const topOptions = this.options(options, 'top', 'status');
     return fn(topOptions);
 }
@@ -796,6 +921,8 @@ async top(options = {status: 1}, fns = () => {}){
 async validate(options = { collection: 'users', full: false, repair: false, metadata: false}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'validate');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const validateOptions = this.options(options, 'validate', 'collection');
     return fn(validateOptions);
 }
@@ -809,6 +936,8 @@ async setFreeMonitoring (){}
 async logApplicationMessage(options = { message: 'get logs'}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'logApplicationMessage');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const logApplicationMessageOptions = this.options(options, 'logApplicationMessage', 'message');
     return fn(logApplicationMessageOptions);
 
@@ -823,12 +952,16 @@ async commitTransaction(){}
 async  startSession(options = {status: 1}, fns = () => {}) {
 
     const fn = dbMethod(this)('command', fns, false, 'startSession');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const startSessionOptions = this.options(options, 'startSession', 'status');
     return fn(startSessionOptions);
 }
 async endSessions(options = {command: [ /*{ id : <UUID> }, ...*/ ]}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'endSessions');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const endSessionsOptions = this.options(options, 'endSessions', 'command');
     return fn(endSessionsOptions);
 
@@ -837,6 +970,8 @@ async endSessions(options = {command: [ /*{ id : <UUID> }, ...*/ ]}, fns = () =>
 async killAllSessions(options = {command: [ /*{ user: <user>, db: <dbname> }, ... */]}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'killAllSessions');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const killAllSessionsOptions = this.options(options, 'killAllSessions', 'command');
     return fn(killAllSessionsOptions);
 }
@@ -844,6 +979,8 @@ async killAllSessions(options = {command: [ /*{ user: <user>, db: <dbname> }, ..
 async killAllSessionsByPattern(options = {pattern: [/* <pattern>, ... */]}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'killAllSessionsByPattern');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const killAllSessionsByPatternOptions = this.options(options, 'killAllSessionsByPattern', 'pattern');
     return fn(killAllSessionsByPatternOptions);
 }
@@ -851,6 +988,8 @@ async killAllSessionsByPattern(options = {pattern: [/* <pattern>, ... */]}, fns 
 async  killSessions(options = {command: [ /*{ id : <UUID> }, ...*/ ]}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, ' killSessions');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const  killSessionsOptions = this.options(options, ' killSessions', 'command');
     return fn( killSessionsOptions);
 
@@ -859,6 +998,8 @@ async  killSessions(options = {command: [ /*{ id : <UUID> }, ...*/ ]}, fns = () 
 async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () => {}){
 
     const fn = dbMethod(this)('command', fns, false, 'refreshSessions');
+
+    if (options && !isObject(options)) return 'Invalid options';
     const refreshSessionsOptions = this.options(options, 'refreshSessions', 'command');
     return fn(refreshSessionsOptions);
 }
@@ -903,6 +1044,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
      */
     async watch(pipeline = [], options = {}, fns = () => {}) {
       const fn = dbMethod(this)('watch', fns);
+
+      if (options && !isObject(options)) return 'Invalid options';
       return fn(pipeline, options);
     }
 
@@ -962,6 +1105,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
      * @returns {Promise} - A Promise that resolves to the statistics of the database.
      */
     async stats(options = {}, fns = () => { }) {
+
+        if (options && !isObject(options)) return 'Invalid options';
         return dbMethod(this)('stats', fns, false, 'stats')(options);
     }// done
 
@@ -1012,6 +1157,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
      */
     async command(options = { ping: 1 }, fns = () => {}) {
         const fn = dbMethod(this)('command', fns);
+
+        if (options && !isObject(options)) return 'Invalid options';
         return fn(options);
     }//done
 
@@ -1112,6 +1259,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async createUser(options = {name: 'newuser', pwd: 'password', customData: {}, roles: [], writeConcern: {}, authenticationRestrictions: [], mechanisms: [], digestPassword: false, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'createUser');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const createUserOptions = this.options(options, 'createUser');
         return fn(createUserOptions);
     
@@ -1120,6 +1269,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async updateUser(options = {name: 'newuser', pwd: 'password', customData: {}, roles: [], writeConcern: {}, authenticationRestrictions: [], mechanisms: [], digestPassword: false, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'updateUser');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const updateUserOptions = this.options(options, 'updateUser');
         return fn(updateUserOptions);
     
@@ -1127,6 +1278,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async dropAllUsersFromDatabase (options = {level:1, writeConcern: {},comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'dropAllUsersFromDatabase');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const dropAllUsersFromDatabaseOptions = this.options(options, 'dropAllUsersFromDatabase', 'level');
         return fn(dropAllUsersFromDatabaseOptions);
     }
@@ -1135,6 +1288,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async dropUser(options = {name: 'newuser',  writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'dropUser');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const dropUserOptions = this.options(options, 'dropUser');
         return fn(dropUserOptions);
     
@@ -1143,6 +1298,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async grantRolesToUser(options = {name: 'newuser', roles: [],  writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'grantRolesToUser');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const grantRolesToUserOptions = this.options(options, 'grantRolesToUser');
         return fn(grantRolesToUserOptions);
     
@@ -1151,6 +1308,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async revokeRolesFromUser(options = {name: 'newuser', roles: [],  writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'revokeRolesFromUser');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const revokeRolesFromUserOptions = this.options(options, 'revokeRolesFromUser');
         return fn(revokeRolesFromUserOptions);
     
@@ -1159,6 +1318,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async usersInfo(options = {name: 'newuser', showCredentials: true, showCustomData: true, showPrivileges: true, showAuthenticationRestrictions: true, filter: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'usersInfo');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const usersInfoOptions = this.options(options, 'usersInfo');
         return fn(usersInfoOptions);
     
@@ -1170,6 +1331,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async createRole(options = {name: 'new role', privileges: [], roles: [], authenticationRestrictions: [], writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'createRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const createRoleOptions = this.options(options, 'createRole');
         return fn(createRoleOptions);
     
@@ -1178,6 +1341,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async dropRole(options = {name: 'role', writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'dropRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const dropRoleOptions = this.options(options, 'dropRole');
         return fn(dropRoleOptions);
     
@@ -1187,6 +1352,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async dropAllRolesFromDatabase(options = {level: 1, writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'dropAllRolesFromDatabase');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const dropAllRolesFromDatabaseOptions = this.options(options, 'dropAllRolesFromDatabase', 'level');
         return fn(dropAllRolesFromDatabaseOptions);
     
@@ -1195,6 +1362,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async grantPrivilegesToRole(options = {name: 'role', privileges: [], writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'grantPrivilegesToRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const grantPrivilegesToRoleOptions = this.options(options, 'grantPrivilegesToRole');
         return fn(grantPrivilegesToRoleOptions);
     
@@ -1203,6 +1372,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async grantRolesToRole(options = {name: 'role', roles: [], writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'grantRolesToRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const grantRolesToRoleOptions = this.options(options, 'grantRolesToRole');
         return fn(grantRolesToRoleOptions);
     }
@@ -1210,6 +1381,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async revokeRolesFromRole(options = {name: 'role', roles: [], writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'revokeRolesFromRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const revokeRolesFromRoleOptions = this.options(options, 'revokeRolesFromRole');
         return fn(revokeRolesFromRoleOptions);
     }
@@ -1217,6 +1390,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async invalidateUserCache(options = {level: 1}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'invalidateUserCache');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const invalidateUserCacheOptions = this.options(options, 'invalidateUserCache', 'level');
         return fn(invalidateUserCacheOptions);
     }
@@ -1224,6 +1399,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async revokePrivilegesFromRole(options = {name: 'role', privileges: [], writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'revokePrivilegesFromRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const revokePrivilegesFromRoleOptions = this.options(options, 'revokePrivilegesFromRole');
         return fn(revokePrivilegesFromRoleOptions);
     
@@ -1233,6 +1410,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async rolesInfo(options = {name: {role: 'role', db: 'app'}, showAuthenticationRestrictions: true, showBuiltinRoles: true, showPrivileges: true, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'rolesInfo');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const rolesInfoOptions = this.options(options, 'rolesInfo');
         return fn(rolesInfoOptions);
     
@@ -1241,6 +1420,8 @@ async refreshSessions(options = {command: [/*{ id : <UUID> , ...*/]}, fns = () =
     async updateRole(options = {name: 'new role', privileges: [], roles: [], authenticationRestrictions: [], writeConcern: {}, comment: ''}, fns = () => {}) {
 
         const fn = dbMethod(this)('command', fns, false,  'updateRole');
+
+        if (options && !isObject(options)) return 'Invalid options';
         const updateRoleOptions = this.options(options, 'updateRole');
         return fn(updateRoleOptions);
     

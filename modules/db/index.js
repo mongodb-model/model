@@ -2592,9 +2592,494 @@ async currentOp(operations = false || {}, fns = () => {}) {
 
 
 
+async fsyncLock(fns = () => {}) { 
+  const fn = dbMethod(this)('fsyncLock', fns);
+  return fn();
+}// todo : fix fsyncLock is not a method issue
+  
+async fsyncUnlock(fns = () => {}) { 
+  const fn = dbMethod(this)('fsyncUnlock', fns);
+  return fn();
+}// todo : fix fsyncUnlock is not a method issue
+
+async getCollectionInfos(filter = {}, nameOnly = true, authorizedCollections = true, fns = () => {}) {
+  const fn = dbMethod(this)('getCollectionInfos', fns, true, 'getCollectionInfos');
+  return fn(filter, nameOnly, authorizedCollections);
+}// todo : fix getCollectionInfos is not a method issue
   
 
-  
+async getLogComponents(fns = () => {}) {
+  const fn = dbMethod(this)('getLogComponents', fns);
+  return fn();
+}//todo database[method] is not a function
+
+async getName(fns = () => {}) {
+  const fn = dbMethod(this)('getName', fns);
+  return fn();
+}//todo: database[method] is not a function
+
+
+  // User Management Commands
+
+/**
+ * Asynchronous method to create a new user in the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for creating the user.
+ * @param {string} options.name - The name of the user to be created.
+ * @param {string} options.pwd - The password for the user.
+ * @param {Object} options.customData - Optional. Custom data associated with the user.
+ * @param {Array} options.roles - Optional. An array of roles assigned to the user.
+ * @param {Object} options.writeConcern - Optional. Write concern for the operation.
+ * @param {Array} options.authenticationRestrictions - Optional. Authentication restrictions for the user.
+ * @param {Array} options.mechanisms - Optional. Authentication mechanisms for the user.
+ * @param {boolean} options.digestPassword - Optional. If true, the password will be stored as a digest.
+ * @param {string} options.comment - Optional. A comment associated with the user.
+ * @param {Function} fns - Optional. A function to execute before creating the user (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the create user command.
+ */
+async createUser(options = { name: 'newuser', pwd: 'password', customData: {}, roles: [], writeConcern: {}, authenticationRestrictions: [], mechanisms: [], digestPassword: false, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'createUser' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'createUser');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'createUserOptions' from the 'options' object
+  const createUserOptions = this.options(options, 'createUser');
+
+  // Return the result of the 'createUser' command
+  return fn(createUserOptions);
+}
+
+
+/**
+ * Asynchronous method to update an existing user in the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for updating the user.
+ * @param {string} options.name - The name of the user to be updated.
+ * @param {string} options.pwd - Optional. The new password for the user.
+ * @param {Object} options.customData - Optional. New custom data associated with the user.
+ * @param {Array} options.roles - Optional. New array of roles assigned to the user.
+ * @param {Object} options.writeConcern - Optional. Write concern for the operation.
+ * @param {Array} options.authenticationRestrictions - Optional. New authentication restrictions for the user.
+ * @param {Array} options.mechanisms - Optional. New authentication mechanisms for the user.
+ * @param {boolean} options.digestPassword - Optional. If true, the new password will be stored as a digest.
+ * @param {string} options.comment - Optional. A comment associated with the user update.
+ * @param {Function} fns - Optional. A function to execute before updating the user (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the update user command.
+ */
+async updateUser(options = { name: 'newuser', pwd: 'password', customData: {}, roles: [], writeConcern: {}, authenticationRestrictions: [], mechanisms: [], digestPassword: false, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'updateUser' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'updateUser');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'updateUserOptions' from the 'options' object
+  const updateUserOptions = this.options(options, 'updateUser');
+
+  // Return the result of the 'updateUser' command
+  return fn(updateUserOptions);
+}
+
+/**
+ * Asynchronous method to drop all users from the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for dropping all users from the database.
+ * @param {number} options.level - Optional. The level of operation. Default is 1.
+ * @param {Object} options.writeConcern - Optional. Write concern for the operation.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before dropping all users (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the dropAllUsersFromDatabase command.
+ */
+async dropAllUsersFromDatabase(options = { level: 1, writeConcern: {}, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'dropAllUsersFromDatabase' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'dropAllUsersFromDatabase');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'dropAllUsersFromDatabaseOptions' from the 'options' object
+  const dropAllUsersFromDatabaseOptions = this.options(options, 'dropAllUsersFromDatabase', 'level');
+
+  // Return the result of the 'dropAllUsersFromDatabase' command
+  return fn(dropAllUsersFromDatabaseOptions);
+}
+
+/**
+ * Asynchronous method to drop a user from the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for dropping the user.
+ * @param {string} options.name - Optional. The name of the user to drop. Default is 'newuser'.
+ * @param {Object} options.writeConcern - Optional. Write concern for the operation.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before dropping the user (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the dropUser command.
+ */
+
+async dropUser(options = { name: 'newuser', writeConcern: {}, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'dropUser' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'dropUser');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'dropUserOptions' from the 'options' object
+  const dropUserOptions = this.options(options, 'dropUser');
+
+  // Return the result of the 'dropUser' command
+  return fn(dropUserOptions);
+}
+
+/**
+ * Asynchronous method to grant roles to a user in the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for granting roles to the user.
+ * @param {string} options.name - Optional. The name of the user to grant roles. Default is 'newuser'.
+ * @param {Array<string>} options.roles - Optional. An array of roles to grant to the user.
+ * @param {Object} options.writeConcern - Optional. Write concern for the operation.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before granting roles to the user (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the grantRolesToUser command.
+ */
+async grantRolesToUser(options = { name: 'newuser', roles: [], writeConcern: {}, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'grantRolesToUser' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'grantRolesToUser');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'grantRolesToUserOptions' from the 'options' object
+  const grantRolesToUserOptions = this.options(options, 'grantRolesToUser');
+
+  // Return the result of the 'grantRolesToUser' command
+  return fn(grantRolesToUserOptions);
+}
+
+
+/**
+ * Asynchronous method to revoke roles from a user in the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for revoking roles from the user.
+ * @param {string} options.name - Optional. The name of the user to revoke roles. Default is 'newuser'.
+ * @param {Array<string>} options.roles - Optional. An array of roles to revoke from the user.
+ * @param {Object} options.writeConcern - Optional. Write concern for the operation.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before revoking roles from the user (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the revokeRolesFromUser command.
+ */
+async revokeRolesFromUser(options = { name: 'newuser', roles: [], writeConcern: {}, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'revokeRolesFromUser' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'revokeRolesFromUser');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'revokeRolesFromUserOptions' from the 'options' object
+  const revokeRolesFromUserOptions = this.options(options, 'revokeRolesFromUser');
+
+  // Return the result of the 'revokeRolesFromUser' command
+  return fn(revokeRolesFromUserOptions);
+}
+
+/**
+ * Asynchronous method to retrieve information about users in the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for retrieving user information.
+ * @param {string} options.name - Optional. The name of the user to retrieve information. Default is 'newuser'.
+ * @param {boolean} options.showCredentials - Optional. Whether to show user credentials. Default is true.
+ * @param {boolean} options.showCustomData - Optional. Whether to show custom data associated with the user. Default is true.
+ * @param {boolean} options.showPrivileges - Optional. Whether to show user privileges. Default is true.
+ * @param {boolean} options.showAuthenticationRestrictions - Optional. Whether to show user authentication restrictions. Default is true.
+ * @param {Object} options.filter - Optional. Additional filtering criteria for user information.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before retrieving user information (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the usersInfo command.
+ */
+async usersInfo(options = {
+  name: 'newuser',
+  showCredentials: true,
+  showCustomData: true,
+  showPrivileges: true,
+  showAuthenticationRestrictions: true,
+  filter: {},
+  comment: ''
+}, fns = () => {}) {
+  // Use 'this.command' to execute the 'usersInfo' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'usersInfo');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'usersInfoOptions' from the 'options' object
+  const usersInfoOptions = this.options(options, 'usersInfo');
+
+  // Return the result of the 'usersInfo' command
+  return fn(usersInfoOptions);
+}
+
+// Role Management Commands: todo://double check these method
+
+
+/**
+ * Asynchronous method to create a new role in the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for creating the role.
+ * @param {string} options.name - Optional. The name of the new role to be created. Default is 'new role'.
+ * @param {Array} options.privileges - Optional. An array of privileges to be granted to the new role. Default is an empty array.
+ * @param {Array} options.roles - Optional. An array of roles to inherit privileges from for the new role. Default is an empty array.
+ * @param {Array} options.authenticationRestrictions - Optional. An array of authentication restrictions for the new role. Default is an empty array.
+ * @param {Object} options.writeConcern - Optional. The write concern for the operation. Default is an empty object.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before creating the role (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the createRole command.
+ */
+async createRole(options = {
+  name: 'new role',
+  privileges: [],
+  roles: [],
+  authenticationRestrictions: [],
+  writeConcern: {},
+  comment: ''
+}, fns = () => {}) {
+  // Use 'this.command' to execute the 'createRole' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'createRole');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'createRoleOptions' from the 'options' object
+  const createRoleOptions = this.options(options, 'createRole');
+
+  // Return the result of the 'createRole' command
+  return fn(createRoleOptions);
+}
+
+/**
+ * Asynchronous method to drop all roles from the MongoDB database.
+ *
+ * @param {Object} options - An object containing the options for dropping all roles from the database.
+ * @param {number} options.level - Optional. The level of the operation. Default is 1.
+ * @param {Object} options.writeConcern - Optional. The write concern for the operation. Default is an empty object.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before dropping all roles (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the dropAllRolesFromDatabase command.
+ */
+async dropAllRolesFromDatabase(options = {
+  level: 1,
+  writeConcern: {},
+  comment: ''
+}, fns = () => {}) {
+  // Use 'this.command' to execute the 'dropAllRolesFromDatabase' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'dropAllRolesFromDatabase');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'dropAllRolesFromDatabaseOptions' from the 'options' object
+  const dropAllRolesFromDatabaseOptions = this.options(options, 'dropAllRolesFromDatabase', 'level');
+
+  // Return the result of the 'dropAllRolesFromDatabase' command
+  return fn(dropAllRolesFromDatabaseOptions);
+}
+
+
+/**
+ * Asynchronous method to grant privileges to a MongoDB role.
+ *
+ * @param {Object} options - An object containing the options for granting privileges to the role.
+ * @param {string} options.name - The name of the role to which privileges will be granted.
+ * @param {Array} options.privileges - An array of privileges to be granted to the role.
+ * @param {Object} options.writeConcern - Optional. The write concern for the operation. Default is an empty object.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before granting privileges to the role (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the grantPrivilegesToRole command.
+ */
+async grantPrivilegesToRole(options = {
+  name: 'role',
+  privileges: [],
+  writeConcern: {},
+  comment: ''
+}, fns = () => {}) {
+  // Use 'this.command' to execute the 'grantPrivilegesToRole' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'grantPrivilegesToRole');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'grantPrivilegesToRoleOptions' from the 'options' object
+  const grantPrivilegesToRoleOptions = this.options(options, 'grantPrivilegesToRole');
+
+  // Return the result of the 'grantPrivilegesToRole' command
+  return fn(grantPrivilegesToRoleOptions);
+}
+
+
+/**
+ * Asynchronous method to grant roles to a MongoDB role.
+ *
+ * @param {Object} options - An object containing the options for granting roles to the role.
+ * @param {string} options.name - The name of the role to which roles will be granted.
+ * @param {Array} options.roles - An array of roles to be granted to the role.
+ * @param {Object} options.writeConcern - Optional. The write concern for the operation. Default is an empty object.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before granting roles to the role (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the grantRolesToRole command.
+ */
+async grantRolesToRole(options = {
+  name: 'role',
+  roles: [],
+  writeConcern: {},
+  comment: ''
+}, fns = () => {}) {
+  // Use 'this.command' to execute the 'grantRolesToRole' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'grantRolesToRole');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'grantRolesToRoleOptions' from the 'options' object
+  const grantRolesToRoleOptions = this.options(options, 'grantRolesToRole');
+
+  // Return the result of the 'grantRolesToRole' command
+  return fn(grantRolesToRoleOptions);
+}
+
+/**
+ * Asynchronous method to revoke roles from a MongoDB role.
+ *
+ * @param {Object} options - An object containing the options for revoking roles from the role.
+ * @param {string} options.name - The name of the role from which roles will be revoked.
+ * @param {Array} options.roles - An array of roles to be revoked from the role.
+ * @param {Object} options.writeConcern - Optional. The write concern for the operation. Default is an empty object.
+ * @param {string} options.comment - Optional. A comment associated with the operation.
+ * @param {Function} fns - Optional. A function to execute before revoking roles from the role (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the revokeRolesFromRole command.
+ */
+async revokeRolesFromRole(options = {
+  name: 'role',
+  roles: [],
+  writeConcern: {},
+  comment: ''
+}, fns = () => {}) {
+  // Use 'this.command' to execute the 'revokeRolesFromRole' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'revokeRolesFromRole');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'revokeRolesFromRoleOptions' from the 'options' object
+  const revokeRolesFromRoleOptions = this.options(options, 'revokeRolesFromRole');
+
+  // Return the result of the 'revokeRolesFromRole' command
+  return fn(revokeRolesFromRoleOptions);
+}
+
+/**
+ * Asynchronous method to invalidate the user cache in MongoDB.
+ *
+ * @param {Object} options - An object containing the options for invalidating the user cache.
+ * @param {number} options.level - The cache level to invalidate (default is 1).
+ * @param {Function} fns - Optional. A function to execute before invalidating the user cache (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the invalidateUserCache command.
+ */
+async invalidateUserCache(options = { level: 1 }, fns = () => {}) {
+  // Use 'this.command' to execute the 'invalidateUserCache' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'invalidateUserCache');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'invalidateUserCacheOptions' from the 'options' object
+  const invalidateUserCacheOptions = this.options(options, 'invalidateUserCache', 'level');
+
+  // Return the result of the 'invalidateUserCache' command
+  return fn(invalidateUserCacheOptions);
+}
+
+
+/**
+ * Asynchronous method to revoke privileges from a role in MongoDB.
+ *
+ * @param {Object} options - An object containing the options for revoking privileges from a role.
+ * @param {string} options.name - The name of the role from which privileges will be revoked.
+ * @param {Array} options.privileges - An array of privilege objects to be revoked from the role.
+ * @param {Object} options.writeConcern - Optional. The write concern for the operation.
+ * @param {string} options.comment - Optional. A comment to describe the purpose of the operation.
+ * @param {Function} fns - Optional. A function to execute before revoking privileges from the role (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the revokePrivilegesFromRole command.
+ */
+async revokePrivilegesFromRole(options = { name: 'role', privileges: [], writeConcern: {}, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'revokePrivilegesFromRole' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'revokePrivilegesFromRole');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'revokePrivilegesFromRoleOptions' from the 'options' object
+  const revokePrivilegesFromRoleOptions = this.options(options, 'revokePrivilegesFromRole');
+
+  // Return the result of the 'revokePrivilegesFromRole' command
+  return fn(revokePrivilegesFromRoleOptions);
+}
+
+
+/**
+ * Asynchronous method to get information about roles in MongoDB.
+ *
+ * @param {Object} options - An object containing the options for retrieving role information.
+ * @param {Object} options.name - Optional. An object specifying the role and the database for which role information will be retrieved.
+ * @param {string} options.name.role - Optional. The name of the role for which information will be retrieved.
+ * @param {string} options.name.db - Optional. The name of the database to which the role belongs.
+ * @param {boolean} options.showAuthenticationRestrictions - Optional. Indicates whether to include authentication restrictions in the role information.
+ * @param {boolean} options.showBuiltinRoles - Optional. Indicates whether to include built-in roles in the role information.
+ * @param {boolean} options.showPrivileges - Optional. Indicates whether to include privileges in the role information.
+ * @param {string} options.comment - Optional. A comment to describe the purpose of the operation.
+ * @param {Function} fns - Optional. A function to execute before retrieving role information (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the rolesInfo command.
+ */
+async rolesInfo(options = { name: { role: 'role', db: 'app' }, showAuthenticationRestrictions: true, showBuiltinRoles: true, showPrivileges: true, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'rolesInfo' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'rolesInfo');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'rolesInfoOptions' from the 'options' object
+  const rolesInfoOptions = this.options(options, 'rolesInfo');
+
+  // Return the result of the 'rolesInfo' command
+  return fn(rolesInfoOptions);
+}
+
+/**
+ * Asynchronous method to update a role in MongoDB.
+ *
+ * @param {Object} options - An object containing the options for updating a role.
+ * @param {string} options.name - Optional. The name of the role to be updated.
+ * @param {Array} options.privileges - Optional. An array of privileges to be granted to the role.
+ * @param {Array} options.roles - Optional. An array of roles to be granted to the role.
+ * @param {Array} options.authenticationRestrictions - Optional. An array of authentication restrictions for the role.
+ * @param {Object} options.writeConcern - Optional. The write concern for the update operation.
+ * @param {string} options.comment - Optional. A comment to describe the purpose of the operation.
+ * @param {Function} fns - Optional. A function to execute before updating the role (pre-hook).
+ * @returns {Promise} - A promise that resolves with the result of the updateRole command.
+ */
+async updateRole(options = { name: 'new role', privileges: [], roles: [], authenticationRestrictions: [], writeConcern: {}, comment: '' }, fns = () => {}) {
+  // Use 'this.command' to execute the 'updateRole' command with the provided parameters
+  const fn = dbMethod(this)('command', fns, false, 'updateRole');
+
+  // Check if 'options' is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Extract and validate 'updateRoleOptions' from the 'options' object
+  const updateRoleOptions = this.options(options, 'updateRole');
+
+  // Return the result of the 'updateRole' command
+  return fn(updateRoleOptions);
+}
+
+
     // async auth(username = 'string', password = 'string')
     // // async changeUserPassword(username, password) { }
     // async createUser(user, writeConcern) { }

@@ -58,6 +58,7 @@ const fs = require('fs');
      */
     const isValid = (fieldName = 'email', input) => isRegexValid(regex[fieldName], input)
     const isObject =  (object = {}) =>  Object.prototype.toString.call(object) === '[object Object]';
+    const isBoolean =  (object = {}) =>  Object.prototype.toString.call(object) === '[object Boolean]';
     const isArray  = (array = []) =>  Object.prototype.toString.call(array) === '[object Array]';
     const isString =  (string = 'string') =>  Object.prototype.toString.call(string) === '[object String]';
     const isNumber  = (number = 12) =>  Object.prototype.toString.call(number) === '[object Number]';
@@ -89,7 +90,7 @@ const checkPortNumbers = string => string.endsWith('27017') || string.endsWith('
   const getDatabaseNameFromUrl = url => url.split('/').filter(el => el.trim().length !== 0).pop();
     
     const helpers = () => ({
-      isValid,isObject, isArray, isString, isNumber, isValidObjectId, defaultStorageDirectory, fileExists, isUrlLocalhost, getDatabaseNameFromUrl
+      isValid,isObject, isArray, isString, isNumber, isValidObjectId, defaultStorageDirectory, fileExists, isUrlLocalhost, getDatabaseNameFromUrl,isBoolean
     })
 
     /*

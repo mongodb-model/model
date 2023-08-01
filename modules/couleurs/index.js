@@ -28,6 +28,11 @@
     |
     */
 
+    /**
+    * Generates an object with color and text styling methods.
+    * @returns {Object} An object with color and text styling methods.
+    */
+
     const couleurs = () => ({
         // Reset
         Color_Off: (string = 'coloring?') => `\x1b[0m${string.toString()}\x1b[0m `, //'\033[0m',       // Text Reset
@@ -114,7 +119,8 @@
         FgGreen: (string = 'coloring?') => `\x1b[32m${string.toString()}\x1b[0m`,//'\e[32m',
         FgYellow: (string = 'coloring?') => `\x1b[33m${string.toString()}\x1b[0m`,//'\e[33m',
         FgBlue: (string = 'coloring?') => `\x1b[34m${string.toString()}\x1b[0m`,//'\e[34m',
-        FgMagenta: (string = 'coloring?') => `\x1b[35m${string.toString()}\x1b[0m`,//'\e[35m',    FgCyan: (string = 'coloring?') => `\x1b[36m${string.toString()}\x1b[0m`,//'\e[36m',
+        FgMagenta: (string = 'coloring?') => `\x1b[35m${string.toString()}\x1b[0m`,//'\e[35m',
+        FgCyan: (string = 'coloring?') => `\x1b[36m${string.toString()}\x1b[0m`,//'\e[36m',
         FgWhite: (string = 'coloring?') => `\x1b[37m${string.toString()}\x1b[0m`,//'\e[37m',
 
         BgBlack: (string = 'coloring?') => `\x1b[40m${string.toString()}\x1b[0m`,//'\e[40m',

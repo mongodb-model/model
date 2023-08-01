@@ -17,7 +17,7 @@ $ yarn add @mongodb-model/model
 $ npm i @mongodb-model/model
 
 ```
-### That's it: Start Using it 
+### That's it: start using it!
 Instantiate the Model class by providing an object with your database URL and collection name as keys. <ins> ***This will give you the corresponding collection model!***</ins>
  ```javascript 
   const Model = require('@mongodb-model/model');
@@ -2303,6 +2303,33 @@ async createManyFromJsonFile(path, options, fn = () => {})
 async createOneFromJsonFile(path, options, fn = () => {})
 async insertManyFromJsonFile(path, options, fn = () => {})
 async insertOneFromJsonFile(path, options, fn = () => {})
+
+```
+
+
+
+
+#### Some available DB instance methods 
+```javascript
+
+const Model = require('@mongodb-model/model');
+const {DB} = new Model();
+
+// The following functions are available on db, the DB instance, as methods.
+// The majority of them, especially the ones with name very similar to the Mongodb native driver methods, are actually the corresponding 
+// mongodb native driver methods. In other words, they take the exact same arguments as the corresponding  native mongodb driver methods with the addtional fns function: the optional callback function.
+
+
+// Note that the callback function (fns) comes last (the last parameter or comes right after the second parameter )
+
+async aggregate(options = { collection: 1, pipeline: [], explain: true, allowDiskUse: true, cursor: {}, maxTimeMS: 0, bypassDocumentValidation: true, readConcern: {}, collation: {}, hint: {} | '', comment: '', writeConcern: {}, let: {} }, fns = () => {})
+
+async count(options = { collection: this.collection, query: {}, limit: 1, skip: 1, hint: '' | {}, readConcern: {}, collation: {}, comment: '' },fns = () => { })
+async buildInfo(options = {}, fns = () => { })
+async listDatabases(options = { listDatabases: 1 }, fns = () => {})
+async serverInfo(options = { serverInfo: 1 }, fns = () => {})
+async ping(options = { ping: 1 }, fns = () => { })
+async serverStatus(options = { serverStatus: 1 }, fns = () => {})
 
 ```
 

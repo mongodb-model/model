@@ -1,1 +1,0 @@
-document this javascript function ""

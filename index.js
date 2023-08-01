@@ -18,11 +18,12 @@
 require('./modules/dotenv').config();
 const collectionMethod = require('./modules/collection');
 const dbMethod = require('./modules/database');
+const admin = require('./modules/admin');
 const streamer = require('./modules/streamer');
 const DB = require('./modules/db');
 
 const { ObjectId } = require('mongodb');
-const { isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExists, getDatabaseNameFromUrl, isUrlLocalhost } = require('./modules/helpers')();
+const { isArray, isValid, isValidObjectId, isObject, isString, isNumber, fileExists, getDatabaseNameFromUrl, isUrlLocalhost} = require('./modules/helpers')();
 
 /**
  * Represents a Model class that extends the base class. */
@@ -56,6 +57,100 @@ class Model extends require("./modules/base") {
 
     // Set the maximum number of event listeners to infinity
     this.setMaxListeners(Infinity);
+  }
+
+  /**
+ * Dynamically creates and executes a MongoDB collection method based on the provided method name and arguments.
+ *
+ * @param {string} method - The name of the MongoDB collection method to execute.
+ * @param {...any} args - Additional arguments to be passed to the specified collection method.
+ * @returns {any} - The result of executing the specified MongoDB collection method with the provided arguments.
+ */
+createFn(method = 'find', ...args) {
+  // Call the specified MongoDB collection method with the provided arguments and return the result
+  // The 'this[method]' expression allows accessing the collection method using the method name stored in the 'method' variable
+  return this[method](...args);
+}
+
+/**
+ * Dynamically creates and executes a MongoDB collection method based on the provided method name and arguments.
+ *
+ * @param {string} method - The name of the MongoDB collection method to execute.
+ * @param {boolean} toArray - A flag indicating whether the method should return the result as an array.
+ * @param {...any} args - Additional arguments to be passed to the specified collection method.
+ * @returns {any} - The result of executing the specified MongoDB collection method with the provided arguments.
+ */
+makeFn(method = 'find', toArray = false, ...args) {
+  // Obtain the collectionMethod function with the current context (this) and the 'countDocuments' operation flag
+  let fn;
+  const fns = args.find(el => typeof (el) === 'function');
+
+  // Determine the correct collection method based on the 'toArray' flag and the presence of callback function 'fns'
+  if (toArray) {
+    if (fns && fns !== undefined) {
+      fn = collectionMethod(this)(`${method}`, fns, toArray);
+    } else {
+      fn = collectionMethod(this)(`${method}`);
+    }
+  } else {
+    if (fns && fns !== undefined) {
+      fn = collectionMethod(this)(`${method}`, fns);
+    } else {
+      fn = collectionMethod(this)(`${method}`);
+    }
+  }
+
+  // Invoke the obtained function passing the arguments, and return the result
+  return fn(...args);
+}
+
+
+  /**
+ * Fetches data from a specified URL and performs operations based on the received data.
+ *
+ * @param {string} [collection=this.collection] - The name of the collection.
+ * @param {string} [faker_url=this.faker_url] - The URL to fetch the data from.
+ * @returns {void}
+ */
+fake(collection = this.collection, faker_url = this.faker_url) {
+  // Make a fetch request to the specified URL
+  fetch(faker_url + collection)
+    .then(response => response.json()) // Parse the response as JSON
+    .then(data => {
+      // Check if the received data is an array
+      if (isArray(data)) {
+        // Call the 'insertMany' method with the data array
+        this.insertMany(data);
+      }
+      // Check if the received data is an object
+      if (isObject(data)) {
+        // Call the 'insertOne' method with the data object
+        this.insertOne(data);
+      }
+    })
+    .catch(err => {
+      // Log any errors to the console
+      console.error(err);
+    });
+}
+
+  /**
+ * Creates a collection with the given name and options.
+ *
+ * @param {string} [name='users'] - The name of the collection to create.
+ * @param {Object} [options={}] - The options for creating the collection.
+ * @returns {Promise} - A Promise that resolves to the created collection.
+ */
+    async createCollection(name = 'users', options = {}, fns = () => { }) {
+      // Check if the name is provided and is a string
+      if (name && !isString(name)) return 'Invalid name';
+
+      // Check if the options are provided and are an object
+      if (options && !isObject(options)) return 'Invalid options';
+
+      const fn = dbMethod(this)('createCollection', fns);
+
+      return fn(name, options);
   }
 
   /**
@@ -1048,243 +1143,1446 @@ async mapReduce(query = {}, options = {}, fns = () => { }) {
 // }
 
 
-/**
- * Asynchronously validates the collection.
- * 
- * @param {Object} [document={full: true, repair: true}] - The validation options.
- * @returns {Promise<Object>|string} - A promise that resolves to the validation result or an error message.
- */
-async validate(document = { full: true, repair: true },fns = () => {}) {
-  // Check if the document is provided and is an object
-  if (document && !isObject(document)) return 'Invalid document';
-  
-  // Obtain the collectionMethod  function with the current context (this) and the 'validate' operation flag
-  const fn = collectionMethod (this)('validate', fns);
+    /**
+     * Asynchronously validates a collection in the database using the 'validateCollection' command with the provided options.
+     * 
+     * @param {string} collection - The name of the collection to be validated. (Default: 'users')
+     * @param {Object} options - The options for the 'validateCollection' command. (Default: { validateCollection: 1 })
+     * @param {function} fns - A callback function that is executed after the 'validateCollection' command. (Default: ()=> {})
+     * @returns {Promise<Object|string>} A Promise that resolves to the validation result or a string indicating an error.
+     */
+    async validate(collection = this.collection, options = { validateCollection: 1 }, fns = () => { }) {
+      // Call the 'admin' function to get the 'validateCollection' command function
+      const fn = admin(this)('validateCollection', fns);
 
-  // Invoke the obtained function passing the document, and return the result
-  return fn(document);
+      // Check if 'options' is not an object
+      if (options && !isObject(options)) return 'Invalid options';
+
+      // Execute the 'validateCollection' command and return the result
+      return fn(collection, options);
+  }
+
+  async getShardVersion(query = {}, options = {}, fns = () => { }) {
+    // Check if the query is provided and is an object
+    if (query && !isObject(query)) return 'Invalid query';
+
+    // Check if the options are provided and are an object
+    if (options && !isObject(options)) return 'Invalid options';
+
+    // Obtain the collectionMethod  function with the current context (this) and the 'getShardVersion' operation flag
+    const fn = collectionMethod(this)('getShardVersion', fns, false, 'getShardVersion');
+
+    // Invoke the obtained function passing the query and options, and return the result
+    return fn(query, options);
+}//todo: collection[method] is not a function
+
+async getShardDistribution(query = {}, options = {}, fns = () => { }) {
+  // Check if the query is provided and is an object
+  if (query && !isObject(query)) return 'Invalid query';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'getShardDistribution' operation flag
+  const fn = collectionMethod(this)('getShardDistribution', fns, false, 'getShardDistribution');
+
+  // Invoke the obtained function passing the query and options, and return the result
+  return fn(query, options);
+}
+//todo: collection[method] is not a function
+
+
+/**
+ * Asynchronously watches changes on a MongoDB collection using the provided pipeline and options.
+ * If no pipeline is provided, an empty array will be used.
+ * If no options are provided, an empty object will be used.
+ * If invalid pipeline or options are provided, an error message will be returned.
+ *
+ * @param {Array} pipeline - The aggregation pipeline to use for watching changes.
+ * @param {Object} options - Additional options to customize the watch operation.
+ * @param {Function} fns - A callback function that will be executed when changes occur.
+ * @returns {Promise} - A promise that resolves with the result of the watch operation.
+ */
+async watch(pipeline = [], options = {}, fns = () => { }) {
+  // Check if the pipeline is provided and is an array
+  if (pipeline && !Array.isArray(pipeline)) return 'Invalid pipeline';
+
+  // Check if the options are provided and are an object
+  if (options && typeof options !== 'object') return 'Invalid options';
+
+  // Obtain the collectionMethod function with the current context (this) and the 'watch' operation flag
+  // collectionMethod is a function used to create a method with specific behavior for a collection
+  const fn = collectionMethod(this)('watch', fns, false, 'watch');
+
+  // Invoke the obtained function passing the pipeline and options, and return the result
+  return fn(pipeline, options);
+}
+
+/**
+ * Asynchronously hides an index on the MongoDB collection using the provided options.
+ * If no options are provided, the collection property will be used by default.
+ * If invalid options are provided, an error message will be returned.
+ *
+ * @param {Object} options - Additional options to customize the hideIndex command.
+ *                          The options object can include 'collection' property as the target collection.
+ *                          Other properties specific to the 'hideIndex' command can also be included.
+ * @param {Function} fns - A callback function that will be executed during the hideIndex command.
+ * @returns {Promise} - A promise that resolves with the result of the hideIndex command.
+ */
+async hideIndex(options = {collection: this.collection}, fns = () => { }) {
+
+  // Call the 'dbMethod' function to get the 'hideIndex' command function
+  // dbMethod is a function used to create a method with specific behavior for a database command
+  const fn = dbMethod(this)('command', fns, false, 'collMod');
+
+  // Check if 'options' is not an object
+  if (options && typeof options !== 'object') return 'Invalid options';
+
+  // Extract 'hideIndex' specific options and create the hideIndexOptions object
+  // The 'options' parameter is passed to this.options along with 'collMod' and 'collection' flags to extract relevant options.
+  const hideIndexOptions = this.options(options, 'collMod', 'collection');
+
+  // Execute the 'hideIndex' command and return the result
+  return fn(hideIndexOptions);
+}
+
+
+/**
+ * Asynchronously unhides a hidden index on the MongoDB collection using the provided options.
+ * If no options are provided, the collection property will be used by default.
+ * If invalid options are provided, an error message will be returned.
+ *
+ * @param {Object} options - Additional options to customize the unhideIndex command.
+ *                           The options object can include 'collection' property as the target collection.
+ *                           Other properties specific to the 'unhideIndex' command can also be included.
+ * @param {Function} fns - A callback function that will be executed during the unhideIndex command.
+ * @returns {Promise} - A promise that resolves with the result of the unhideIndex command.
+ */
+async unhideIndex(options = { collection: this.collection }, fns = () => { }) {
+
+  // Call the 'dbMethod' function to get the 'unhideIndex' command function
+  // dbMethod is a function used to create a method with specific behavior for a database command
+  const fn = dbMethod(this)('command', fns, false, 'collMod');
+
+  // Check if 'options' is not an object
+  if (options && typeof options !== 'object') return 'Invalid options';
+
+  // Extract 'unhideIndex' specific options and create the unhideIndexOptions object
+  // The 'options' parameter is passed to this.options along with 'collMod' and 'collection' flags to extract relevant options.
+  const unhideIndexOptions = this.options(options, 'collMod', 'collection');
+
+  // Execute the 'unhideIndex' command and return the result
+  return fn(unhideIndexOptions);
+}
+
+
+// Custom 
+
+/**
+ * Asynchronously deletes a single document from the collection that matches the specified filter and options.
+ * 
+ * @param {Object} [filter={}] - The filter object to determine the document to delete.
+ * @param {Object} [options={}] - Additional options for the deleteOne operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the delete result or an error message.
+ */
+async destroy(filter = {}, options = {}, fns = () => {}) {
+  // Check if the filter is provided and is an object
+  if (filter && !isObject(filter)) return 'Invalid filter';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('deleteOne', fns, false, 'delete');
+
+  // Invoke the obtained function passing the filter and options, and return the result
+  return fn(filter, options);
+}
+ 
+/**
+ * Asynchronously deletes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to delete.
+ * @param {Object} [options={}] - Additional options for the delete operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the delete result or an error message.
+ */
+async deleteById(id = '645b9cf776b7fb46975316d9', options = {}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('deleteOne', fns, false, 'deleteById' );
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({ _id: new ObjectId(id) }, options);
+}
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async removeById(id = '645b9cf776b7fb46975316d9', options = {},fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('deleteOne', fns, false, 'removeById');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({ _id: new ObjectId(id) }, options);
+}
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateById(id = '645b9cf776b7fb46975316d9', update = {}, options = {}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateById');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({ _id: new ObjectId(id) }, {$set: update}, options);
+}
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateByUsername(username = 'username', update = {}, options = {}, fns = () => {}) {
+  
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateByUsername');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({username }, {$set: update}, options);
+}
+
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateByEmail(email = '645b9cf776b7fb46975316d9', update = {}, options = {}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateByEmail');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({email}, {$set: update}, options);
+}
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateByCode(code = '645b9cf776b7fb46975316d9', update = {}, options = {}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateByCode');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({code}, {$set: update}, options);
+}
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateByToken(token = '645b9cf776b7fb46975316d9', update = {}, options = {}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateByToken');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({token}, {$set: update}, options);
+}
+
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateLastByUsername(username = '645b9cf776b7fb46975316d9', update = {}, options = {sort: {_id: - 1}}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateLastByUsername');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({username}, {$set: update}, options);
+}
+
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateLastByEmail(email = '645b9cf776b7fb46975316d9', update = {}, options = {sort: {_id: - 1}}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateLastByEmail');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({email}, {$set: update}, options);
+}
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateLastByToken(token = '645b9cf776b7fb46975316d9', update = {}, options = {sort: {_id: - 1}}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateLastByToken');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({token }, {$set: update}, options);
+}
+
+
+/**
+ * Asynchronously removes a document from the collection by its ID, using the specified options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to remove.
+ * @param {Object} [options={}] - Additional options for the remove operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the remove result or an error message.
+ */
+async updateLastByCode(code = '645b9cf776b7fb46975316d9', update = {}, options = {sort: {_id: - 1}}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  // if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options are provided and are an object
+  if (update && !isObject(update)) return 'Invalid update';
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('updateOne', fns, false, 'updateLastByCode');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId) and options, and return the result
+  return fn({code}, {$set: update}, options);
+}
+
+  
+/**
+ * Asynchronously deletes a single document from the collection that matches the specified email and options.
+ * 
+ * @param {string} [email='ericson.weah@gmail'] - The email of the document to delete.
+ * @param {Object} [options={}] - Additional options for the deleteOne operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the delete result or an error message.
+ */
+async deleteOneByEmail(email = 'ericson.weah@gmail', options = {}, fns = () => {}) {
+  // Check if the email is provided and is a valid email format
+  if (email && !isValid('email', email)) return 'Invalid email';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('deleteOne', fns, false, 'deleteOneByEmail');
+
+  // Invoke the obtained function passing the filter (using the email field) and options, and return the result
+  return fn({ email }, options);
+}
+
+
+/**
+ * Asynchronously deletes a single document from the collection that matches the specified username and options.
+ * 
+ * @param {string} [username='ericsonweah'] - The username of the document to delete.
+ * @param {Object} [options={}] - Additional options for the deleteOne operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the delete result or an error message.
+ */
+async deleteOneByUsername(username = 'ericsonweah', options = {},fns = () => {}) {
+  // Check if the username is provided and is a valid username format
+  if (username && !isValid('username', username)) return 'Invalid username';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('deleteOne', fns,false, 'deleteOneByUsername');
+
+  // Invoke the obtained function passing the filter (using the username field) and options, and return the result
+  return fn({ username }, options);
+}
+
+
+/**
+ * Asynchronously deletes a single document from the collection that matches the specified code and options.
+ * 
+ * @param {string} [code='FT'] - The code of the document to delete.
+ * @param {Object} [options={}] - Additional options for the deleteOne operation.
+ * @returns {Promise<DeleteResult>|string} - A promise that resolves to the delete result or an error message.
+ */
+async deleteOneByCode(code = 'FT', options = {},fns = () => {}) {
+  // Check if the code is provided and is a string
+  if (code && !isString(code)) return 'Invalid code';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'deleteOne' operation flag
+  const fn = collectionMethod (this)('deleteOne', fns, false, 'deleteOneByCode');
+
+  // Invoke the obtained function passing the filter (using the code field) and options, and return the result
+  return fn({ code }, options);
+}
+
+/**
+ * Asynchronously finds and retrieves documents from the collection based on the specified query, projection, and options.
+ * 
+ * @param {Object} [query={}] - The query object to filter the documents.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the find operation.
+ * @returns {Promise<Cursor>|string} - A promise that resolves to a cursor or an error message.
+ */
+async all(query = {}, options = {}, fns = () => {}) {
+  // Check if the query is provided and is an object
+  if (query && !isObject(query)) return 'Invalid query';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'find' operation flag
+  const fn = collectionMethod(this)('find', fns, true, 'all');
+
+  // Invoke the obtained function passing the query, options, and options, and return the result
+  return fn(query, options);
+}
+
+/**
+ * Asynchronously finds and retrieves a document from the collection based on the specified ID, projection, and options.
+ * 
+ * @param {string} [id='645b9cf776b7fb46975316d9'] - The ID of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async findById(id = '645b9cf776b7fb46975316d9', options = {}, fns = () => {}) {
+  // Check if the ID is provided and is a valid ObjectId
+  if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+ 
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'findById');
+
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId), options, and options, and return the result
+  return fn({ _id: new ObjectId(id) }, options);
+}
+
+
+
+/**
+ * Asynchronously finds and retrieves a document from the collection based on the specified email, projection, and options.
+ * 
+ * @param {string} [email='ericson.weah@gmail.com'] - The email of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async findByEmail(email = 'ericson.weah@gmail.com', options = {}, fns = () => {}) {
+  // Check if the email is provided and is a valid email format
+  if (email && !isValid('email', email)) return 'Invalid email';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'findByEmail');
+
+  // Invoke the obtained function passing the filter (using the email field), options, and options, and return the result
+  return fn({ email }, options);
 }
 
 
 
 
- 
- 
+/**
+ * Asynchronously finds and retrieves a document from the collection based on the specified username, projection, and options.
+ * 
+ * @param {string} [username='username'] - The username of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async findByUsername(username = 'username', options = {}, fns = () => {}) {
+  // Check if the username is provided and is a valid username format
+  if (username && !isValid('username', username)) return 'Invalid username';
   
- 
 
- 
-
-
-
- 
-
-
-
-
-
- 
- 
-
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
   
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
   
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns,false, 'findByUsername');
+
+  // Invoke the obtained function passing the filter (using the username field), options, and options, and return the result
+  return fn({ username },options);
+}
+
+
+
+/**
+ * Asynchronously finds and retrieves a document from the collection based on the specified phone number, projection, and options.
+ * 
+ * @param {string} [phone='2852045167'] - The phone number of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the findByPhone operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async findByPhone(phone = '2852045167', options = {}, fns = () => {}) {
+  // Check if the phone number is provided and is a string
+  if (phone && !isString(phone)) return 'Invalid phone';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'findByPhone');
+
+  // Invoke the obtained function passing the filter (using the phone field), options, and options, and return the result
+  return fn({ phone }, options);
+}
+
+
+/**
+ * Asynchronously finds and retrieves a document from the collection based on the specified code, projection, and options.
+ * 
+ * @param {string} [code='FT'] - The code of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the findByCode operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async findByCode(code = 'FT', options = {}, fns = () => {}) {
+  // Check if the code is provided and is a string
+  if (code && !isString(code)) return 'Invalid code';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'findByCode');
+
+  // Invoke the obtained function passing the filter (using the code field), options, and options, and return the result
+  return fn({ code }, options);
+}
+
+
+
+/**
+ * Asynchronously finds and retrieves the first document from the collection based on the specified email, projection, and options.
+ * 
+ * @param {string} [email='ericson.weah@gmail.com'] - The email of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the firstByEmail operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async firstByEmail(email = 'ericson.weah@gmail.com', options = {},fns = () => {}) {
+  // Check if the email is provided and is a valid email format
+  if (email && !isValid('email', email)) return 'Invalid email';
+
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'firstByEmail');
+
+  // Invoke the obtained function passing the filter (using the email field), options, and options, and return the result
+  return fn({ email }, options);
+}
+
+
+
+/**
+ * Asynchronously finds and retrieves the first document from the collection based on the specified username, projection, and options.
+ * 
+ * @param {string} [username='username'] - The username of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the firstByUsername operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async firstByUsername(username = 'username', options = {},fns = () => {}) {
+  // Check if the username is provided and is a valid username format
+  if (username && !isValid('username', username)) return 'Invalid username';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'firstByUsername');
+
+  // Invoke the obtained function passing the filter (using the username field), options, and options, and return the result
+  return fn({ username }, options);
+}
+
+
+/**
+ * Asynchronously finds and retrieves the first document from the collection based on the specified phone number, projection, and options.
+ * 
+ * @param {string} [phone='2852045167'] - The phone number of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the firstByPhone operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async firstByPhone(phone = '2852045167', options = {},fns = () => {}) {
+  // Check if the phone number is provided and is a string
+  if (phone && !isString(phone)) return 'Invalid phone';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'firstByPhone');
+
+  // Invoke the obtained function passing the filter (using the phone field), options, and options, and return the result
+  return fn({ phone }, options, options);
+}
+
+
+
+/**
+ * Asynchronously finds and retrieves the first document from the collection based on the specified code, projection, and options.
+ * 
+ * @param {string} [code='FT'] - The code of the document to find.
+ * @param {Object} [projection={}] - The projection object to specify the fields to include or exclude.
+ * @param {Object} [options={}] - Additional options for the firstByCode operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the found document or an error message.
+ */
+async firstByCode(code = 'FT', options = {}, fns = () => {}) {
+  // Check if the code is provided and is a string
+  if (code && !isString(code)) return 'Invalid code';
+  
+
+  // Check if the options is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Check if the options are provided and are an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne',fns, false, 'firstByCode');
+
+  // Invoke the obtained function passing the filter (using the code field), options, and options, and return the result
+  return fn({ code }, options);
+}
+
+/**
+ * Asynchronously creates a single document in the collection.
+ * 
+ * @param {Object} [document={}] - The document to create.
+ * @param {Object} [options={}] - Additional options for the create operation.
+ * @returns {Promise<Document>|string} - A promise that resolves to the created document or an error message.
+ */
+async create(document = {}, options = {}, fns = () => {}) {
+  // Check if the document is provided and is an object
+  if (document && !isObject(document)) return 'Invalid document';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'insertOne' operation flag
+  const fn = collectionMethod (this)('insertOne', fns, false, 'create');
+
+  // Invoke the obtained function passing the document and options, and return the result
+  return fn(document, options);
+}
+
+
+/**
+ * Asynchronously creates multiple documents in the collection.
+ * 
+ * @param {Array} [documents=[]] - The array of documents to create.
+ * @param {Object} [options={}] - Additional options for the createMany operation.
+ * @returns {Promise<Array<Document>>|string} - A promise that resolves to an array of created documents or an error message.
+ */
+async createMany(documents = [], options = {}, fns = () => {}) {
+  // Check if the documents array is provided and is an array
+  if (documents && !isArray(documents)) return 'Invalid input documents';
+  
+
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the collectionMethod  function with the current context (this) and the 'insertMany' operation flag
+  const fn = collectionMethod (this)('insertMany', fns, false, 'createMany');
+
+  // Invoke the obtained function passing the documents array and options, and return the result
+  return fn(documents, options);
+}
+
+/**
+ * Finds a document in the collection by the specified firstname.
+ *
+ * @param {string} [firstname='firstname'] - The firstname to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the firstname is not a string or if the projection/options are not objects.
+ */
+async findByFirstname(firstname = 'firstname', options = {}, fns = () => {}) {
+  // Check if the firstname parameter is provided and is a string
+  if (firstname && !isString(firstname)) return 'Invalid firstname';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Check if the options parameter is provided and is an object
+  // if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'findByFirstname');
+
+  // Execute the query with the provided parameters
+  return fn({ firstname }, options);
+}
+
+/**
+ * Finds a document in the collection by the specified lastname.
+ *
+ * @param {string} [lastname='lastname'] - The lastname to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the lastname is not a string or if the projection/options are not objects.
+ */
+async findByLastname(lastname = 'lastname', options = {}, fns = () => {}) {
+  // Check if the lastname parameter is provided and is a string
+  if (lastname && !isString(lastname)) return 'Invalid lastname';
+  
+
+  // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'findByLastname');
+
+  // Execute the query with the provided parameters
+  return fn({ lastname }, options);
+}
+
+
+async firstById(id="645b9cf776b7fb46975316d9", options = {sort: {_id: 1}}, fns = () => {}){
+   // Check if the ID is provided and is a valid ObjectId
+   if (id && !isValidObjectId(id)) return 'Invalid id provided';
+  
+
+  // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+   
  
+   //Check if the options are provided and are an object
+   if (options && !isObject(options)) return 'Invalid options';
+   
  
+   // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+   const fn = collectionMethod (this)('findOne', fns, false, 'firstById');
  
+  // Invoke the obtained function passing the filter (using the ID converted to ObjectId), projection, and options, and return the result
+  return fn({ _id: new ObjectId(id) }, options);
+}
+/**
+ * Finds the first document in the collection by the specified email.
+ *
+ * @param {string} [email='ericson.weah@gmail.com'] - The email to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the email is not a string, if the email is not valid, or if the projection/options are not objects.
+ */
+async firstByEmail(email = 'ericson.weah@gmail.com', options = {}, fns = () => {}) {
+  // Check if the email parameter is provided and is a string
+  if (email && !isString(email)) return 'Invalid email';
+  
+
+  // Check if the email parameter is provided and is a valid email
+  if (email && !isValid('email', email)) return 'Invalid email';
+  
+
+  // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByEmail');
+
+  // Execute the query with the provided parameters
+  return fn({ email }, options);
+}
+
+/**
+ * Finds the first document in the collection by the specified token.
+ *
+ * @param {string} [token='645b9cf776b7fb46975316d9'] - The token to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the token is not a string or if the projection/options are not objects.
+ */
+async firstByToken(token = '645b9cf776b7fb46975316d9', options = {}, fns = () => {}) {
+  // Check if the token parameter is provided and is a string
+  if (token && !isString(token)) return 'Invalid token';
+  
+
+  // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByToken');
+
+  // Execute the query with the provided parameters
+  return fn({ token }, options);
+}
+
+/**
+ * Finds the first document in the collection based on the phone field.
+ *
+ * @param {string} phone - The phone number to search for.
+ * @param {object} projection - The projection object to specify which fields to include or exclude.
+ * @param {object} options - The options object for additional query options.
+ * @returns {Promise} - A promise that resolves to the first matching document or an error message.
+ */
+async firstByPhone(phone = '2852045167', options = {}, fns = () => {}) {
+  // Validate the phone parameter
+  if (phone && typeof phone !== 'string') return 'Invalid phone';
+
+  // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+
+  // Validate the options object
+  if (options && !isObject(options)) return 'Invalid options';
+
+  // Call the findOne method on the collection using the provided parameters
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByPhone');
+  return fn({ phone }, options);
+}
+
+/**
+ * Finds the first document in the collection by the specified username.
+ *
+ * @param {string} [username='username'] - The username to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the username is not a string or if the projection/options are not objects.
+ */
+async firstByUsername(username = 'username', options = {}, fns = () => {}) {
+  // Check if the username parameter is provided and is a string
+  if (username && !isString(username)) return 'Invalid username';
+  
+
+  // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByUsername');
+
+  // Execute the query with the provided parameters
+  return fn({ username }, options);
+}
+
+/**
+ * Finds the first document in the collection by the specified code.
+ *
+ * @param {string} [code='FT'] - The code to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the code is not a string or if the projection/options are not objects.
+ */
+async firstByCode(code = 'FT', options = {}, fns = () => {}) {
+  // Check if the code parameter is provided and is a string
+  if (code && !isString(code)) return 'Invalid code';
+  
+
+  // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByCode');
+
+  // Execute the query with the provided parameters
+  return fn({ code }, options);
+}
+
+/**
+ * Finds the first document in the collection by the specified firstname.
+ *
+ * @param {string} [firstname='firstname'] - The firstname to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the firstname is not a string or if the projection/options are not objects.
+ */
+async firstByFirstname(firstname = 'firstname', options = {}, fns = () => {}) {
+  // Check if the firstname parameter is provided and is a string
+  if (firstname && !isString(firstname)) return 'Invalid firstname';
+  
+
+  // // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByFirstname');
+
+  // Execute the query with the provided parameters
+  return fn({ firstname }, options);
+}
+
+/**
+ * Finds the first document in the collection by the specified lastname.
+ *
+ * @param {string} [lastname='lastname'] - The lastname to search for.
+ * @param {Object} [projection={}] - The projection options for the query.
+ * @param {Object} [options={}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the lastname is not a string or if the projection/options are not objects.
+ */
+async firstByLastname(lastname = 'lastname', options = {}, fns = () => {}) {
+  // Check if the lastname parameter is provided and is a string
+  if (lastname && !isString(lastname)) return 'Invalid lastname';
+  
+
+  // // // Check if the projection parameter is provided and is an object
+  // if (projection && !isObject(projection)) return 'Invalid projection';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'firstByLastname');
+
+  // Execute the query with the provided parameters
+  return fn({ lastname }, options);
+}
+
+
+async lastById(id="645b9cf776b7fb46975316d9", fns = () => {}, options = { sort: {_id: -1}, projection: {}}){
+  // Check if the ID is provided and is a valid ObjectId
+  if (id && !isValidObjectId(id)) return 'Invalid id provided';
  
+  // Check if the options are provided and are an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+  // Obtain the collectionMethod  function with the current context (this) and the 'findOne' operation flag
+  const fn = collectionMethod (this)('findOne', fns, false, 'lastById');
+
+ // Invoke the obtained function passing the filter (using the ID converted to ObjectId), projection, and options, and return the result
+ return fn({ _id: new ObjectId(id) }, options);
+}
+async last(query = {},  fns = () => {}, options = { sort: {_id: -1}, projection: {}}){
+
+  if (query && !isObject(query)) return 'Invalid query';
+
+  if (options && !isObject(options)) return 'Invalid options';
+
+  const fn = collectionMethod (this)('findOne', fns, false, 'last');
+  return fn(query,  options);
+ }
+/**
+ * Finds the last document in the collection by the specified email.
+ *
+ * @param {string} [email='ericson.weah@gmail.com'] - The email to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the email is not a string or if the projection/options are not objects.
+ */
+async lastByEmail(email = 'ericson.weah@gmail.com',  fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the email parameter is provided and is a string
+  if (email && !isString(email)) return 'Invalid email';
+  
+
+  // Check if the email parameter passes the email validation
+  if (email && !isValid('email', email)) return 'Invalid email';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'lastByEmail');
+
+  // Execute the query with the provided parameters
+  return fn({ email }, options);
+}
+
+/**
+ * Finds the last document in the collection by the specified token.
+ *
+ * @param {string} [token='645b9cf776b7fb46975316d9'] - The token to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the token is not a string or if the options are not an object.
+ */
+async lastByToken(token = '645b9cf776b7fb46975316d9', fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the token parameter is provided and is a string
+  if (token && !isString(token)) return 'Invalid token';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne',fns, false, 'lastByToken');
+
+  // Execute the query with the provided parameters
+  return fn({ token }, options);
+}
+
+/**
+ * Finds the last document in the collection by the specified phone number.
+ *
+ * @param {string} [phone='2852045167'] - The phone number to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the phone number is not a string or if the options are not an object.
+ */
+async lastByPhone(phone = '2852045167',  fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the phone parameter is provided and is a string
+  if (phone && !isString(phone)) return 'Invalid phone';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'lastByPhone');
+
+  // Execute the query with the provided parameters
+  return fn({ phone }, options);
+}
+
+/**
+ * Finds the last document in the collection by the specified username.
+ *
+ * @param {string} [username='username'] - The username to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the username is not a string or if the options are not an object.
+ */
+async lastByUsername(username = 'username', fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the username parameter is provided and is a string
+  if (username && !isString(username)) return 'Invalid username';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne',fns, false, 'lastByUsername');
+
+  // Execute the query with the provided parameters
+  return fn({ username }, options);
+}
+
+/**
+ * Finds the last document in the collection by the specified code.
+ *
+ * @param {string} [code='FT'] - The code to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the code is not a string or if the options are not an object.
+ */
+async lastByCode(code = 'FT', fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the code parameter is provided and is a string
+  if (code && !isString(code)) return 'Invalid code';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'lastByCode');
+
+  // Execute the query with the provided parameters
+  return fn({ code }, options);
+}
+
+/**
+ * Finds the last document in the collection by the specified firstname.
+ *
+ * @param {string} [firstname='firstname'] - The firstname to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the firstname is not a string or if the options are not an object.
+ */
+async lastByFirstname(firstname = 'firstname', fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the firstname parameter is provided and is a string
+  if (firstname && !isString(firstname)) return 'Invalid firstname';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'lastByFirstname');
+
+  // Execute the query with the provided parameters
+  return fn({ firstname }, options);
+}
+
+/**
+ * Finds the last document in the collection by the specified lastname.
+ *
+ * @param {string} [lastname='lastname'] - The lastname to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the lastname is not a string or if the options are not an object.
+ */
+async lastByLastname(lastname = 'lastname',  fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the lastname parameter is provided and is a string
+  if (lastname && !isString(lastname)) return 'Invalid lastname';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'lastByLastname');
+
+  // Execute the query with the provided parameters
+  return fn({ lastname }, options);
+}
+
+
+/**
+ * Finds the last document in the collection by the specified lastname.
+ *
+ * @param {string} [lastname='lastname'] - The lastname to search for.
+ * @param {Object} [options={ sort: {_id: -1}, projection: {}}] - The additional options for the query.
+ * @returns {Promise} - A Promise that resolves with the matching document.
+ * @throws {Error} - If the lastname is not a string or if the options are not an object.
+ */
+async lastByName(name = 'name', fns = () => {}, options = { sort: {_id: -1}, projection: {}}) {
+  // Check if the name parameter is provided and is a string
+  if (name && !isString(name)) return 'Invalid name';
+  
+
+  // Check if the options parameter is provided and is an object
+  if (options && !isObject(options)) return 'Invalid options';
+  
+
+  // Obtain the appropriate function for executing the query
+  const fn = collectionMethod(this)('findOne', fns, false, 'lastByName');
+
+  // Execute the query with the provided parameters
+  return fn({ name }, options);
+}
+
+/**
+ * Creates a new ObjectId instance from a string.
+ *
+ * @param {string} [string='6476fe3e6e636c2f079eca69'] - The string representation of the ObjectId.
+ * @returns {ObjectId} The new ObjectId instance.
+ */
+objectId(string = '6476fe3e6e636c2f079eca69') {
+  return new ObjectId(string);
+}
+
+
+/**
+ * Saves a file to the specified path with the given file name.
+ *
+ * @param {string} filePath - The path where the file will be saved.
+ * @param {string} fileName - The name of the file to be saved.
+ * @throws {TypeError} If either the filePath or fileName does not exist.
+ * @returns {Promise} A promise that resolves when the file is saved successfully.
+ */
+async saveFile(filePath, fileName) {
+  if (fileExists(filePath)) {
+    return streamer(this)(filePath, fileName);
+  }
+  throw new TypeError(`Either ${filePath} or ${fileName} does not exist`);
+}
+
+
+/**
+ * Creates multiple instances of the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for creating the instances.
+ * @param {Function} [fn=() => {}] - An optional callback function called for each created instance.
+ * @returns {Array} An array of the created instances.
+ */
+createManyFromJsonFile(path, options, fn = () => {}) {
+  const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
+  return this.createMany(data, options, fn);
+}
+
+
+/**
+ * Creates a single instance of the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for creating the instance.
+ * @param {Function} [fn=() => {}] - An optional callback function called after the instance is created.
+ * @returns {Object} The created instance.
+ */
+createOneFromJsonFile(path, options, fn = () => {}) {
+  const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
+  return this.createOne(data, options, fn);
+}
+
+
+/**
+ * Inserts multiple records into the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for inserting the records.
+ * @param {Function} [fn=() => {}] - An optional callback function called for each inserted record.
+ * @returns {Array} An array of the inserted records.
+ */
+insertManyFromJsonFile(path, options, fn = () => {}) {
+  const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
+  return this.insertMany(data, options, fn);
+}
+
+
+
+/**
+ * Inserts a single record into the class from a JSON file.
+ *
+ * @param {string} path - The path to the JSON file.
+ * @param {Object} options - Additional options for inserting the record.
+ * @param {Function} [fn=() => {}] - An optional callback function called after the record is inserted.
+ * @returns {Object} The inserted record.
+ */
+insertOneFromJsonFile(path, options, fn = () => {}) {
+  const data = JSON.parse(require('fs').readFileSync(path, 'utf8'));
+  return this.insertOne(data, options, fn);
+}
+
+
+
  
- 
-
-
- 
-
- 
- 
- 
- 
-
- 
-
-
-
- 
-
-
-
-
-
-
-
-
-  // async validate(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'validate' operation flag
-  //   const fn = collectionMethod(this)('validate', fns, false, 'validate');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async getShardVersion(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'getShardVersion' operation flag
-  //   const fn = collectionMethod(this)('getShardVersion', fns, false, 'getShardVersion');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async getShardDistribution(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'getShardDistribution' operation flag
-  //   const fn = collectionMethod(this)('getShardDistribution', fns, false, 'getShardDistribution');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async watch(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'watch' operation flag
-  //   const fn = collectionMethod(this)('watch', fns, false, 'watch');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async hideIndex(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'hideIndex' operation flag
-  //   const fn = collectionMethod(this)('hideIndex', fns, false, 'hideIndex');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async unhideIndex(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'unhideIndex' operation flag
-  //   const fn = collectionMethod(this)('unhideIndex', fns, false, 'unhideIndex');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async analyzeShardKey(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'analyzeShardKey' operation flag
-  //   const fn = collectionMethod(this)('analyzeShardKey', fns, false, 'analyzeShardKey');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async configureQueryAnalyzer(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'configureQueryAnalyzer' operation flag
-  //   const fn = collectionMethod(this)('configureQueryAnalyzer', fns, false, 'configureQueryAnalyzer');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async checkMetadataConsistency(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'checkMetadataConsistency' operation flag
-  //   const fn = collectionMethod(this)('checkMetadataConsistency', fns, false, 'checkMetadataConsistency');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async getSearchIndexes(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'getSearchIndexes' operation flag
-  //   const fn = collectionMethod(this)('getSearchIndexes', fns, false, 'getSearchIndexes');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async createSearchIndex(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'createSearchIndex' operation flag
-  //   const fn = collectionMethod(this)('createSearchIndex', fns, false, 'createSearchIndex');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async createSearchIndexes(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'createSearchIndexes' operation flag
-  //   const fn = collectionMethod(this)('createSearchIndexes', fns, false, 'createSearchIndexes');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
-  // async dropSearchIndex(query = {}, options = {}, fns = () => { }) {
-  //   // Check if the query is provided and is an object
-  //   if (query && !isObject(query)) return 'Invalid query';
-
-  //   // Check if the options are provided and are an object
-  //   if (options && !isObject(options)) return 'Invalid options';
-
-  //   // Obtain the collectionMethod  function with the current context (this) and the 'dropSearchIndex' operation flag
-  //   const fn = collectionMethod(this)('dropSearchIndex', fns, false, 'dropSearchIndex');
-
-  //   // Invoke the obtained function passing the query and options, and return the result
-  //   return fn(query, options);
-  // }
 
 
 

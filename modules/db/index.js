@@ -3079,28 +3079,6 @@ async updateRole(options = { name: 'new role', privileges: [], roles: [], authen
   return fn(updateRoleOptions);
 }
 
-
-    // async auth(username = 'string', password = 'string')
-    // // async changeUserPassword(username, password) { }
-    // async createUser(user, writeConcern) { }
-    // async dropUser(username, writeConcern) { }
-    // async dropAllUsers(writeConcern) { }
-    // async getUser(username, args) { }
-    // async getUsers(options) { }
-    // async grantRolesToUser(username, roles, writeConcern) { }
-    // async removeUser(username) { }
-    // async revokeRolesFromUser() { }
-    // async updateUser(username, update, writeConcern) { }
-    // async createRole(role, writeConcern) { }
-    // async dropRole(rolename, writeConcern) { }
-    // async dropAllRoles(writeConcern) { }
-    // async getRole(rolename, args) { }
-    // async getRoles() { }
-    // async grantPrivilegesToRole(rolename, privileges, writeConcern) { }
-    // async revokePrivilegesFromRole(rolename, privileges, writeConcern) { }
-    // async grantRolesToRole(rolename, roles, writeConcern) { }
-    // async revokeRolesFromRole(rolename, roles, writeConcern) { }
-    // async updateRole(rolename, update, writeConcern) { }
 }
 
 module.exports = DB

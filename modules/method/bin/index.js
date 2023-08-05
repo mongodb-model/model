@@ -15,6 +15,9 @@
  */
 
 const Method = require("../");
+const Model = require('../../..')
+
+const { Green, BgBlue, Blue, Cyan, Purple, Red} = require('../../couleurs')();
 class CLI extends require("../../base") {
   constructor(...arrayOfObjects) {
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
@@ -40,7 +43,102 @@ class CLI extends require("../../base") {
   command(index = 2) {
     return process.argv[index];
   }
+
+  findMethod (method = 'method', ClassName) {
+    return Reflect.has(ClassName.prototype, method) ? Reflect.get(ClassName.prototype, method).toString(): undefined
+  } 
+  colorMethodMethodBodyString (methodString, inputMethod) {
+    let methodBodyIndex = methodString.indexOf(inputMethod) 
+     let methodBodyString = '';
+     let dotCount = 0;
+     for(let i = methodBodyIndex; i < methodString.length; i++){
+         methodBodyString += methodString[i];
+         if(methodString[i] === '.') {
+            dotCount++
+         }
+         if(dotCount >= 3) break;
+     }
+     return methodBodyString;
+}
+findCommentLines(functionString) {
+  const commentPattern = /\/\/.*|\/\*[\s\S]*?\*\//g;
+  return functionString.match(commentPattern) || [];
+}
+
+findInputMethod (method) {return this.findMethod(method, Model);}
+
+
+
+getCommentColoringFunction(method){
+
+  try {
+    const string = this.findInputMethod(method)
+    const comments = this.findCommentLines(string)
+  
+    let functionString = ''
+  
+    for(let i = 0; i < comments.length; i++){
+        if(functionString.length == 0){
+            functionString = string.replace(comments[i],Green(comments[i]))
+        }else{
+            functionString = functionString.replace(comments[i],Green(comments[i]))
+        }
+    }
+  
+   functionString = functionString.trim().length > 0 ? functionString:  string ;
+  
+   const countCode = this.colorMethodMethodBodyString(string, '(')
+  
+   const countName = string.split(countCode).filter(el => el.trim().length > 0).join(' ')
+  
+   if(countName.split(' ').length  == 2){
+    if(countName.split(' ')[1] && countName.split(' ')[1].trim().length !== 0){
+        functionString = functionString.replace(countName.split(' ')[1], Blue(countName.split(' ')[1]))
+    }
+    if(countName.split(' ')[0] && countName.split(' ')[0].trim().length !== 0){
+        functionString = functionString.replace(countName.split(' ')[0], Purple(countName.split(' ')[0]))
+    }
+   }else{
+    if(countName.split(' ')[0] && countName.split(' ')[0].trim().length !== 0){
+        functionString = functionString.replace(countName.split(' ')[0], Blue(countName.split(' ')[0]))
+    }
+   }
+  
+  
+    return ` 
+  ===================== model ${Blue(countName.split(' ')[1])} method ===================
+  
+${functionString}
+  
+  `
+  }catch (e) {
+    return Red(`method named '${this.command(3)}' does not exist.`)
+  }
+
+
+}
+
+methodList(className, string = false)  {
+
+  for (let method of Object.getOwnPropertyNames(className.prototype)) {
+      if (className.prototype[method]) {
+        if (typeof className.prototype[method] === "function") {
+           if(string){
+              console.log(this.getCommentColoringFunction(method))
+           }else{
+              console.log(className.prototype[method])
+           }
+        }
+      }
+    }
+}
+
+  // default(){
+    
+  //   this.findMethod('count', Model)
+  // }
   default(){
+
     if(!this.command(2)){
       return new Method({command: this.command(2)}).method();
     }else{
@@ -114,10 +212,12 @@ class CLI extends require("../../base") {
         console.log("make man page");
         break;
       case "-n":
-        this.n()
+        // this.n()
+        console.log(this.getCommentColoringFunction(this.command(3)))
         break;
       case "--name":
-       this.name()
+       //this.name()
+       console.log(this.getCommentColoringFunction(this.command(3)))
         break;
       case "help":
         console.log("help man page");

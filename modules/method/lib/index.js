@@ -1,7 +1,3 @@
-const Callback = require('../../db-callback');
-const CallbackQuery = require('../../db-query');
-const CallbackQueryValidator = require('../../db-query-validator');
-
 const findMethod = (method = 'method', ClassName) => Reflect.has(ClassName.prototype, method) ? Reflect.get(ClassName.prototype, method).toString(): undefined
 const findValidator = (method = 'method') => {
     let index = method.indexOf('.validate');
@@ -26,6 +22,7 @@ const colorMethodMethodBodyString = (methodString, inputMethod) => {
 
      return methodBodyString;
 }
+
 const colorMethodCallbackArgumentString = (methodString, inputMethod) => {
     let callbackArgumentIndex = methodString.indexOf(`${inputMethod}Callback`) + `${inputMethod}Callback`.length;
     let callbackArgumentString = '';

@@ -17,12 +17,9 @@
 
 const { createReadStream, createWriteStream, promises } = require("fs");
 const {inspect} = require('util');
-// const MongoTransform = require('./');
-const MongoTransform = require('../../index');
+// const Model = require('./');
+const Model = require('../../index');
 const native  = require('./lib');
-const Callback = require('../db-callback');
-const CallbackQuery = require('../db-query');
-const CallbackQueryValidator = require('../db-query-validator');
 
 class Method extends require("../base") {
   constructor(options = {}) {
@@ -114,7 +111,7 @@ isNativeDefined(){
       // this.texAligner(options, this.methodCommands());
       console.log();
       
-      // const Mongo = new MongoTransform;
+      // const Mongo = new Model;
       // for(let method in Mongo){
       //   console.log(method);
       // }
@@ -164,7 +161,7 @@ isNativeDefined(){
       // this.texAligner(options, this.methodCommands());
       console.log();
       
-      // const Mongo = new MongoTransform;
+      // const Mongo = new Model;
       // for(let method in Mongo){
       //   console.log(method);
       // }
@@ -218,7 +215,7 @@ isNativeDefined(){
     let hash = {}
     hash["      \x1b[32m1|\x1b[0m"] = "=================== Generic Example ===============";
     hash[`               `] = '';
-    hash[`      var CollectionName = new MongoTransform({collection: 'CollectionName'})`] = ": Instantiates the CollectionName model.";
+    hash[`      var CollectionName = new Model({collection: 'CollectionName'})`] = ": Instantiates the CollectionName model.";
     hash[`                       `] = '';
     hash[`      \x1b[33mListening for '${command}' and '${command}-error' events on CollectionName: \x1b[0m\x1b[36m\x1b[0m`] = '';
     hash[`      CollectionName.\x1b[35m${command}\x1b[0m\x1b[36m()\x1b[0m`] = ": Gets all CollectionName models from the database";
@@ -231,7 +228,7 @@ isNativeDefined(){
 
     hash["      \x1b[32m2|\x1b[0m"] = "=================== Specific Example ===============";
     hash[`                  `] = '';
-    hash[`      var User = new MongoTransform({collection: 'users'})`] = ": Instantiates the User model.";
+    hash[`      var User = new Model({collection: 'users'})`] = ": Instantiates the User model.";
 
     hash[`                          `] = '';
     hash[`      \x1b[33mListening for '${command}' and '${command}-error' events on User: \x1b[0m\x1b[36m\x1b[0m`] = '';
@@ -250,7 +247,7 @@ isNativeDefined(){
     let hash = {}
     hash["      \x1b[32m1|\x1b[0m"] = "=================== Generic Example ===============";
     hash[`               `] = '';
-    hash[`      var CollectionName = new MongoTransform({collection: 'CollectionName'})`] = ": Instantiates the CollectionName model.";
+    hash[`      var CollectionName = new Model({collection: 'CollectionName'})`] = ": Instantiates the CollectionName model.";
     hash[`                `] = '';
     hash[`      \x1b[33mListening for '${command}' and '${command}-error' events on CollectionName: \x1b[0m\x1b[36m\x1b[0m`] = '';
     hash[`      CollectionName.\x1b[35m${command}\x1b[0m\x1b[36m()\x1b[0m`] = ": Gets all CollectionName models from the database";
@@ -262,7 +259,7 @@ isNativeDefined(){
 
     hash["      \x1b[32m2|\x1b[0m"] = "=================== Specific Example ===============";
     hash[`                 `] = '';
-    hash[`      var User = new MongoTransform({collection: 'users'})`] = ": Instantiates the User model.";
+    hash[`      var User = new Model({collection: 'users'})`] = ": Instantiates the User model.";
     hash[`                  `] = '';
     hash[`      \x1b[33mListening for '${command}' and '${command}-error' events on User: \x1b[0m\x1b[36m\x1b[0m`] = '';
     hash[`      User.\x1b[35m${command}\x1b[0m\x1b[36m()\x1b[0m`] = ": Gets all User models from the database";
@@ -277,7 +274,7 @@ isNativeDefined(){
 
     let hash = {}
     hash["      \x1b[32m1|\x1b[0m"] = "=================== Generic Example ===============";
-    hash[`      var CollectionName = new MongoTransform({collection: 'CollectionName'})`] = ": Instantiates the CollectionName model.";
+    hash[`      var CollectionName = new Model({collection: 'CollectionName'})`] = ": Instantiates the CollectionName model.";
     hash[`      CollectionName.\x1b[35m${command}\x1b[0m\x1b[36m()\x1b[0m`] = ": Gets all CollectionName models from the database";
     hash[`      CollectionName.on('\x1b[35m${command}\x1b[0m\x1b[36m', data => console.log(data))\x1b[0m`] = ": Listens for the success event.";
     hash[`      CollectionName.on('\x1b[35m${command}\x1b[0m\x1b[31m-error\x1b[0m\x1b[36m', data => console.error(error))\x1b[0m`] = ": Listens for the error event.";
@@ -286,7 +283,7 @@ isNativeDefined(){
     hash[`      `] = '';
 
     hash["      \x1b[32m2|\x1b[0m"] = "=================== Specific Example ===============";
-    hash[  `      var User = new MongoTransform({collection: 'users'})`] = ": Instantiates the User model.";
+    hash[  `      var User = new Model({collection: 'users'})`] = ": Instantiates the User model.";
     hash[`      User.\x1b[35m${command}\x1b[0m\x1b[36m()\x1b[0m`] = ": Gets all User models from the database";
     hash[`      User.on('\x1b[35m${command}\x1b[0m\x1b[36m', data => console.log(data))\x1b[0m`] = ": Listens for the success event.";
     hash[`      User.on('\x1b[35m${command}\x1b[0m\x1b[31m-error\x1b[0m\x1b[36m', data => console.error(error))\x1b[0m`] = ": Listens for the error event.";
@@ -298,6 +295,7 @@ isNativeDefined(){
 
 
   method(){
+    // return console.log('method method')
     if (true) {
       console.clear();
       // if (command.length !== 8)
@@ -333,7 +331,7 @@ isNativeDefined(){
   }
   list(){
     if(this.command == '--list' || this.command == '-l' ){
-       let Mongo = new MongoTransform
+       let Mongo = new Model
        for(let method in Mongo){
         if(typeof(Mongo[method]) === 'function'){
           if(!method.startsWith('validate') && !method.endsWith('Callback')){
@@ -401,7 +399,7 @@ isNativeDefined(){
 
     if(this.command == '-n'){
       // if(command){
-      //   let Mongo = new MongoTransform
+      //   let Mongo = new Model
       //   if(Mongo[command]){
       //     this.methodUsage(command, this.corresponding()[command]);
       //   }else{

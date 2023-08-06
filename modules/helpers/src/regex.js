@@ -30,18 +30,15 @@
     */
 
     /**
-    * @name regex
-    * @function
-    * 
-    * @description stores all the form field regexes
-    * 
-    * @return {Object} all the form field regexes
-    * 
-    */
+     * Provides a collection of regular expressions for various data validation patterns.
+     *
+     * @function regex
+     * @returns {Object} An object containing regular expressions for data validation.
+     */
     const regex = () => ({
         phone: /^[0-9]{3}([\- ]?)[0-9]{3}([\- ]?)[0-9]{4}$/gm,
-        password: /^(?=.*[0-9])(?=.*[=#$%^+&*()_\-{}:;',.\`|/~[\])(?=.*[A-Z])(?=.*[a-z])[^ \f\n\r\t\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]{8,15}$/gm,
-        passwordConfirmation: /^(?=.*[0-9])(?=.*[=#$%^+&*()_\-{}:;',.\`|/~[\])(?=.*[A-Z])(?=.*[a-z])[^ \f\n\r\t\v\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]{8,15}$/gm,
+        password: /^(?=.*[0-9])(?=.*[=#$%^+&*()_\-{}:;',.`|/~[\])(?=.*[A-Z])(?=.*[a-z])[^ \f\n\r\t\v\u00a0\u1680\u2000-\200a\u2028\u2029\u202f\u205f\u3000\ufeff]{8,15}$/gm,
+        passwordConfirmation: /^(?=.*[0-9])(?=.*[=#$%^+&*()_\-{}:;',.`|/~[\])(?=.*[A-Z])(?=.*[a-z])[^ \f\n\r\t\v\u00a0\u1680\u2000-\200a\u2028\u2029\u202f\u205f\u3000\ufeff]{8,15}$/gm,
         firstname: /^[A-Z][A-Za-z.'\-].{0,25}$/gm,
         lastname: /^[A-Z][A-Za-z.'\-].{0,25}$/gm,
         username: /^[A-Za-z.'\-].{0,25}\S*$/gm,
@@ -78,7 +75,8 @@
         state: '',
         // Country
         country: /^USA$/gm
-    })
+    });
+
 
 
     /*

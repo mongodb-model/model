@@ -32,20 +32,58 @@ const Client = require('../client');
 
     |
     */
-    
-    const bucketOptions = ()=> ({
-        bucketName: process.env.BUCKET_NAME || 'myGridFSBucket',
-        chunkSizeBytes: 512 * 1024, // 512 KB
-        writeConcern: { w: 'majority', wtimeout: 10000 },
-        readPreference: 'secondary',
-        disableMD5: true,
-    })
 
-    const file = (Observable, options = bucketOptions(), client = new Client(Observable.url) ) => async (filePath, fileName) => {
+    /**
+  * Returns an object containing options for configuring a GridFS bucket.
+  * The function provides default values for the bucketName, chunkSizeBytes,
+  * writeConcern, readPreference, and disableMD5 options. These options can be
+  * overridden by environment variables if provided, otherwise, default values
+  * are used.
+  *
+  * @returns {Object} An object containing the configuration options for the GridFS bucket.
+  * - bucketName (string): The name of the GridFS bucket. Defaults to 'myGridFSBucket'.
+  * - chunkSizeBytes (number): The chunk size in bytes for storing files in GridFS. Defaults to 512 KB (512 * 1024 bytes).
+  * - writeConcern (Object): The write concern settings for GridFS. Defaults to { w: 'majority', wtimeout: 10000 }.
+  * - readPreference (string): The read preference for GridFS. Defaults to 'secondary'.
+  * - disableMD5 (boolean): A flag indicating whether to disable MD5 checksum validation for files. Defaults to true.
+  */
+    function bucketOptions() {
+        return {
+            // The name of the GridFS bucket. Defaults to 'myGridFSBucket'.
+            bucketName: process.env.BUCKET_NAME || 'myGridFSBucket',
+            // The chunk size in bytes for storing files in GridFS. Defaults to 512 KB (512 * 1024 bytes).
+            chunkSizeBytes: 512 * 1024,
+            // The write concern settings for GridFS. Defaults to { w: 'majority', wtimeout: 10000 }.
+            writeConcern: { w: 'majority', wtimeout: 10000 },
+            // The read preference for GridFS. Defaults to 'secondary'.
+            readPreference: 'secondary',
+            // A flag indicating whether to disable MD5 checksum validation for files. Defaults to true.
+            disableMD5: true,
+        };
+    }
 
+
+    /**
+     * Uploads a file to a GridFS bucket in MongoDB using the given Observable configuration.
+     *
+     * @param {Object} Observable - An object containing the configuration for connecting to MongoDB.
+     *                             It must have the properties 'url' and 'db' for specifying the
+     *                             MongoDB connection URL and database name, respectively.
+     * @param {Object} [options] - An object containing options for configuring the GridFS bucket.
+     *                             It can include properties such as 'bucketName', 'chunkSizeBytes',
+     *                             'writeConcern', 'readPreference', and 'disableMD5'. These options
+     *                             will be used to create the GridFS bucket.
+     * @param {Object} [client] - A MongoClient instance representing the MongoDB connection. If not
+     *                            provided, a new MongoClient instance will be created using the
+     *                            connection URL from the 'Observable.url' property.
+     * @returns {Promise<void>} A Promise that resolves when the file is successfully uploaded to the GridFS bucket,
+     *                          or rejects if there is an error during the upload process.
+     */
+    async function file(Observable, options = bucketOptions(), client = new Client(Observable.url)) {
         try {
             // Access the database
             const database = client.db(Observable.db);
+
             // Create a new GridFSBucket instance
             const bucket = new GridFSBucket(database, options);
 
@@ -63,6 +101,7 @@ const Client = require('../client');
                 uploadStream.on('error', reject);
                 uploadStream.on('finish', resolve);
             });
+
             console.log('File saved successfully!');
         } catch (error) {
             console.error('Error saving file:', error);
@@ -71,6 +110,7 @@ const Client = require('../client');
             await client.close();
         }
     }
+
     /*
     |----------------------------------------------------------------------------------
     | EXPORTS MODULE IN NODEJS ENVIRONMENTS

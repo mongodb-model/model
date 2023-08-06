@@ -24,9 +24,9 @@ class CLI extends require("../../base") {
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
 
     arrayOfObjects.forEach(option => {
-        if(Object.keys(option).length > 0){
-            Object.keys(option).forEach((key) => { if(!this[key]) this[key] = option[key];})
-        }
+      if (Object.keys(option).length > 0) {
+        Object.keys(option).forEach((key) => { if (!this[key]) this[key] = option[key]; })
+      }
     });
 
     // auto bind methods
@@ -40,58 +40,84 @@ class CLI extends require("../../base") {
   }
 
 
-  command(index = 2){
-    return process.argv[index]
- }
- commands(){
-  switch(this.command(2)){
+  /**
+   * Get the command-line argument at the specified index.
+   *
+   * @function command
+   * @param {number} [index=2] - The index of the command-line argument to retrieve.
+   * @returns {string} The command-line argument at the specified index.
+   */
+  command(index = 2) {
+    // Retrieve the command-line argument at the specified index using process.argv.
+    // If the index is not provided, default to index 2 (the third command-line argument).
+    return process.argv[index];
+  }
+
+  /**
+   * Execute different commands based on the specified command-line arguments.
+   *
+   * @function commands
+   */
+  commands() {
+    switch (this.command(2)) {
       case "make":
-        if(this.command(3)){
-          const  {makeMigration, hasType} =  new Migration({command: this.command(2)})
-          if(this.command(4)){
-              if(hasType(this.command(4))){
-                makeMigration(this.command(3), this.command(4));
-              }else{
-                console.log(`invalid argument for make:migration ${this.command(3)}`);
-              }
-          }else{
+        // Check if the "make" command has an additional argument (migration name).
+        if (this.command(3)) {
+          // Destructure the "makeMigration" and "hasType" functions from the Migration class instance.
+          const { makeMigration, hasType } = new Migration({ command: this.command(2) });
+
+          // Check if there is an additional argument for the type of migration.
+          if (this.command(4)) {
+            // Check if the provided migration type is valid using the "hasType" function.
+            if (hasType(this.command(4))) {
+              // Create the migration using the specified name and type.
+              makeMigration(this.command(3), this.command(4));
+            } else {
+              console.log(`invalid argument for make:migration ${this.command(3)}`);
+            }
+          } else {
+            // Create the migration using only the specified name.
             makeMigration(this.command(3));
           }
-         }else{
-          console.log('make:migration command adfdasf', this.command(3));
-         }
-       
+        } else {
+          console.log('make:migration command requires a migration name.');
+        }
         break;
+
       case "man":
         console.log('make man page');
         break;
+
       case "help":
         console.log("help man page");
         break;
-      default: 
+
+      default:
         console.log("invalid command ...");
         break;
-  }
-}
-
-  init(){
-    this.commands();
+    }
   }
   /**
-   * @name autoinvoked
-   * @function
+   * Initialize the application by executing the commands.
    *
-   * @param {Object|Function|Class} className the class whose methods to be bound to it
-   *
-   * @description auto sets the list of methods to be auto invoked
-   *
-   * @return does not return anything
-   *
+   * @function init
    */
+  init() {
+    // Call the "commands" function to handle different commands based on the command-line arguments.
+    this.commands();
+  }
 
-     autoinvoked() {
-      return ["init"];
-    }
+  /**
+   * Get the list of auto-invoked functions.
+   *
+   * @function autoinvoked
+   * @returns {Array} An array containing the names of auto-invoked functions.
+   */
+  autoinvoked() {
+    // Return an array containing the name of the function "init".
+    return ["init"];
+  }
+
 
 }
 

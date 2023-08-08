@@ -34,6 +34,8 @@ const { Server } = require("socket.io");
 const { createAdapter } = require("@socket.io/redis-adapter");
 const { createClient } = require("redis");
 
+const cmd = require('./modules/cmd')();
+
 class CLI extends Interface {
     constructor(...arrayOfObjects) {
         super({
@@ -44,6 +46,12 @@ class CLI extends Interface {
             crlfDelay: Infinity,
             removeHistoryDuplicates: false,
             escapeCodeTimeout: 500,
+            completer: line => {
+                const completions = ['help', 'list', 'create', 'delete', 'exit'];
+                const hits = completions.filter((c) => c.startsWith(line));
+                return [hits.length ? hits : completions, line];
+            },
+            terminal: true,
         });
 
         arrayOfObjects.forEach(option => {
@@ -82,7 +90,6 @@ class CLI extends Interface {
         this.getAuth = user;
     }
 
-
     eventList() {
         return [
             'model',
@@ -102,6 +109,55 @@ class CLI extends Interface {
             "frontend"
         ];
     }
+
+    // main (string)  {
+    //     string =
+    //         typeof string === "string" && string.trim().length > 0
+    //             ? string.trim()
+    //             : false;
+    //     if (string) {
+    //         let commandEvent = false;
+    //         let event = this.eventList().find(
+    //             (event) =>
+    //                 string.trim().toLowerCase().indexOf(event) > -1 &&
+    //                 string.startsWith(event)
+    //         );
+
+    //         if (event) {
+    //             commandEvent = true;
+
+    //             this.emit(event, string);
+    //             return true;
+    //         }
+    //         if (commandEvent === false) {
+    //             this.removeDuplicateListeners("command-not-found");
+    //             return this.emit("command-not-found", {
+    //                 error: `'${string}' is not command`,
+    //             });
+    //         }
+    //     } else {
+    //         return;
+    //     }
+    // }
+
+    // common () {
+    //     this.on("clear", () => {
+    //         console.clear();
+    //     });
+    //     this.on("exit", () => {
+    //         this.close();
+    //     });
+    //     this.on("leave", () => {
+    //         this.close();
+    //     });
+    //     this.on("quit", () => {
+    //         this.close();
+    //     });
+    //     this.on('home', () => {
+    //         console.log('Welcom Home',)
+    //     })
+    // }
+
  
     /**
  * The Base class represents a base class that extends the Transform class from the stream module.
@@ -751,6 +807,12 @@ class CLI extends Interface {
             }
         }
     
+        // init(){
+        //     cmd.initObservable(this)
+        // }
+        // invalidCommand(){
+        //     cmd.invalidCommand(this)
+        // }
         /**
          * Automatically invokes methods from the specified class name on the current instance.
          *
@@ -765,22 +827,33 @@ class CLI extends Interface {
                 });
             }
         }
-    
-    
-        /**
-         * Returns an array of method names that should be automatically invoked by the `autoinvoker` method.
-         * Modify this method to specify the method names to be autoinvoked.
-         *
-         * @returns {Array} - An array of method names.
-         */
-    
-        autoinvoked() {
-            return ["init", "common", "invalidCommand", "login"];
+       
+        common(){
+            cmd.common(this)
+        }
+        invalidCommand(){
+           cmd.invalidCommand(this)
+        }
+
+        // init(){
+        //     //cmd.initObservable(this)
+        // }
+         
+           /**
+             * Returns an array of method names that should be automatically invoked by the `autoinvoker` method.
+             * Modify this method to specify the method names to be autoinvoked.
+             *
+             * @returns {Array} - An array of method names.
+             */
+        
+           autoinvoked() {
+            return ["common", "invalidCommand"];
         }
 }
 
 module.exports = CLI;
 
+// new CLI();
 
 
 

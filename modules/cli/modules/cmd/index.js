@@ -2,7 +2,8 @@
 const path = require("path");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
-const { createReadStream, createWriteStream, promises } = require("fs");
+const { createReadStream, promises } = require("fs");
+const colors = require('../../../couleurs')();
 /*
 |------------------------------------------------------------------------------------
 | Universal Module Definition (UMD)
@@ -39,7 +40,7 @@ const { createReadStream, createWriteStream, promises } = require("fs");
     |
     */
 
-    const texAligner = (...args) => {
+    const textAligner = (...args) => {
         let options = {
             pad: 75,
             position: process.stdout.columns,
@@ -344,14 +345,35 @@ const { createReadStream, createWriteStream, promises } = require("fs");
             .join(" ");
     }
 
-    const main = (string, Observable) => {
+    const eventList = () => ([
+        'model',
+        'method',
+        'http',
+        'https',
+        'tcp',
+        "man",
+        "clear",
+        "help",
+        "exit",
+        "quit",
+        "leave",
+        "admin",
+        "login",
+        "logout",
+        "frontend",
+        "list",
+        "--list"
+    ]);
+    
+
+    const main = (Observable, string) => {
         string =
             typeof string === "string" && string.trim().length > 0
                 ? string.trim()
                 : false;
         if (string) {
             let commandEvent = false;
-            let event = Observable.eventList().find(
+            let event = eventList().find(
                 (event) =>
                     string.trim().toLowerCase().indexOf(event) > -1 &&
                     string.startsWith(event)
@@ -545,6 +567,7 @@ const { createReadStream, createWriteStream, promises } = require("fs");
         })
     }
 
+    
     const invalidCommand = (Obervable = {}) => {
         Obervable.on("command-not-found", (data) => {
             console.log();
@@ -593,6 +616,23 @@ const { createReadStream, createWriteStream, promises } = require("fs");
         }
     }
 
+    const cliOptions = () => ({
+        pad: 22,
+        position: process.stdout.columns,
+        hline: false,
+        keyColor: "36",
+        valueColor: "37",
+    })
+    const cmds = () => ({
+        "MODEL:":
+            "\x1b[34mType \x1b[33mfrontend\x1b[0m \x1b[34mor\x1b[0m \x1b[34mnavigate to \x1b[33mhttp://localhost:3000\x1b[0m\x1b[0m \x1b[34m(Safari browser is not supported yet)\x1b[0m",
+        "TCP:": `\x1b[34mType \x1b[33mman\x1b[0m \x1b[34mor\x1b[0m \x1b[33mhelp\x1b[0m \x1b[34mor\x1b[0m \x1b[33musers\x1b[0m \x1b[34mor\x1b[0m \x1b[33morders\x1b[0m \x1b[34mor\x1b[0m \x1b[33mmenu\x1b[0m\x1b[34m etc. for the corresponding manual\x1b[0m\x1b[0m`,
+        "HTTP:":
+            "\x1b[34musername:\x1b[0m\x1b[33m6122071306\x1b[0m\x1b[34m,\x1b[0m \x1b[34mpassword:\x1b[0m\x1b[33m#20Demaison\x1b[0m \x1b[34m(You must be logged in to have full access)\x1b[0m",
+        "HTTPS:": `\x1b[34mType \x1b[33mlogin\x1b[0m \x1b[34mfor logging in\x1b[0m`,
+        "PLAYGROUND:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+        "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+    });
     const initObservable = (Obervable = {}) => {
         Obervable.setPrompt(`[\x1b[32mmongodb model: \x1b[0m`);
         console.clear();
@@ -606,39 +646,31 @@ const { createReadStream, createWriteStream, promises } = require("fs");
 
         //this.verticalSpace(2)
 
-        const options = {
-            pad: 22,
-            position: process.stdout.columns,
-            hline: false,
-            keyColor: "36",
-            valueColor: "37",
-        };
+        // const options = {
+        //     pad: 22,
+        //     position: process.stdout.columns,
+        //     hline: false,
+        //     keyColor: "36",
+        //     valueColor: "37",
+        // };
 
         // console.log('\x1b[34m%s\x1b[0m', 'CLI and server are running on port 3000.')
         // console.log('\x1b[36m%s\x1b[0m', `Type 'help' or 'man' for CLI usage`)
         console.log("");
-        const cmds = {
-            "MODEL:":
-                "\x1b[34mType \x1b[33mfrontend\x1b[0m \x1b[34mor\x1b[0m \x1b[34mnavigate to \x1b[33mhttp://localhost:3000\x1b[0m\x1b[0m \x1b[34m(Safari browser is not supported yet)\x1b[0m",
-            "TCP:": `\x1b[34mType \x1b[33mman\x1b[0m \x1b[34mor\x1b[0m \x1b[33mhelp\x1b[0m \x1b[34mor\x1b[0m \x1b[33musers\x1b[0m \x1b[34mor\x1b[0m \x1b[33morders\x1b[0m \x1b[34mor\x1b[0m \x1b[33mmenu\x1b[0m\x1b[34m etc. for the corresponding manual\x1b[0m\x1b[0m`,
-            "HTTP:":
-                "\x1b[34musername:\x1b[0m\x1b[33m6122071306\x1b[0m\x1b[34m,\x1b[0m \x1b[34mpassword:\x1b[0m\x1b[33m#20Demaison\x1b[0m \x1b[34m(You must be logged in to have full access)\x1b[0m",
-            "HTTPS:": `\x1b[34mType \x1b[33mlogin\x1b[0m \x1b[34mfor logging in\x1b[0m`,
-            "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
-        };
-        texAligner(options, cmds);
+       
+        textAligner(cliOptions(), cmds());
         verticalSpace();
         horizontalLine();
         verticalSpace();
         Obervable.prompt();
+
         Obervable.on("line", (string) => {
 
-
-            main(string);
+            main(Obervable, string);
             Obervable.prompt();
         })
             .on("pause", () => {
-                console.log('waiting for you ....')
+                //console.log('waiting for you ....')
             })
             .on("resume", () => {
                 console.log('resumed ....')
@@ -665,8 +697,12 @@ const { createReadStream, createWriteStream, promises } = require("fs");
                 process.exit(0);
             });
     }
+
+
+    
+
     const cmd = () => ({
-        texAligner,
+        textAligner,
         verticalSpace,
         horizontalLine,
         centered,
@@ -690,7 +726,8 @@ const { createReadStream, createWriteStream, promises } = require("fs");
         base,
         findAll,
         hash,
-        initObservable 
+        initObservable,
+        cliOptions
     })
 
 

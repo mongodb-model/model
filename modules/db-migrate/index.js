@@ -563,10 +563,10 @@ allSchemaMigration(file, model = new Model) {
 
   // Extract the schema name from the file path and log it to the console.
   const schemaName = this.cmd(file.split('/').pop().split('.js').join(''));
-  console.log(schemaName);
+  //console.log(schemaName);
 
   // Load the schema module and log it to the console (assuming the path is correct).
-  console.log(require(join(process.cwd(), './' + file)));
+  //console.log(require(join(process.cwd(), './' + file)));
 
   // Perform the migration by creating a collection in the database using the schema name and module.
   model.createCollection(schemaName, require(join(process.cwd(), './' + file)))
@@ -672,75 +672,80 @@ migrationMigration(command, model = new Model) {
   model.on('createCollection', this.onCreateCollection);
   model.on('createCollection-error', this.onCreateCollectionError);
 
-  // Perform the migration of the single migration file by executing its contents in the database.
+  if(existsSync(join(process.cwd(), './database/migrations/' + migrationFileName + '.js'))){
+    // Perform the migration of the single migration file by executing its contents in the database.
   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
-    .then(response => {
-      if (response && response.s && response.s.namespace) {
-        console.log(Green("Migrated: " + response.s.namespace));
-      } else {
-        console.log(response);
-      }
-    })
-    .catch(error => {
-      console.error('Error occurred during migration of the single migration file:', error);
-    });
+  .then(response => {
+    if (response && response.s && response.s.namespace) {
+      console.log(Green("Migrated: " + response.s.namespace));
+    } else {
+      console.log(response);
+    }
+  })
+  .catch(error => {
+    console.error('Error occurred during migration of the single migration file:', error);
+  });
+  }else{
+    console.log(`migration ${migrationFileName}.js' is not found`);
+  }
+  
 }
 
-/**
- * Performs migration of a single migration file by executing its contents in the database.
- *
- * @param {string} command - The command string containing the migration file information in the format '--migration=MigrationFileName'.
- * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
- */
-migrationMigration(command, model = new Model) {
-  // Extract the migration file name from the command string.
-  const migrationFileName = command.split('=')[1].trim();
+// /**
+//  * Performs migration of a single migration file by executing its contents in the database.
+//  *
+//  * @param {string} command - The command string containing the migration file information in the format '--migration=MigrationFileName'.
+//  * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
+//  */
+// migrationMigration(command, model = new Model) {
+//   // Extract the migration file name from the command string.
+//   const migrationFileName = command.split('=')[1].trim();
 
-  // Add event listeners for the 'createCollection' and 'createCollection-error' events.
-  model.on('createCollection', this.onCreateCollection);
-  model.on('createCollection-error', this.onCreateCollectionError);
+//   // Add event listeners for the 'createCollection' and 'createCollection-error' events.
+//   model.on('createCollection', this.onCreateCollection);
+//   model.on('createCollection-error', this.onCreateCollectionError);
 
-  // Perform the migration of the single migration file by executing its contents in the database.
-  model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
-    .then(response => {
-      if (response && response.s && response.s.namespace) {
-        console.log(Green("Migrated: " + response.s.namespace));
-      } else {
-        console.log(response);
-      }
-    })
-    .catch(error => {
-      console.error('Error occurred during migration of the single migration file:', error);
-    });
-}
+//   // Perform the migration of the single migration file by executing its contents in the database.
+//   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
+//     .then(response => {
+//       if (response && response.s && response.s.namespace) {
+//         console.log(Green("Migrated: " + response.s.namespace));
+//       } else {
+//         console.log(response);
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Error occurred during migration of the single migration file:', error);
+//     });
+// }
 
-/**
- * Performs migration of a single migration file by executing its contents in the database.
- *
- * @param {string} command - The command string containing the migration file information in the format '--migration=MigrationFileName'.
- * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
- */
-migrationMigration(command, model = new Model) {
-  // Extract the migration file name from the command string.
-  const migrationFileName = command.split('=')[1].trim();
+// /**
+//  * Performs migration of a single migration file by executing its contents in the database.
+//  *
+//  * @param {string} command - The command string containing the migration file information in the format '--migration=MigrationFileName'.
+//  * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
+//  */
+// migrationMigration(command, model = new Model) {
+//   // Extract the migration file name from the command string.
+//   const migrationFileName = command.split('=')[1].trim();
 
-  // Add event listeners for the 'createCollection' and 'createCollection-error' events.
-  model.on('createCollection', this.onCreateCollection);
-  model.on('createCollection-error', this.onCreateCollectionError);
+//   // Add event listeners for the 'createCollection' and 'createCollection-error' events.
+//   model.on('createCollection', this.onCreateCollection);
+//   model.on('createCollection-error', this.onCreateCollectionError);
 
-  // Perform the migration of the single migration file by executing its contents in the database.
-  model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
-    .then(response => {
-      if (response && response.s && response.s.namespace) {
-        console.log(Green("Migrated: " + response.s.namespace));
-      } else {
-        console.log(response);
-      }
-    })
-    .catch(error => {
-      console.error('Error occurred during migration of the single migration file:', error);
-    });
-}
+//   // Perform the migration of the single migration file by executing its contents in the database.
+//   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
+//     .then(response => {
+//       if (response && response.s && response.s.namespace) {
+//         console.log(Green("Migrated: " + response.s.namespace));
+//       } else {
+//         console.log(response);
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Error occurred during migration of the single migration file:', error);
+//     });
+// }
 
 /**
  * Recursively reads all files from a given directory and its subdirectories.

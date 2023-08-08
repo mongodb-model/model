@@ -22,227 +22,256 @@
  */
 
 
-const Model  = require('../../../../')
+const Model = require('../../../../')
 const couleurs = require('../../../couleurs')()
+
+const cmd = require('../cmd')();
+const tcpCmdText = require('./modules/tcp/lib/cmdText')()
+const httpCmdText = require('./modules/http/lib/cmdText')()
+const httpsCmdText = require('./modules/https/lib/cmdText')()
+const playgroundCmdText = require('./modules/playground/lib/cmdText')()
+const homeCmdText = require('./modules/home/lib/cmdText')()
+const mainCommands = require('./lib/commands')
 class ModelCLI extends require("../../CLI") {
 
-  constructor(...arrayOfObjects) {
+    constructor(...arrayOfObjects) {
 
-    super({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: ``,
-        historySize: 1000,
-        crlfDelay: Infinity,
-        removeHistoryDuplicates: false,
-        escapeCodeTimeout: 500,
-    });
+        super({
+            input: process.stdin,
+            output: process.stdout,
+            prompt: ``,
+            historySize: 1000,
+            crlfDelay: Infinity,
+            removeHistoryDuplicates: false,
+            escapeCodeTimeout: 500,
+            completer: line => {
+                const completions = ['help', 'list', 'create', 'delete', 'exit'];
+                const hits = completions.filter((c) => c.startsWith(line));
+                return [hits.length ? hits : completions, line];
+            },
+            terminal: true,
+        });
 
-    arrayOfObjects.forEach(option => {
-      if (Object.keys(option).length > 0) {
-        Object.keys(option).forEach((key) => { if (!this[key]) this[key] = option[key]; })
-      }
-    });
+        arrayOfObjects.forEach(option => {
+            if (Object.keys(option).length > 0) {
+                Object.keys(option).forEach((key) => { if (!this[key]) this[key] = option[key]; })
+            }
+        });
 
-    // auto bind methods
-    this.autobind(ModelCLI);
-    // auto invoke methods
-    this.autoinvoker(ModelCLI);
-    // add other classes method if methods do not already exist. Argument order matters!
-    // this.methodizer(..classList);
-    //Set the maximum number of listeners to infinity
-    this.setMaxListeners(Infinity);
-  }
+        // auto bind methods
+        this.autobind(ModelCLI);
+        // auto invoke methods
+        this.autoinvoker(ModelCLI);
+        // add other classes method if methods do not already exist. Argument order matters!
+        // this.methodizer(..classList);
+        //Set the maximum number of listeners to infinity
+        this.setMaxListeners(Infinity);
+    }
 
-    topEventList(){
+    topEventList() {
         return [
-            'man',
             'help',
+            'model',
+            "clear",
+            "help",
+            "exit",
+            "quit",
+            "leave",
             '?',
             'make:model',
             'make:schema',
             'make:migration',
             'migrate',
-            'collection'
+            'collection',
+            'list',
+            '--list',
+            'tcp',
+            'http',
+            'https',
+            'playground',
+            'home',
+            'model man'
         ]
     }
-    texAligner(...args) {
-        let options = {
-            pad: 75,
+
+    cliOptions() {
+        return {
+            pad: 22,
             position: process.stdout.columns,
             hline: false,
             keyColor: "36",
-            valueColor: "33",
-        };
-        if (args.length > 1) {
-            if (typeof args[0] === "object") {
-                for (let prop in args[0]) {
-                    if (options.hasOwnProperty(prop)) {
-                        options[prop] = args[0][prop];
-                    }
-                }
-            }
+            valueColor: "37",
         }
-
-        let i = args.length > 1 ? 1 : 0;
-
-        for (; i < args.length; i++) {
-            if (typeof args[i] === "object") {
-                for (let prop in args[i]) {
-                    let key = `\x1b[${options.keyColor}m${prop}\x1b[0m`;
-                    let value = `\x1b[${options.valueColor}m${args[i][prop]}\x1b[0m`;
-                    let padding = options.pad - key.length;
-
-                    for (let i = 0; i < padding; i++) {
-                        key += " ";
-                    }
-                    key += value;
-                    options.hline === true
-                        ? hline(1, options.position, key)
-                        : console.log(key);
-                }
-            } else {
-                let key = `\x1b[36mKey\x1b[0m`;
-                let value = `\x1b[33m${args[i]}\x1b[0m`;
-                let padding = options.pad - key.length;
-
-                for (let i = 0; i < padding; i++) {
-                    key += " ";
-                }
-                key += value;
-                options.hline === true
-                    ? hline(1, options.position, key)
-                    : console.log(key);
-            }
-        }
-    };
-
-    defaultDisplay() {
-
-        const commands = {
-            '\x1b[36mman\x1b[0m': '                  model man page: [\x1b[36mman\x1b[0m] ',
-            '\x1b[36m--help\x1b[0m or \x1b[36m-h\x1b[0m': '         Help: [\x1b[36m--help\x1b[0m|\x1b[36m-h\x1b[0m\x1b[0m\x1b[0m]',
-            '\x1b[36mmake:model\x1b[0m': '           Make model: [\x1b[36mmake:model\x1b[0m\x1b[0m\x1b[0m] model_name',
-            '\x1b[36mmake:migration\x1b[0m': '       Make migration: [\x1b[36mmake:migration\x1b[0m\x1b[0m] migration_name',
-            '\x1b[36mmake:schema\x1b[0m': '          Make schema: [\x1b[36mmake:schema\x1b[0m\x1b[0m\x1b[0m] schema_name',
-            '\x1b[36mmigrate\x1b[0m ': '             Migrate: [\x1b[36m--schema=\x1b[0m|\x1b[36m-s\x1b[0m]schema_name'
-
-        }
-
-        // let clean = string.split(' ').filter(str => str !== '').join(' ')
-
-
-       // if (string === 'man' || string === ' -h' || string === '--help' || string === 'help') {
-            console.clear()
-            const centered = `\x1b[36mNAME\x1b[0m
-\x1b[36mmodel\x1b[0m - Model and an model's methods details 
-
-\x1b[36mSYPNOSIS\x1b[0m
-\x1b[36mmodel\x1b[0m [\x1b[36mman\x1b[0m|\x1b[36m--help\x1b[0m|\x1b[36m-h\x1b[0m|\x1b[36mhelp\x1b[0m]
-\x1b[36mmodel\x1b[0m [\x1b[36mmake:model\x1b[0m\x1b[0m\x1b[0m\x1b[0m\x1b[0m] model_name
-\x1b[36mmodel\x1b[0m [\x1b[36mmake:schema\x1b[0m\x1b[0m] schema_name
-\x1b[36mmodel\x1b[0m [\x1b[36mmake:migration\x1b[0m|\x1b[36m--migration=\x1b[0m\x1b[0m\x1b[0m\x1b[0m] migration_name \x1b[0m
-\x1b[36mmodel\x1b[0m [\x1b[36mmigrate\x1b[0m|\x1b[36m--schema=\x1b[0m\x1b[0m] schema_name
-
-
-\x1b[36mDESCRIPTION\x1b[0m
-Model (short for MongoDB Model) is a versatile and efficient tool for interacting with a 
-MongoDB database and facilitating internal or external API calls. It is important to note
-that Model is not an ORM (Object-Relational Mapping) but rather a wrapper for the native 
-MongoDB Node.js driver. By doing so, it simplifies the usage of the MongoDB native Node.js 
-driver and alleviates common complexities associated with it, as well as with Mongoose.js.
-
-Model operates as a duplex stream, specifically utilizing the Node.js native transform stream.
-This allows it to harness the full power of the MongoDB native Node.js driver and the native
-Node.js transform stream API. Put simply, any operation achievable with the native MongoDB 
-Node.js driver and the native Node.js transform API can also be accomplished using Model.
-
-An inherent strength of Model lies in its highly event-driven nature. It seamlessly integrates
-with Mongoose.js, ensuring compatibility and enhancing its capabilities.
-
-In summary, Model provides a straightforward yet powerful means of interacting with MongoDB databases,
-making API calls, and working with data streams. It simplifies the usage of the native MongoDB Node.js
-driver and the Node.js transform stream API, while being fully compatible with Mongoose.js.
-`
-            //this.horizontalLine()
-            this.centered(`\x1b[32mMODEL COMMANDS AND USAGE MANUAL\x1b[0m`)
-            //this.horizontalLine()
-            this.description(centered)
-            //this.horizontalLine()
-            this.verticalSpace(2)
-
-            const options = { pad: 13, position: process.stdout.columns, hline: false, keyColor: '36', valueColor: '37' }
-            this.textAligner(options, commands)
-            console.log()
-        //}
     }
-     mainCommand(){
-        this.on('model', string => {
-            this.setPrompt( `${couleurs.FgMagenta('[model: ')}`);
-            // return console.log(string)
-            if(!this.command(string, 1) || this.command(string, 1).trim().length === 0) return this.defaultDisplay()
-            if(!this.topEventList().includes(this.command(string, 1))){
-                return console.log(couleurs.Red(`  '${this.command(string, 1)}' is not valid command or command option`))
+    cmds() {
+        return {
+            "MODEL:": "\x1b[34mType \x1b[33mmodel\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mmodel man page (main commands)\x1b[0m\x1b[0m",
+            "TCP:": "\x1b[34mType \x1b[33mtcp\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mtcp man page (main commands)\x1b[0m\x1b[0m",
+            "HTTP:": "\x1b[34mType \x1b[33mhttp\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mhttp man page (main commands)\x1b[0m\x1b[0m",
+            "HTTPS:": "\x1b[34mType \x1b[33mhttps\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mhttps man page (main commands)\x1b[0m\x1b[0m",
+            "PLAYGROUND:": "\x1b[34mType \x1b[33mplayground\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mplayground man page (main commands)\x1b[0m\x1b[0m",
+            "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+        }
+    }
+
+    main(string) {
+        string =
+            typeof string === "string" && string.trim().length > 0
+                ? string.trim()
+                : false;
+        if (string) {
+            let commandEvent = false;
+            let event = this.topEventList().find(
+                (event) =>
+                    string.trim().toLowerCase().indexOf(event) > -1 &&
+                    string.startsWith(event)
+            );
+
+            if (event) {
+                commandEvent = true;
+
+                this.emit(event, string);
+                return true;
             }
-            if(this.command(string, 1)){
-                // const User = new Model({collection: 'users'})
-                // console.log(User)     
-                switch (this.command(string, 1)) {
-                    case "collection":
-                        if(this.command(string, 2)){
-                            // console.log(`${this.command(string, 1)} ${this.command(string, 2)}`)
-                            const UserModel = new Model({collection: `${this.command(string, 2)}`})
-                            
-                            if(this.command(string, 3)){
-                                switch (this.command(string, 3)) {
-                                    case 'create': 
-                                        console.log('create')
-                                        if(this.command(string, 4)){
+            if (commandEvent === false) {
+                this.removeDuplicateListeners("command-not-found");
+                return this.emit("command-not-found", {
+                    error: `'${string}' is not command`,
+                });
+            }
+        } else {
+            return;
+        }
+    }
+    init() {
+        this.setPrompt(`[\x1b[32mmongodb model: \x1b[0m`);
+        console.clear();
+        cmd.horizontalLine();
 
-                                            console.log(this.command(string, 4))
-                                            // if(typeof this.command(string, 4) == 'string'){
-                                            //     console.log(JSON.parse(this.command(string, 4)))
-                                            // }
-                                        }else{
-                                            console.log('nothing')
-                                        }
-                                        break;
-                                    default:
-                                        console.log(`Creating ${this.command(string,3)}`)
-                                        break
-                                }
-                            }else{
+        cmd.centered("\x1b[34mMONGODB MODEL MAIN COMMAND LINE INTERFACE (CLI).\x1b[0m");
+        cmd.horizontalLine();
 
-                            }
-                        }else{
+        console.log("");
 
-                        }
-                      break;
-                    default:
-                        console.log(Red(`  '${this.command(string, 1)}' is not valid command or command option`))
-                      break;
-                  }       
-            }else{
+        cmd.textAligner(this.cliOptions(), this.cmds());
+        cmd.verticalSpace();
+        cmd.horizontalLine();
+        cmd.verticalSpace();
+        this.prompt();
 
+        this.on("line", (string) => {
+
+            this.main(string);
+            this.prompt();
+
+
+        })
+            .on("pause", () => {
+                console.log('waiting for you ....')
+            })
+            .on("resume", () => {
+                console.log('resumed ....')
+            })
+            .on('SIGINT', () => {
+                this.question('Are you sure you want to exit? y(es) or no ', (answer) => {
+                    if (answer.match(/^y(es)?$/i)) this.close()
+                })
+            })
+            .on("SIGCONT", () => {
+                // `prompt` will automatically resume the stream
+                this.prompt();
+            })
+            .on("SIGTSTP", () => {
+                // This will override SIGTSTP and prevent the program from going to the
+                // background.
+                console.log('Caught SIGTSTP.')
+            })
+            .on("close", () => {
+                console.log(
+                    "\x1b[36m%s\x1b[0m",
+                    "Goobye. Have a wonderful and lovely one!"
+                );
+                process.exit(0);
+            });
+    }
+
+    mainCommand() {
+        this.on('model', string => mainCommands(string)(this))
+    }
+
+    tcpCommand() {
+        this.on('tcp', string => {
+            this.setPrompt(`${couleurs.FgRed('[model:tcp: ')}`);
+
+            if (!cmd.command(string, 1) || cmd.command(string, 1).trim().length === 0) return tcpCmdText.manPage()
+            if (!this.topEventList().includes(cmd.command(string, 1))) {
+                return console.log(couleurs.Red(`  '${cmd.command(string, 1)}' is not valid command or command option`))
             }
 
         })
-     }
+    }
 
-     
-       /**
-         * Returns an array of method names that should be automatically invoked by the `autoinvoker` method.
-         * Modify this method to specify the method names to be autoinvoked.
-         *
-         * @returns {Array} - An array of method names.
-         */
-    
-       autoinvoked() {
-        return ["init", "common", "invalidCommand", "login", 'mainCommand'];
+    httpCommand() {
+        this.on('http', string => {
+            this.setPrompt(`${couleurs.FgYellow('[model:http: ')}`);
+
+            if (!cmd.command(string, 1) || cmd.command(string, 1).trim().length === 0) return httpCmdText.manPage()
+            if (!this.topEventList().includes(cmd.command(string, 1))) {
+                return console.log(couleurs.Red(`  '${cmd.command(string, 1)}' is not valid command or command option`))
+            }
+        })
+    }
+
+    httpsCommand() {
+        this.on('https', string => {
+            this.setPrompt(`${couleurs.FgWhite('[model:https: ')}`);
+
+            if (!cmd.command(string, 1) || cmd.command(string, 1).trim().length === 0) return httpsCmdText.manPage()
+            if (!this.topEventList().includes(cmd.command(string, 1))) {
+                return console.log(couleurs.Red(`  '${cmd.command(string, 1)}' is not valid command or command option`))
+            }
+        })
+    }
+
+    playgroundCommand() {
+        this.on('playground', string => {
+            this.setPrompt(`${couleurs.FgGreen('[model:playground: ')}`);
+
+            if (!cmd.command(string, 1) || cmd.command(string, 1).trim().length === 0) return playgroundCmdText.manPage()
+            if (!this.topEventList().includes(cmd.command(string, 1))) {
+                return console.log(couleurs.Red(`  '${cmd.command(string, 1)}' is not valid command or command option`))
+            }
+        })
+    }
+
+    home() {
+        this.on('home', string => {
+            this.setPrompt(`${couleurs.FgGreen('[model:home: ')}`);
+
+            if (!cmd.command(string, 1) || cmd.command(string, 1).trim().length === 0) return homeCmdText.homePage(this)
+            if (!this.topEventList().includes(cmd.command(string, 1))) {
+                return console.log(couleurs.Red(`  '${cmd.command(string, 1)}' is not valid command or command option`))
+            }
+        })
+    }
+
+
+
+
+    /**
+      * Returns an array of method names that should be automatically invoked by the `autoinvoker` method.
+      * Modify this method to specify the method names to be autoinvoked.
+      *
+      * @returns {Array} - An array of method names.
+      */
+
+    autoinvoked() {
+        return ["init", "common", "invalidCommand", "mainCommand", "tcpCommand", "httpCommand", "httpsCommand", "playgroundCommand", "home"];
     }
 }
 
 
 module.exports = ModelCLI;
 
-const cli = new ModelCLI();
+new ModelCLI();
+

@@ -58,6 +58,18 @@ types() {
   ];
 }
 
+async addDirectory (path = this.path()) {
+  if(!existsSync(path)){
+    await require('fs').promises.mkdir(path, {recursive: true});
+  }
+  if(!existsSync(this.path('/app/schemas'))){
+    await require('fs').promises.mkdir(this.path('/app/schemas'), {recursive: true});
+  }
+  if(!existsSync(this.path('/database/migrations'))){
+    await require('fs').promises.mkdir(this.path('/database/migrations'), {recursive: true});
+  }
+}
+
 /**
  * Generate the command name based on the input command string.
  *

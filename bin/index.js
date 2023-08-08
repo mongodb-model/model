@@ -221,7 +221,6 @@ errorNotification(command) {
             makeSchema(this.command(3));
           }
       
-        
         break;
       case "make:migration":
         //console.log('make migration')

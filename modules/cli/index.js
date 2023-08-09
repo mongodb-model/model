@@ -30,9 +30,9 @@ class CLI extends require("../base") {
     super({ objectMode: true, encoding: "utf-8", autoDestroy: true });
 
     arrayOfObjects.forEach(option => {
-        if(Object.keys(option).length > 0){
-            Object.keys(option).forEach((key) => { if(!this[key]) this[key] = option[key];})
-        }
+      if (Object.keys(option).length > 0) {
+        Object.keys(option).forEach((key) => { if (!this[key]) this[key] = option[key]; })
+      }
     });
 
     // auto bind methods
@@ -44,35 +44,35 @@ class CLI extends require("../base") {
     //Set the maximum number of listeners to infinity
     this.setMaxListeners(Infinity);
   }
- /**
- * Returns an object containing the available commands for method listing, method retrieval by name, method info by name, and method type by name.
- * 
- * @returns {Object} An object containing the available commands with their descriptions.
- */
+  /**
+  * Returns an object containing the available commands for method listing, method retrieval by name, method info by name, and method type by name.
+  * 
+  * @returns {Object} An object containing the available commands with their descriptions.
+  */
 
   methodCommands() {
-      return {
-          "-l": " or \x1b[36m--list\x1b[0m        list available methods: \x1b[36m method --list \x1b[0m ",
-          "-n": " or \x1b[36m--name\x1b[0m        method by name: [\x1b[36m-n \x1b[0m|\x1b[36m--name=\x1b[0m]\x1b[4mmethod_name\x1b[0m",
-          "-i": " or \x1b[36m--info\x1b[0m        method info by method name: [\x1b[36m-n \x1b[0m|\x1b[36m--name=\x1b[0m]\x1b[4mmethod_name\x1b[0m[\x1b[36m-i\x1b[0m|\x1b[36m--info\x1b[0m]",
-          "-t": " or \x1b[36m--type\x1b[0m        method type by method name: [\x1b[36m-n \x1b[0m|\x1b[36m--name=\x1b[0m]\x1b[4mmethod_name\x1b[0m[\x1b[36m-t\x1b[0m|\x1b[36m--type\x1b[0m]",
-      };
+    return {
+      "-l": " or \x1b[36m--list\x1b[0m        list available methods: \x1b[36m method --list \x1b[0m ",
+      "-n": " or \x1b[36m--name\x1b[0m        method by name: [\x1b[36m-n \x1b[0m|\x1b[36m--name=\x1b[0m]\x1b[4mmethod_name\x1b[0m",
+      "-i": " or \x1b[36m--info\x1b[0m        method info by method name: [\x1b[36m-n \x1b[0m|\x1b[36m--name=\x1b[0m]\x1b[4mmethod_name\x1b[0m[\x1b[36m-i\x1b[0m|\x1b[36m--info\x1b[0m]",
+      "-t": " or \x1b[36m--type\x1b[0m        method type by method name: [\x1b[36m-n \x1b[0m|\x1b[36m--name=\x1b[0m]\x1b[4mmethod_name\x1b[0m[\x1b[36m-t\x1b[0m|\x1b[36m--type\x1b[0m]",
+    };
   }
 
-/**
- * A text aligner function that formats and prints key-value pairs or single values with customizable options.
- *
- * @param {...Object|string} args - The key-value pairs or single values to be formatted and printed.
- * @param {Object} [options] - Customizable options for text alignment and formatting.
- * @param {number} [options.pad=75] - The padding size for aligning the values. (Default: 75)
- * @param {number} [options.position=process.stdout.columns] - The position where the text alignment should happen. (Default: process.stdout.columns)
- * @param {boolean} [options.hline=false] - If true, a horizontal line will be used as a separator for each key-value pair. (Default: false)
- * @param {string} [options.keyColor="36"] - The color code for the key (property) part of the output using ANSI escape sequences. (Default: "36" which represents cyan color)
- * @param {string} [options.valueColor="33"] - The color code for the value part of the output using ANSI escape sequences. (Default: "33" which represents yellow color)
- * @returns {void} This function does not return anything, but prints the formatted output to the console.
- */
+  /**
+   * A text aligner function that formats and prints key-value pairs or single values with customizable options.
+   *
+   * @param {...Object|string} args - The key-value pairs or single values to be formatted and printed.
+   * @param {Object} [options] - Customizable options for text alignment and formatting.
+   * @param {number} [options.pad=75] - The padding size for aligning the values. (Default: 75)
+   * @param {number} [options.position=process.stdout.columns] - The position where the text alignment should happen. (Default: process.stdout.columns)
+   * @param {boolean} [options.hline=false] - If true, a horizontal line will be used as a separator for each key-value pair. (Default: false)
+   * @param {string} [options.keyColor="36"] - The color code for the key (property) part of the output using ANSI escape sequences. (Default: "36" which represents cyan color)
+   * @param {string} [options.valueColor="33"] - The color code for the value part of the output using ANSI escape sequences. (Default: "33" which represents yellow color)
+   * @returns {void} This function does not return anything, but prints the formatted output to the console.
+   */
 
-  textAligner = (...args) => {
+  textAligner(...args) {
     let options = {
       pad: 75,
       position: process.stdout.columns,
@@ -125,12 +125,12 @@ class CLI extends require("../base") {
 
 
 
-/**
- * Prints a vertical space by printing empty lines based on the specified number of lines.
- * 
- * @param {number} NumberOfLines - The number of empty lines to be printed. (Default: 1)
- * @returns {void} This function does not return anything, but prints empty lines to create vertical space in the console.
- */
+  /**
+   * Prints a vertical space by printing empty lines based on the specified number of lines.
+   * 
+   * @param {number} NumberOfLines - The number of empty lines to be printed. (Default: 1)
+   * @returns {void} This function does not return anything, but prints empty lines to create vertical space in the console.
+   */
 
   verticalSpace(NumberOfLines) {
     // Check if NumberOfLines is a positive number, otherwise default to 1
@@ -147,11 +147,11 @@ class CLI extends require("../base") {
 
 
   // horizontal line across the screen
-/**
- * Prints a horizontal line in the console with a width equal to the width of the terminal window.
- *
- * @returns {void} This function does not return anything, but prints a horizontal line of '-' characters in the console.
- */
+  /**
+   * Prints a horizontal line in the console with a width equal to the width of the terminal window.
+   *
+   * @returns {void} This function does not return anything, but prints a horizontal line of '-' characters in the console.
+   */
 
   horizontalLine() {
     // Get the width of the terminal window
@@ -171,12 +171,12 @@ class CLI extends require("../base") {
 
 
   // create centered text on the screen
-/**
- * Prints a string centered in the console with respect to the terminal window width.
- *
- * @param {string} str - The string to be centered in the console.
- * @returns {void} This function does not return anything, but prints the centered string in the console.
- */
+  /**
+   * Prints a string centered in the console with respect to the terminal window width.
+   *
+   * @param {string} str - The string to be centered in the console.
+   * @returns {void} This function does not return anything, but prints the centered string in the console.
+   */
 
   centered(str) {
     // Check if 'str' is a non-empty string after trimming, otherwise set it to an empty string
@@ -218,12 +218,12 @@ class CLI extends require("../base") {
   //     console.log(line)
   // }
 
-/**
- * Prints a string with left padding in the console to create a description-like format.
- *
- * @param {string} str - The string to be formatted as a description.
- * @returns {void} This function does not return anything, but prints the formatted string in the console.
- */
+  /**
+   * Prints a string with left padding in the console to create a description-like format.
+   *
+   * @param {string} str - The string to be formatted as a description.
+   * @returns {void} This function does not return anything, but prints the formatted string in the console.
+   */
 
   description(str) {
     // Check if 'str' is a non-empty string after trimming, otherwise set it to an empty string
@@ -251,12 +251,12 @@ class CLI extends require("../base") {
   }
 
 
-/**
- * Prints a string with left padding in the console to create a manual-like format.
- *
- * @param {string} str - The string to be formatted as a manual entry.
- * @returns {void} This function does not return anything, but prints the formatted string in the console.
- */
+  /**
+   * Prints a string with left padding in the console to create a manual-like format.
+   *
+   * @param {string} str - The string to be formatted as a manual entry.
+   * @returns {void} This function does not return anything, but prints the formatted string in the console.
+   */
 
   manual(str) {
     // Check if 'str' is a non-empty string after trimming, otherwise set it to an empty string
@@ -285,12 +285,12 @@ class CLI extends require("../base") {
 
 
 
-/**
- * Converts the given arguments into an array of objects with 'object' and 'options' properties.
- *
- * @param {...*} args - The arguments to be converted into an array of objects.
- * @returns {Array} An array of objects, each containing 'object' and 'options' properties.
- */
+  /**
+   * Converts the given arguments into an array of objects with 'object' and 'options' properties.
+   *
+   * @param {...*} args - The arguments to be converted into an array of objects.
+   * @returns {Array} An array of objects, each containing 'object' and 'options' properties.
+   */
   objectToDisplay(...args) {
     // Initialize an empty 'option' object with 'object' and 'options' properties
     let option = {
@@ -349,66 +349,66 @@ class CLI extends require("../base") {
    * @returns {void} This function does not return anything, but prints the formatted output in the console.
    */
 
-    displayer(...args) {
-      // Define default options for `util.inspect`
-      let option = {
-        showHidden: true,
-        depth: 10,
-        colors: true,
-        showProxy: true,
-        maxArrayLength: 100,
-        compact: true,
-        sorted: true,
-      };
-  
-      // Create an object 'dargs' with 'object' and 'options' properties, used for default arguments
-      let dargs = {
-        object: {
-          data: "no data",
-        },
-        options: option,
-      };
-  
-      // Check if no arguments are provided, and display 'dargs.object' with 'dargs.options'
-      if (args.length === 0) {
-        console.log(util.inspect(dargs.object, dargs.options));
-        return;
-      }
-  
-      // Process each argument and display them with custom options using `util.inspect`
-      for (let i = 0; i < args.length; i++) {
-        if (typeof args[i] === "object") {
-          // If the argument is an object and has both 'object' and 'options' properties
-          if (args[i].hasOwnProperty("object") && args[i].hasOwnProperty("options")) {
-            // Check if the 'options' property is not an empty object
-            if (JSON.stringify(args[i]["options"]) !== "{}") {
-              // Merge the properties of 'args[i]["options"]' into 'option'
-              for (let prop in args[i]["options"]) {
-                if (option.hasOwnProperty(prop)) {
-                  option[prop] = args[i]["options"][prop];
-                }
+  displayer(...args) {
+    // Define default options for `util.inspect`
+    let option = {
+      showHidden: true,
+      depth: 10,
+      colors: true,
+      showProxy: true,
+      maxArrayLength: 100,
+      compact: true,
+      sorted: true,
+    };
+
+    // Create an object 'dargs' with 'object' and 'options' properties, used for default arguments
+    let dargs = {
+      object: {
+        data: "no data",
+      },
+      options: option,
+    };
+
+    // Check if no arguments are provided, and display 'dargs.object' with 'dargs.options'
+    if (args.length === 0) {
+      console.log(util.inspect(dargs.object, dargs.options));
+      return;
+    }
+
+    // Process each argument and display them with custom options using `util.inspect`
+    for (let i = 0; i < args.length; i++) {
+      if (typeof args[i] === "object") {
+        // If the argument is an object and has both 'object' and 'options' properties
+        if (args[i].hasOwnProperty("object") && args[i].hasOwnProperty("options")) {
+          // Check if the 'options' property is not an empty object
+          if (JSON.stringify(args[i]["options"]) !== "{}") {
+            // Merge the properties of 'args[i]["options"]' into 'option'
+            for (let prop in args[i]["options"]) {
+              if (option.hasOwnProperty(prop)) {
+                option[prop] = args[i]["options"][prop];
               }
             }
-            // Display 'args[i]["object"]' with the updated 'option'
-            console.log(util.inspect(args[i]["object"], option));
           }
-          // If the argument is an object and has 'object' property but no 'options' property
-          else if (args[i].hasOwnProperty("object") && !args[i].hasOwnProperty("options")) {
-            // Display 'args[i]["object"]' with the default 'option'
-            console.log(util.inspect(args[i]["object"], option));
-          }
-          // If the argument is an object but does not have 'object' property
-          else if (!args[i].hasOwnProperty("object")) {
-            // Display 'dargs.object' with 'dargs.options'
-            console.log(util.inspect(dargs.object, dargs.options));
-          }
+          // Display 'args[i]["object"]' with the updated 'option'
+          console.log(util.inspect(args[i]["object"], option));
         }
-        // If the argument is not an object, display it as is
-        else {
-          console.log(args[i], "here");
+        // If the argument is an object and has 'object' property but no 'options' property
+        else if (args[i].hasOwnProperty("object") && !args[i].hasOwnProperty("options")) {
+          // Display 'args[i]["object"]' with the default 'option'
+          console.log(util.inspect(args[i]["object"], option));
+        }
+        // If the argument is an object but does not have 'object' property
+        else if (!args[i].hasOwnProperty("object")) {
+          // Display 'dargs.object' with 'dargs.options'
+          console.log(util.inspect(dargs.object, dargs.options));
         }
       }
+      // If the argument is not an object, display it as is
+      else {
+        console.log(args[i], "here");
+      }
     }
+  }
 
   /**
    * Displays an object with custom options using the `displayer` and `objectToDisplay` methods.
@@ -560,32 +560,24 @@ class CLI extends require("../base") {
 
 
 
- /**
- * Pluralizes a noun based on the given quantity.
- *
- * @param {string} item - The noun to be pluralized.
- * @param {number} quantity - The quantity to determine if the noun should be pluralized.
- * @returns {string} The pluralized noun if the quantity is greater than 1, otherwise the original noun.
- */
-pluralize(item, quantity) {
   /**
-   * Pluralizes a noun based on the given quantity.
-   *
-   * @param {string} item - The noun to be pluralized.
-   * @param {number} quantity - The quantity to determine if the noun should be pluralized.
-   * @returns {string} The pluralized noun if the quantity is greater than 1, otherwise the original noun.
-   */
-  return quantity > 1 ? `${item}s` : `${item}`;
-}
+  * Pluralizes a noun based on the given quantity.
+  *
+  * @param {string} item - The noun to be pluralized.
+  * @param {number} quantity - The quantity to determine if the noun should be pluralized.
+  * @returns {string} The pluralized noun if the quantity is greater than 1, otherwise the original noun.
+  */
+  pluralize(item, quantity) {
+    /**
+     * Pluralizes a noun based on the given quantity.
+     *
+     * @param {string} item - The noun to be pluralized.
+     * @param {number} quantity - The quantity to determine if the noun should be pluralized.
+     * @returns {string} The pluralized noun if the quantity is greater than 1, otherwise the original noun.
+     */
+    return quantity > 1 ? `${item}s` : `${item}`;
+  }
 
-/**
- * Splits a string into an array using a specified delimiter and removes empty strings. Trims leading and trailing spaces from each element in the resulting array.
- *
- * @param {string} str - The input string to be split.
- * @param {string} spl - The delimiter to use for splitting the string.
- * @returns {string[]} An array of non-empty strings resulting from splitting the input string using the specified delimiter and trimming each element.
- */
-spliter(str, spl) {
   /**
    * Splits a string into an array using a specified delimiter and removes empty strings. Trims leading and trailing spaces from each element in the resulting array.
    *
@@ -593,197 +585,205 @@ spliter(str, spl) {
    * @param {string} spl - The delimiter to use for splitting the string.
    * @returns {string[]} An array of non-empty strings resulting from splitting the input string using the specified delimiter and trimming each element.
    */
-  if (str === undefined || spl === undefined) return [];
-  
-  // Split the string using the specified delimiter and remove empty strings
-  return str
-    .split(spl)
-    .filter((string) => string != "")
-    .map((st) => st.trim());
-}
+  spliter(str, spl) {
+    /**
+     * Splits a string into an array using a specified delimiter and removes empty strings. Trims leading and trailing spaces from each element in the resulting array.
+     *
+     * @param {string} str - The input string to be split.
+     * @param {string} spl - The delimiter to use for splitting the string.
+     * @returns {string[]} An array of non-empty strings resulting from splitting the input string using the specified delimiter and trimming each element.
+     */
+    if (str === undefined || spl === undefined) return [];
 
-/**
- * Cleans a string by removing leading and trailing spaces from each word and collapsing multiple spaces into single spaces.
- *
- * @param {string} string - The input string to be cleaned.
- * @returns {string} The cleaned string with leading and trailing spaces removed from each word and multiple spaces collapsed into single spaces.
- */
-clean(string) {
+    // Split the string using the specified delimiter and remove empty strings
+    return str
+      .split(spl)
+      .filter((string) => string != "")
+      .map((st) => st.trim());
+  }
+
   /**
    * Cleans a string by removing leading and trailing spaces from each word and collapsing multiple spaces into single spaces.
    *
    * @param {string} string - The input string to be cleaned.
    * @returns {string} The cleaned string with leading and trailing spaces removed from each word and multiple spaces collapsed into single spaces.
    */
-  return string
-    .split(" ")               // Split the string into an array of words using space as the delimiter
-    .filter((str) => str != "")   // Filter the array to remove any empty words (spaces between consecutive spaces)
-    .map((str) => str.trim())     // Trim leading and trailing spaces from each word in the array
-    .join(" ");              // Join the cleaned words back into a single string using space as the separator
-}
+  clean(string) {
+    /**
+     * Cleans a string by removing leading and trailing spaces from each word and collapsing multiple spaces into single spaces.
+     *
+     * @param {string} string - The input string to be cleaned.
+     * @returns {string} The cleaned string with leading and trailing spaces removed from each word and multiple spaces collapsed into single spaces.
+     */
+    return string
+      .split(" ")               // Split the string into an array of words using space as the delimiter
+      .filter((str) => str != "")   // Filter the array to remove any empty words (spaces between consecutive spaces)
+      .map((str) => str.trim())     // Trim leading and trailing spaces from each word in the array
+      .join(" ");              // Join the cleaned words back into a single string using space as the separator
+  }
 
-/**
- * Calculates the elapsed time from a given date until the current date and time.
- *
- * @param {string|Date} date - The date from which to calculate the elapsed time. It can be a Date object or a string representation of a date that can be parsed by the Date constructor.
- * @returns {Object} An object containing the elapsed time in years, months, days, hours, minutes, and seconds.
- */
-onfromthelasttime(date) {
   /**
    * Calculates the elapsed time from a given date until the current date and time.
    *
    * @param {string|Date} date - The date from which to calculate the elapsed time. It can be a Date object or a string representation of a date that can be parsed by the Date constructor.
    * @returns {Object} An object containing the elapsed time in years, months, days, hours, minutes, and seconds.
    */
-  return this.elapsed(new Date(date), new Date());
-}
+  onfromthelasttime(date) {
+    /**
+     * Calculates the elapsed time from a given date until the current date and time.
+     *
+     * @param {string|Date} date - The date from which to calculate the elapsed time. It can be a Date object or a string representation of a date that can be parsed by the Date constructor.
+     * @returns {Object} An object containing the elapsed time in years, months, days, hours, minutes, and seconds.
+     */
+    return this.elapsed(new Date(date), new Date());
+  }
 
-/**
- * Completes a command-line input based on a list of predefined completions.
- *
- * @param {string} line - The input line to be completed.
- * @returns {Array} An array containing completions matching the input line and the original input line.
- */
-completer(line) {
   /**
    * Completes a command-line input based on a list of predefined completions.
    *
    * @param {string} line - The input line to be completed.
    * @returns {Array} An array containing completions matching the input line and the original input line.
    */
-  const completions = ".help .error .exit .quit .q".split(" ");
+  completer(line) {
+    /**
+     * Completes a command-line input based on a list of predefined completions.
+     *
+     * @param {string} line - The input line to be completed.
+     * @returns {Array} An array containing completions matching the input line and the original input line.
+     */
+    const completions = ".help .error .exit .quit .q".split(" ");
 
-  // Filter completions to find matches starting with the input line
-  const hits = completions.filter((c) => c.startsWith(line));
+    // Filter completions to find matches starting with the input line
+    const hits = completions.filter((c) => c.startsWith(line));
 
-  // If there are matches, return the matching completions; otherwise, return all completions
-  return [hits.length ? hits : completions, line];
-}
+    // If there are matches, return the matching completions; otherwise, return all completions
+    return [hits.length ? hits : completions, line];
+  }
 
-/**
- * Sets up common event listeners for a custom command-line interface (CLI) object.
- * Adds event listeners for "clear", "exit", "leave", and "quit" commands.
- */
-common() {
   /**
    * Sets up common event listeners for a custom command-line interface (CLI) object.
    * Adds event listeners for "clear", "exit", "leave", and "quit" commands.
    */
-  this.on("clear", () => {
-    // Event listener for "clear" command - clears the console
-    console.clear();
-  });
+  common() {
+    /**
+     * Sets up common event listeners for a custom command-line interface (CLI) object.
+     * Adds event listeners for "clear", "exit", "leave", and "quit" commands.
+     */
+    this.on("clear", () => {
+      // Event listener for "clear" command - clears the console
+      console.clear();
+    });
 
-  this.on("exit", () => {
-    // Event listener for "exit" command - closes the custom CLI
-    this.close();
-  });
+    this.on("exit", () => {
+      // Event listener for "exit" command - closes the custom CLI
+      this.close();
+    });
 
-  this.on("leave", () => {
-    // Event listener for "leave" command - closes the custom CLI
-    this.close();
-  });
+    this.on("leave", () => {
+      // Event listener for "leave" command - closes the custom CLI
+      this.close();
+    });
 
-  this.on("quit", () => {
-    // Event listener for "quit" command - closes the custom CLI
-    this.close();
-  });
-}
+    this.on("quit", () => {
+      // Event listener for "quit" command - closes the custom CLI
+      this.close();
+    });
+  }
 
-/**
- * Sets up event listeners for handling invalid commands and errors in a custom command-line interface (CLI) object.
- * Adds event listeners for "command-not-found", "error", and "success" events.
- */
-invalidCommand() {
   /**
    * Sets up event listeners for handling invalid commands and errors in a custom command-line interface (CLI) object.
    * Adds event listeners for "command-not-found", "error", and "success" events.
    */
+  invalidCommand() {
+    /**
+     * Sets up event listeners for handling invalid commands and errors in a custom command-line interface (CLI) object.
+     * Adds event listeners for "command-not-found", "error", and "success" events.
+     */
 
-  this.on("command-not-found", (data) => {
-    // Event listener for "command-not-found" event - handles invalid commands
-    console.log();
-    console.log(`\x1b[31m${data.error}\x1b[0m`); // Prints the error message in red color
-    console.log();
-    // this.prompt(); // Optionally, prompts the user for the next command
-    // process.exit(0); // Optionally, exits the CLI process
-  });
+    this.on("command-not-found", (data) => {
+      // Event listener for "command-not-found" event - handles invalid commands
+      console.log();
+      console.log(`\x1b[31m${data.error}\x1b[0m`); // Prints the error message in red color
+      console.log();
+      // this.prompt(); // Optionally, prompts the user for the next command
+      // process.exit(0); // Optionally, exits the CLI process
+    });
 
-  this.on("error", (data) => {
-    // Event listener for "error" event - handles general errors
-    console.log();
-    console.log(`\x1b[31m${data.error}\x1b[0m`); // Prints the error message in red color
-    console.log();
-    // this.prompt(); // Optionally, prompts the user for the next command
-    // process.exit(0); // Optionally, exits the CLI process
-  });
+    this.on("error", (data) => {
+      // Event listener for "error" event - handles general errors
+      console.log();
+      console.log(`\x1b[31m${data.error}\x1b[0m`); // Prints the error message in red color
+      console.log();
+      // this.prompt(); // Optionally, prompts the user for the next command
+      // process.exit(0); // Optionally, exits the CLI process
+    });
 
-  this.on("success", (data) => {
-    // Event listener for "success" event - handles successful commands
-    console.log(`\x1b[36m${data.message}\x1b[0m`); // Prints the success message in cyan color
-  });
-}
+    this.on("success", (data) => {
+      // Event listener for "success" event - handles successful commands
+      console.log(`\x1b[36m${data.message}\x1b[0m`); // Prints the success message in cyan color
+    });
+  }
 
 
-/**
- * Displays information about an object using the Node.js 'util.inspect' function.
- *
- * @param {any} object - The object to be inspected and displayed.
- * @param {number} [depth=1] - The depth to which the object should be inspected. Defaults to 1.
- */
-infos(object, depth = 1) {
   /**
    * Displays information about an object using the Node.js 'util.inspect' function.
    *
    * @param {any} object - The object to be inspected and displayed.
    * @param {number} [depth=1] - The depth to which the object should be inspected. Defaults to 1.
    */
-  console.log(
-    util.inspect(object, {
-      showHidden: true,
-      colors: true,
-      depth: depth,
-    })
-  );
-}
+  infos(object, depth = 1) {
+    /**
+     * Displays information about an object using the Node.js 'util.inspect' function.
+     *
+     * @param {any} object - The object to be inspected and displayed.
+     * @param {number} [depth=1] - The depth to which the object should be inspected. Defaults to 1.
+     */
+    console.log(
+      util.inspect(object, {
+        showHidden: true,
+        colors: true,
+        depth: depth,
+      })
+    );
+  }
 
-/**
- * Generates a usage message for a command.
- *
- * @param {string} command - The command for which the usage message is generated.
- * @returns {string} A formatted usage message for the given command.
- */
-usage(command) {
   /**
    * Generates a usage message for a command.
    *
    * @param {string} command - The command for which the usage message is generated.
    * @returns {string} A formatted usage message for the given command.
    */
-  return `
+  usage(command) {
+    /**
+     * Generates a usage message for a command.
+     *
+     * @param {string} command - The command for which the usage message is generated.
+     * @returns {string} A formatted usage message for the given command.
+     */
+    return `
 ----------------------------------------------------
 | ${command} ----------------------------------------------------
 `;
-}
+  }
 
 
 
- /**
- * An auto-invoked function that returns an empty array.
- *
- * @returns {Array} An empty array.
- */
-autoinvoked() {
   /**
-   * An auto-invoked function that returns an empty array.
-   *
-   * @returns {Array} An empty array.
-   */
-  return [];
-}
+  * An auto-invoked function that returns an empty array.
+  *
+  * @returns {Array} An empty array.
+  */
+  autoinvoked() {
+    /**
+     * An auto-invoked function that returns an empty array.
+     *
+     * @returns {Array} An empty array.
+     */
+    return [];
+  }
 
 
 }
 
-module.exports =  CLI;
+module.exports = CLI;
 

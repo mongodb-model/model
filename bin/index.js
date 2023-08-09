@@ -20,6 +20,7 @@ const Couleur = require("../modules/couleurs");
 const Schema = require("../modules/schema");
 const Migrate = require("../modules/db-migrate");
 const Migration = require("../modules/db-migration");
+const ModelCli =  require('../modules/cli/modules/model')
 // const Method = require("method");
 
 const {ModelCommand} = require('../lib')().Commands()
@@ -183,6 +184,9 @@ errorNotification(command) {
       case "--help":
   
         new Man({ command: this.command(2) }).man("man");
+        break;
+      case "cli":
+         new ModelCli()
         break;
       case "-h":
         new Man({ command: this.command(2) }).man("man");

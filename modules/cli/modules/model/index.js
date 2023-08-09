@@ -273,5 +273,3 @@ class ModelCLI extends require("../../CLI") {
 
 module.exports = ModelCLI;
 
-new ModelCLI();
-

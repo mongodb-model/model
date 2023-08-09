@@ -1,9 +1,7 @@
 'use strict';
-const cmd = require('../../cmd')();
-const cmdText = require('./cmdText')()
-const switches  = require('./commands/switches')
-const couleurs = require('../../../../couleurs')();
-
+const cmd = require('../../../cmd')();
+const couleurs = require('../../../../../couleurs')();
+const Method = require("../../../../../method");
 /*
 |------------------------------------------------------------------------------------
 | Universal Module Definition (UMD)
@@ -32,17 +30,39 @@ const couleurs = require('../../../../couleurs')();
 
     |
     */
+    
 
-    const commands = (string = 'model') => (Observable = {}) => {
+        const error  = (command = '') => (message = 'error') =>  console.log(couleurs.FgRed(`'${command}' ${message}`));
+        const method = string => {
+            if (cmd.command(string, 2)) {
+                const methodCmd =  new Method({ command: cmd.command(string, 2) })
+                 switch (cmd.command(string, 2)) {
+                     case '--list':
+                         methodCmd.list();
+                         break;
+                     case '-l':
+                         methodCmd.list();
+                         break;
+                     case '--name':
+                         //getCommentColoringFunction
+                         console.log(methodCmd)
+                         // methodCmd.getCommentColoringFunction(cmd.command(string, 3))
+                         break;
+                     case '--name=':
+                         console.log('model method --name=')
+                         break;
+                     case '-n':
+                         console.log('model method -n')
+                         break;
+                     default:
+                         console.log(couleurs.Red('invalid option for model method'))
+                         break;
+                 }
+             } else {
+                 console.log(couleurs.Red('model method requires an argument'))
+             }
+        }
 
-        Observable.setPrompt(`${couleurs.FgMagenta('[model: ')}`);
-
-        if (!cmd.command(string, 1) || cmd.command(string, 1).trim().length === 0) return cmdText.manPage()
-
-        if (Observable.getPrompt() == couleurs.FgMagenta('[model: ')) switches(string)(Observable);
-        else console.log('No')
-        
-    }
 
 
     /*
@@ -52,12 +72,12 @@ const couleurs = require('../../../../couleurs')();
     |
     | The module is exported using an if/else statement. If the module object is defined and
     | has an exports property, then the module is being used in Node.js and we export 
-    | the commands object by assigning it to module.exports
+    | the method object by assigning it to module.exports
     |
     |
     */
-
-    if (typeof module !== 'undefined' && module.exports) module.exports = commands;
+    
+    if (typeof module !== 'undefined' && module.exports)  module.exports = method;
 
     /*
     |----------------------------------------------------------------------------------------
@@ -66,9 +86,9 @@ const couleurs = require('../../../../couleurs')();
     |
     | If module is not defined or does not have an exports property, then the module is being used
     | in the browser and we attach the myModule object to the global object (which is the window object
-    | in the browser) by assigning it to global.commands.
+    | in the browser) by assigning it to global.method.
     |
     */
 
-    else global.commands = commands;
+    else global.method = method;
 })(this)

@@ -1,10 +1,10 @@
 'use strict';
 /*
 |--------------------------------------------------------------------------------
-| Demaison Model
+| Chat Model
 |--------------------------------------------------------------------------------
 |
-| Demaison extends the base model (Model) class and thus has everything
+| Chat extends the base model (Model) class and thus has everything
 | the base model has including all the basic CRUD methods or operations.
 |
 |
@@ -12,7 +12,7 @@
 
 const Model = require('@mongodb-model/model');
 
-class Demaison extends Model{
+class Chat extends Model{
 
     /*
     |----------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ class Demaison extends Model{
     |
     |
     */
-    constructor(dbOptions = {collection: 'demaisons', url: 'undefined', db: 'undefined'},...options){
+    constructor(dbOptions = {collection: 'chats', url: 'mongodb://localhost:27017/model', db: 'model'},...options){
    
     /*
     |-------------------------------------------------------------------------------------
@@ -46,9 +46,9 @@ class Demaison extends Model{
     |
     */
 
-    if(!this['hasOwnProperty']['collection']) this.collection = 'demaisons';
-    if(!this['hasOwnProperty']['url']) this.url = 'undefined';
-    if(!this['hasOwnProperty']['faker_url']) this.faker_url = 'undefined';
+    if(!this['hasOwnProperty']['collection']) this.collection = 'chats';
+    if(!this['hasOwnProperty']['url']) this.url = 'mongodb://localhost:27017/model';
+    if(!this['hasOwnProperty']['faker_url']) this.faker_url = 'https://jsonplaceholder.typicode.com/';
 
     /*
     |---------------------------------------------------------------------------------------
@@ -99,4 +99,4 @@ class Demaison extends Model{
  |-----------------------------------------------------------------------------------------------
  |
  */
- module.exports = Demaison;
+ module.exports = Chat;

@@ -526,8 +526,6 @@ hasMigration(command, migrationsPath = './database/migrations') {
   }
 }
 
-
-
 // allSchemaMigration(file, model = new Model) {
 //   //model.on('createCollection', this.onCreateCollection)
 //   //return console.log(this.cmd(file.split('/').pop().split('.js').join('')))
@@ -569,28 +567,42 @@ allSchemaMigration(file, model = new Model) {
   //console.log(require(join(process.cwd(), './' + file)));
 
   // Perform the migration by creating a collection in the database using the schema name and module.
-  model.createCollection(schemaName, require(join(process.cwd(), './' + file)))
-    .then(response => {
-      if (response && response.s && response.s.namespace) {
-        console.log(Green("Migrated: " + response.s.namespace));
+  if(existsSync(require(join(process.cwd(), './' + file)))){
+      if(schemaName && schemaName.trim().length > 0){
+         try {
+          model.createCollection(schemaName, require(join(process.cwd(), './' + file)))
+          .then(response => {
+            if (response && response.s && response.s.namespace) {
+              console.log(Green("Migrated: " + response.s.namespace));
+            }
+          })
+          .catch(error => {
+            console.error('Error occurred during migration:', error);
+          });
+      
+        // Check and manage the 'createCollection' and 'createCollection-error' event listeners.
+        if (model.listenerCount('createCollection') > 1) {
+          model.removeListener('createCollection', this.onCreateCollection);
+        } else {
+          model.on('createCollection', this.onCreateCollection);
+        }
+      
+        if (model.listenerCount('createCollection-error') > 1) {
+          model.removeListener('createCollection-error', this.onCreateCollectionError);
+        } else {
+          model.on('createCollection-error', this.onCreateCollectionError);
+        }
+         }catch(error){
+          console.log('ERRROR: IN allSchemaMigration')
+         }
+     
+      }else{
+         return console.log('Invalid schema name')
       }
-    })
-    .catch(error => {
-      console.error('Error occurred during migration:', error);
-    });
-
-  // Check and manage the 'createCollection' and 'createCollection-error' event listeners.
-  if (model.listenerCount('createCollection') > 1) {
-    model.removeListener('createCollection', this.onCreateCollection);
-  } else {
-    model.on('createCollection', this.onCreateCollection);
+  }else{
+    return console.log(Red('Migration schema not found'));
   }
-
-  if (model.listenerCount('createCollection-error') > 1) {
-    model.removeListener('createCollection-error', this.onCreateCollectionError);
-  } else {
-    model.on('createCollection-error', this.onCreateCollectionError);
-  }
+  
 }
 
 
@@ -602,7 +614,11 @@ allSchemaMigration(file, model = new Model) {
  */
 allMigrationMigration(file, model = new Model) {
   // Perform the migration by creating a collection in the database using the migration file.
-  model.createCollection(this.cmd(file.split('/').pop().split('.js').join('')), require(join(process.cwd(), './' + file)))
+  if(!existsSync(require(join(process.cwd(), './' + file)))) return;
+
+  if(this.cmd(file.split('/').pop().split('.js').join('')) && this.cmd(file.split('/').pop().split('.js').join('')).trim().length > 0){
+
+    model.createCollection(this.cmd(file.split('/').pop().split('.js').join('')), require(join(process.cwd(), './' + file)))
     .then(response => {
       if (response && response.s && response.s.namespace) {
         console.log(Green("Migrated: " + response.s.namespace));
@@ -613,20 +629,9 @@ allMigrationMigration(file, model = new Model) {
     .catch(error => {
       console.error('Error occurred during migration:', error);
     });
-
-  // The following lines appear to be commented out and involve event listener management.
-  // The event listener part seems to be irrelevant to the current function, so it has been commented out.
-  // If this part needs to be enabled later, it should be further evaluated and uncommented accordingly.
-  // if(model.listenerCount('createCollection') > 1){
-  //     model.removeListener('createCollection',this.onCreateCollection)
-  // }else{
-  //     model.on('createCollection', this.onCreateCollection)
-  // }
-  // if(model.listenerCount('createCollection-error') > 1){
-  //     model.removeListener('createCollection-error',this.onCreateCollectionError)
-  // }else{
-  //     model.on('createCollection-error', this.onCreateCollectionError)
-  // }
+  }else{
+    return console.log('Invalid migration name')
+  }
 }
 
 /**
@@ -636,25 +641,42 @@ allMigrationMigration(file, model = new Model) {
  * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
  */
 schemaMigration(command, model = new Model) {
+
   // Extract the schema name from the command string.
   const schemaName = command.split('=')[1].trim();
+
+
+  
+
+  if(!schemaName || schemaName.trim().length === 0) return ;
+  if(!existsSync(join(process.cwd(), './app/schemas/' + schemaName + '.js'))) return ;
 
   // Add event listeners for the 'createCollection' and 'createCollection-error' events.
   model.on('createCollection', this.onCreateCollection);
   model.on('createCollection-error', this.onCreateCollectionError);
 
   // Perform the schema migration by creating a collection in the database using the specified schema file.
-  model.createCollection(this.collectionName(command), require(join(process.cwd(), './app/schemas/' + schemaName + '.js')))
-    .then(response => {
-      if (response && response.s && response.s.namespace) {
-        console.log(Green("Migrated: " + response.s.namespace));
-      } else {
-        console.log(response);
-      }
-    })
-    .catch(error => {
-      console.error('Error occurred during schema migration:', error);
-    });
+
+     try {
+        if(command && command.trim().length > 0){
+          model.createCollection(this.collectionName(command), require(join(process.cwd(), './app/schemas/' + schemaName + '.js')))
+          .then(response => {
+            if (response && response.s && response.s.namespace) {
+              console.log(Green("Migrated: " + response.s.namespace));
+            } else {
+              console.log(response);
+            }
+          })
+          .catch(error => {
+            console.error('Error occurred during schema migration:', error);
+          });
+        }else{
+          return console.log('Invalid collection name')
+        }
+     }catch(error){
+       console.log("ERROR: schemaMigration", error.message)
+     }
+
 }
 
 
@@ -667,12 +689,11 @@ schemaMigration(command, model = new Model) {
 migrationMigration(command, model = new Model) {
   // Extract the migration file name from the command string.
   const migrationFileName = command.split('=')[1].trim();
-
+  if(migrationFileName.trim().length  === 0 || !migrationFileName) return console.log(Red(`migration ${migrationFileName}.js' is not found`));
+  if(!existsSync(join(process.cwd(), './database/migrations/' + migrationFileName + '.js'))) return console.log(Red(`migration ${migrationFileName}.js' is not found`));
   // Add event listeners for the 'createCollection' and 'createCollection-error' events.
   model.on('createCollection', this.onCreateCollection);
   model.on('createCollection-error', this.onCreateCollectionError);
-
-  if(existsSync(join(process.cwd(), './database/migrations/' + migrationFileName + '.js'))){
     // Perform the migration of the single migration file by executing its contents in the database.
   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
   .then(response => {
@@ -683,12 +704,9 @@ migrationMigration(command, model = new Model) {
     }
   })
   .catch(error => {
-    console.error('Error occurred during migration of the single migration file:', error);
+    return console.log(Red('Error occurred during migration of the single migration file:' + error))
   });
-  }else{
-    console.log(`migration ${migrationFileName}.js' is not found`);
-  }
-  
+ 
 }
 
 // /**

@@ -85,10 +85,6 @@ class ModelCLI extends require("../../CLI") {
             'collection',
             'list',
             '--list',
-            'tcp',
-            'http',
-            'https',
-            'playground',
             'home',
             'model man'
         ]
@@ -106,11 +102,9 @@ class ModelCLI extends require("../../CLI") {
     cmds() {
         return {
             "MODEL:": "\x1b[34mType \x1b[33mmodel\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mmodel man page (main commands)\x1b[0m\x1b[0m",
-            "TCP:": "\x1b[34mType \x1b[33mtcp\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mtcp man page (main commands)\x1b[0m\x1b[0m",
-            "HTTP:": "\x1b[34mType \x1b[33mhttp\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mhttp man page (main commands)\x1b[0m\x1b[0m",
-            "HTTPS:": "\x1b[34mType \x1b[33mhttps\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mhttps man page (main commands)\x1b[0m\x1b[0m",
-            "PLAYGROUND:": "\x1b[34mType \x1b[33mplayground\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mplayground man page (main commands)\x1b[0m\x1b[0m",
-            "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+            "HOME:": "\x1b[34mType \x1b[33mhome\x1b[0m \x1b[34manytime to return to this page\x1b[0m",
+            "CLEAR:": "\x1b[34mType \x1b[33mclear\x1b[0m \x1b[34mto clear terminal\x1b[0m",
+            "EXIT:": "\x1b[34mType \x1b[33mexit,leave\x1b[0m \x1b[34mto exit this terminal\x1b[0m",
         }
     }
 
@@ -210,7 +204,6 @@ class ModelCLI extends require("../../CLI") {
 
         })
     }
-
     httpCommand() {
         this.on('http', string => {
             this.setPrompt(`${couleurs.FgYellow('[model:http: ')}`);

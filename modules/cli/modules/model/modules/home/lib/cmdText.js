@@ -44,14 +44,10 @@ const cmd = require('../../../../cmd')();
             valueColor: "37",
         })
         const cmds = () => ({
-            "MODEL:":
-                "\x1b[34mType \x1b[33mfrontend\x1b[0m \x1b[34mor\x1b[0m \x1b[34mnavigate to \x1b[33mhttp://localhost:3000\x1b[0m\x1b[0m \x1b[34m(Safari browser is not supported yet)\x1b[0m",
-            "TCP:": `\x1b[34mType \x1b[33mman\x1b[0m \x1b[34mor\x1b[0m \x1b[33mhelp\x1b[0m \x1b[34mor\x1b[0m \x1b[33musers\x1b[0m \x1b[34mor\x1b[0m \x1b[33morders\x1b[0m \x1b[34mor\x1b[0m \x1b[33mmenu\x1b[0m\x1b[34m etc. for the corresponding manual\x1b[0m\x1b[0m`,
-            "HTTP:":
-                "\x1b[34musername:\x1b[0m\x1b[33m6122071306\x1b[0m\x1b[34m,\x1b[0m \x1b[34mpassword:\x1b[0m\x1b[33m#20Demaison\x1b[0m \x1b[34m(You must be logged in to have full access)\x1b[0m",
-            "HTTPS:": `\x1b[34mType \x1b[33mlogin\x1b[0m \x1b[34mfor logging in\x1b[0m`,
-            "PLAYGROUND:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
-            "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+            "MODEL:": "\x1b[34mType \x1b[33mmodel\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mmodel man page (main commands)\x1b[0m\x1b[0m",
+            "HOME:": "\x1b[34mType \x1b[33mhome\x1b[0m \x1b[34manytime to return to this page\x1b[0m",
+            "CLEAR:": "\x1b[34mType \x1b[33mclear\x1b[0m \x1b[34mto clear terminal\x1b[0m",
+            "EXIT:": "\x1b[34mType \x1b[33mexit,leave\x1b[0m \x1b[34mto exit this terminal\x1b[0m",
         });
 
 

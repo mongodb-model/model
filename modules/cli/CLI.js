@@ -94,9 +94,6 @@ class CLI extends Interface {
         return [
             'model',
             'method',
-            'http',
-            'https',
-            'tcp',
             "man",
             "clear",
             "help",

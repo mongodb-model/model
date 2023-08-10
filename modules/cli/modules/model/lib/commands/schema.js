@@ -34,13 +34,31 @@ const couleurs = require('../../../../../couleurs')();
         const makeSchema = (string = '') => (index = '2') => new Schema({command: cmd.command(string, index)}).makeSchema
         const hasType = (string = '') => (index = '2') => new Schema({command: cmd.command(string, index)}).hasType
 
+
+        // const  {makeSchema, hasType} =  new Schema({command: this.command(2)})
+        // if(this.command(4)){
+        //     if(hasType(this.command(4))){
+        //       makeSchema(this.command(3), this.command(4));
+        //     }else{
+        //       console.log(`invalid argument for make:schema ${this.command(3)}`);
+        //     }
+          
+        // }else{
+        //   makeSchema(this.command(3));
+        // }
         const schema = string => {
-            if (cmd.command(string, 2)) {
+
+            if(cmd.command(string, 1)){
+                cmd.command(string, 2) ? 
+                makeSchema(string)(2)(cmd.command(string, 2), cmd.command(string, 3)) : 
+                error('make:schema')('command requires a valid argument');
+            }else if (cmd.command(string, 2)) {
                 if(cmd.command(string, 2).startsWith('--schema=')){
                     makeSchema(string)(2)(cmd.command(string, 2), cmd.command(string, 3))
                 }else{
                     switch (cmd.command(string, 2)) {
                         case '--schema':
+                            console.log('hey')
                             cmd.command(string, 3) ? 
                                 makeSchema(string)(3)(cmd.command(string, 3), cmd.command(string, 4)) : 
                                 error('make:schema')('command requires a valid argument');
@@ -51,7 +69,7 @@ const couleurs = require('../../../../../couleurs')();
                             error('make:schema')('command requires a valid argument');
                             break;
                         default:
-                            error('make:schema')('command requires a valid argument')
+                            error('make:schema....')('command requires a valid argument')
                             break;
                     }
                 }

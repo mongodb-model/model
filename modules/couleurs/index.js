@@ -1,3 +1,23 @@
+// Copyright (c) 2023 Ericson S. Weah <ericsonweah.dev>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the 'Software'), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 'use strict';
 /*
 |------------------------------------------------------------------------------------
@@ -35,10 +55,10 @@
 
     const couleurs = () => ({
         // Reset
-        Color_Off: (string = 'coloring?') => `\x1b[0m${string.toString()}\x1b[0m `, //'\033[0m',       // Text Reset
+        Color_Off: (string = 'coloring?') => `\x1b[0m${string.toString()}\x1b[0m`, //'\033[0m',       // Text Reset
         // Regular Colors
-        Black: (string = 'coloring?') => `\x1b[0;30m${string.toString()}\x1b[0m `,//'\033[0;30m',        // Black
-        Red: (string = 'coloring?') => `\x1b[0;31m${string.toString()}\x1b[0m `,//'\033[0;31m',          // Red
+        Black: (string = 'coloring?') => `\x1b[0;30m${string.toString()}\x1b[0m`,//'\033[0;30m',        // Black
+        Red: (string = 'coloring?') => `\x1b[0;31m${string.toString()}\x1b[0m`,//'\033[0;31m',          // Red
         Green: (string = 'coloring?') => `\x1b[0;32m${string.toString()}\x1b[0m`,//'\033[0;32m',        // Green
         Yellow: (string = 'coloring?') => `\x1b[0;33m${string.toString()}\x1b[0m`,//'\033[0;33m',       // Yellow
         Blue: (string = 'coloring?') => `\x1b[0;34m${string.toString()}\x1b[0m`,//'\033[0;34m',         // Blue
@@ -131,6 +151,7 @@
         BgMagenta: (string = 'coloring?') => `\x1b[45m${string.toString()}\x1b[0m`,//'\e[45m',
         BgCyan: (string = 'coloring?') => `\x1b[46m${string.toString()}\x1b[0m`,//'\e[46m',
         BgWhite: (string = 'coloring?') => `\x1b[47m${string.toString()}\x1b[0m`,//'\e[47m',
+
         SetColor: (string = 'coloring!', R = 30, G = 2, B = 208) => (Number.isInteger(R) && Number.isInteger(G) && Number.isInteger(G)) ? `\x1b[${R};${G};${B}m${string.toString()}\x1b[0m` : new Error('invalid input'),
         Underline: (string = 'coloring!', R = 30, B = 208) => (Number.isInteger(R) && Number.isInteger(B)) ? `\x1b[${R};4;${B}m${string.toString()}\x1b[0m` : new Error('invalid input'),
         Strikethrough: (string = 'coloring!', R = 30, B = 208) => (Number.isInteger(R) && Number.isInteger(B)) ? `\x1b[${R};9;${B}m${string.toString()}\x1b[0m` : new Error('invalid input'),

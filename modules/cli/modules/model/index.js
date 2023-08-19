@@ -1,5 +1,25 @@
 #!/usr/bin/env node
 
+// Copyright (c) 2023 Ericson S. Weah <ericsonweah.dev>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the 'Software'), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 "use strict";
 
 /**
@@ -85,10 +105,6 @@ class ModelCLI extends require("../../CLI") {
             'collection',
             'list',
             '--list',
-            'tcp',
-            'http',
-            'https',
-            'playground',
             'home',
             'model man'
         ]
@@ -106,11 +122,9 @@ class ModelCLI extends require("../../CLI") {
     cmds() {
         return {
             "MODEL:": "\x1b[34mType \x1b[33mmodel\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mmodel man page (main commands)\x1b[0m\x1b[0m",
-            "TCP:": "\x1b[34mType \x1b[33mtcp\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mtcp man page (main commands)\x1b[0m\x1b[0m",
-            "HTTP:": "\x1b[34mType \x1b[33mhttp\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mhttp man page (main commands)\x1b[0m\x1b[0m",
-            "HTTPS:": "\x1b[34mType \x1b[33mhttps\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mhttps man page (main commands)\x1b[0m\x1b[0m",
-            "PLAYGROUND:": "\x1b[34mType \x1b[33mplayground\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mplayground man page (main commands)\x1b[0m\x1b[0m",
-            "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+            "HOME:": "\x1b[34mType \x1b[33mhome\x1b[0m \x1b[34manytime to return to this page\x1b[0m",
+            "CLEAR:": "\x1b[34mType \x1b[33mclear\x1b[0m \x1b[34mto clear terminal\x1b[0m",
+            "EXIT:": "\x1b[34mType \x1b[33mexit,leave\x1b[0m \x1b[34mto exit this terminal\x1b[0m",
         }
     }
 
@@ -210,7 +224,6 @@ class ModelCLI extends require("../../CLI") {
 
         })
     }
-
     httpCommand() {
         this.on('http', string => {
             this.setPrompt(`${couleurs.FgYellow('[model:http: ')}`);

@@ -1,3 +1,24 @@
+// Copyright (c) 2023 Ericson S. Weah <ericsonweah.dev>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the 'Software'), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
 'use strict';
 const path = require("path");
 const util = require("util");
@@ -348,9 +369,6 @@ const colors = require('../../../couleurs')();
     const eventList = () => ([
         'model',
         'method',
-        'http',
-        'https',
-        'tcp',
         "man",
         "clear",
         "help",
@@ -624,38 +642,18 @@ const colors = require('../../../couleurs')();
         valueColor: "37",
     })
     const cmds = () => ({
-        "MODEL:":
-            "\x1b[34mType \x1b[33mfrontend\x1b[0m \x1b[34mor\x1b[0m \x1b[34mnavigate to \x1b[33mhttp://localhost:3000\x1b[0m\x1b[0m \x1b[34m(Safari browser is not supported yet)\x1b[0m",
-        "TCP:": `\x1b[34mType \x1b[33mman\x1b[0m \x1b[34mor\x1b[0m \x1b[33mhelp\x1b[0m \x1b[34mor\x1b[0m \x1b[33musers\x1b[0m \x1b[34mor\x1b[0m \x1b[33morders\x1b[0m \x1b[34mor\x1b[0m \x1b[33mmenu\x1b[0m\x1b[34m etc. for the corresponding manual\x1b[0m\x1b[0m`,
-        "HTTP:":
-            "\x1b[34musername:\x1b[0m\x1b[33m6122071306\x1b[0m\x1b[34m,\x1b[0m \x1b[34mpassword:\x1b[0m\x1b[33m#20Demaison\x1b[0m \x1b[34m(You must be logged in to have full access)\x1b[0m",
-        "HTTPS:": `\x1b[34mType \x1b[33mlogin\x1b[0m \x1b[34mfor logging in\x1b[0m`,
-        "PLAYGROUND:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
-        "LOGOUT:": `\x1b[34mType \x1b[33mlogout\x1b[0m \x1b[34mfor logging out\x1b[0m`,
+        "MODEL:": "\x1b[34mType \x1b[33mmodel\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mmodel man page (main commands)\x1b[0m\x1b[0m",
+        "HOME:": "\x1b[34mType \x1b[33mhome\x1b[0m \x1b[34manytime to return to this page\x1b[0m",
+        // "HELP:": "\x1b[34mType \x1b[33mhelp,?,--help,-h\x1b[0m \x1b[34mfor\x1b[0m \x1b[34mthe main  \x1b[33mmodel man page (main commands)\x1b[0m\x1b[0m",
+        "EXIT:": "\x1b[34mType \x1b[33mexit,leave\x1b[0m \x1b[34mto exit this terminal\x1b[0m",
     });
     const initObservable = (Obervable = {}) => {
         Obervable.setPrompt(`[\x1b[32mmongodb model: \x1b[0m`);
         console.clear();
         horizontalLine();
 
-        centered("\x1b[34mMONGODB MODEL MAIN COMMAND LINE INTERFACE (CLI).\x1b[0m");
+        centered("\x1b[34mMONGODB MODEL ssssMAIN COMMAND LINE INTERFACE (CLI).\x1b[0m");
         horizontalLine();
-        //this.centered(`\x1b[32mUSERS COMMANDS HELP AND USAGE MANUAL\x1b[0m`)
-
-        //this.description(centered)
-
-        //this.verticalSpace(2)
-
-        // const options = {
-        //     pad: 22,
-        //     position: process.stdout.columns,
-        //     hline: false,
-        //     keyColor: "36",
-        //     valueColor: "37",
-        // };
-
-        // console.log('\x1b[34m%s\x1b[0m', 'CLI and server are running on port 3000.')
-        // console.log('\x1b[36m%s\x1b[0m', `Type 'help' or 'man' for CLI usage`)
         console.log("");
        
         textAligner(cliOptions(), cmds());

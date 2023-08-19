@@ -1,3 +1,23 @@
+// Copyright (c) 2023 Ericson S. Weah <ericsonweah.dev>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the 'Software'), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 "use strict";
 
 /**
@@ -97,27 +117,6 @@ path(path = '/app/schemas') {
   return require('path').join(process.cwd(), path);
 }
 
-// /**
-//  * Asynchronously creates a directory at the given `path` if it does not already exist.
-//  *
-//  * @param {string} [path=this.path()] - The path for the directory to be created. Defaults to the result of the 'path' function.
-//  * @returns {Promise<void>} A promise that resolves when the directory is created (or if it already exists).
-//  */
-// async addDirectory(path = this.path()) {
-//   /**
-//    * Asynchronously creates a directory at the given `path` if it does not already exist.
-//    *
-//    * @param {string} [path=this.path()] - The path for the directory to be created. Defaults to the result of the 'path' function.
-//    * @returns {Promise<void>} A promise that resolves when the directory is created (or if it already exists).
-//    */
-//   const { existsSync } = require('fs');
-
-//   if (!existsSync(path)) {
-//     // Check if the directory already exists.
-//     // If not, create the directory recursively using fs.promises.mkdir().
-//     await require('fs').promises.mkdir(path, { recursive: true });
-//   }
-// }
 
   /**
  * Generates an absolute file path for the migration directory by joining the given `path` with the current working directory.
@@ -561,19 +560,22 @@ allSchemaMigration(file, model = new Model) {
 
   // Extract the schema name from the file path and log it to the console.
   const schemaName = this.cmd(file.split('/').pop().split('.js').join(''));
+  if(!schemaName || schemaName.trim().length === 0)  return 
+  if(!existsSync(join(process.cwd(), './' + file))) return;
   //console.log(schemaName);
 
   // Load the schema module and log it to the console (assuming the path is correct).
   //console.log(require(join(process.cwd(), './' + file)));
 
   // Perform the migration by creating a collection in the database using the schema name and module.
-  if(existsSync(require(join(process.cwd(), './' + file)))){
-      if(schemaName && schemaName.trim().length > 0){
+
+
+
          try {
           model.createCollection(schemaName, require(join(process.cwd(), './' + file)))
           .then(response => {
             if (response && response.s && response.s.namespace) {
-              console.log(Green("Migrated: " + response.s.namespace));
+             return console.log(Green("Migrated: " + response.s.namespace));
             }
           })
           .catch(error => {
@@ -595,14 +597,6 @@ allSchemaMigration(file, model = new Model) {
          }catch(error){
           console.log('ERRROR: IN allSchemaMigration')
          }
-     
-      }else{
-         return console.log('Invalid schema name')
-      }
-  }else{
-    return console.log(Red('Migration schema not found'));
-  }
-  
 }
 
 
@@ -621,7 +615,7 @@ allMigrationMigration(file, model = new Model) {
     model.createCollection(this.cmd(file.split('/').pop().split('.js').join('')), require(join(process.cwd(), './' + file)))
     .then(response => {
       if (response && response.s && response.s.namespace) {
-        console.log(Green("Migrated: " + response.s.namespace));
+        return console.log(Green("Migrated: " + response.s.namespace));
       } else {
         console.log(response);
       }
@@ -662,7 +656,7 @@ schemaMigration(command, model = new Model) {
           model.createCollection(this.collectionName(command), require(join(process.cwd(), './app/schemas/' + schemaName + '.js')))
           .then(response => {
             if (response && response.s && response.s.namespace) {
-              console.log(Green("Migrated: " + response.s.namespace));
+              return console.log(Green("Migrated: " + response.s.namespace));
             } else {
               console.log(response);
             }
@@ -698,7 +692,7 @@ migrationMigration(command, model = new Model) {
   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
   .then(response => {
     if (response && response.s && response.s.namespace) {
-      console.log(Green("Migrated: " + response.s.namespace));
+      return console.log(Green("Migrated: " + response.s.namespace));
     } else {
       console.log(response);
     }
@@ -709,61 +703,6 @@ migrationMigration(command, model = new Model) {
  
 }
 
-// /**
-//  * Performs migration of a single migration file by executing its contents in the database.
-//  *
-//  * @param {string} command - The command string containing the migration file information in the format '--migration=MigrationFileName'.
-//  * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
-//  */
-// migrationMigration(command, model = new Model) {
-//   // Extract the migration file name from the command string.
-//   const migrationFileName = command.split('=')[1].trim();
-
-//   // Add event listeners for the 'createCollection' and 'createCollection-error' events.
-//   model.on('createCollection', this.onCreateCollection);
-//   model.on('createCollection-error', this.onCreateCollectionError);
-
-//   // Perform the migration of the single migration file by executing its contents in the database.
-//   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
-//     .then(response => {
-//       if (response && response.s && response.s.namespace) {
-//         console.log(Green("Migrated: " + response.s.namespace));
-//       } else {
-//         console.log(response);
-//       }
-//     })
-//     .catch(error => {
-//       console.error('Error occurred during migration of the single migration file:', error);
-//     });
-// }
-
-// /**
-//  * Performs migration of a single migration file by executing its contents in the database.
-//  *
-//  * @param {string} command - The command string containing the migration file information in the format '--migration=MigrationFileName'.
-//  * @param {Model} model - An instance of the Model class representing the MongoDB model for database operations.
-//  */
-// migrationMigration(command, model = new Model) {
-//   // Extract the migration file name from the command string.
-//   const migrationFileName = command.split('=')[1].trim();
-
-//   // Add event listeners for the 'createCollection' and 'createCollection-error' events.
-//   model.on('createCollection', this.onCreateCollection);
-//   model.on('createCollection-error', this.onCreateCollectionError);
-
-//   // Perform the migration of the single migration file by executing its contents in the database.
-//   model.createCollection(this.collectionName(command), require(join(process.cwd(), './database/migrations/' + migrationFileName + '.js')))
-//     .then(response => {
-//       if (response && response.s && response.s.namespace) {
-//         console.log(Green("Migrated: " + response.s.namespace));
-//       } else {
-//         console.log(response);
-//       }
-//     })
-//     .catch(error => {
-//       console.error('Error occurred during migration of the single migration file:', error);
-//     });
-// }
 
 /**
  * Recursively reads all files from a given directory and its subdirectories.
@@ -884,7 +823,7 @@ migrateAllMigrations(command, migrationPath = './database/migrations') {
       });
     } else {
       // If there are no migration files available, display a message.
-      console.log(BBlue('No migrations available'));
+      //return console.log(BBlue('No migrations available'));
     }
   } catch (error) {
     // Handle errors that occur during migration.
@@ -1121,19 +1060,6 @@ centered(str) {
   console.log(line);
 }
 
-  // padding (str){
-  //     str = typeof (str) === 'string' && str.trim().length > 0 ? str.trim() : ''
-  //     const width = process.stdout.columns
-  //     // calculate left padding
-  //     const leftPadding = Math.floor((width - str.length) / 2)
-  //     // put in left padding space before the string
-  //     let line = ''
-  //     for (let i = 0; i < leftPadding; i++) {
-  //         line += ' '
-  //     }
-  //     line += str
-  //     console.log(line)
-  // }
 
 /**
  * Prints the given string with a description-like format on the console.

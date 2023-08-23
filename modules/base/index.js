@@ -32,6 +32,10 @@
  * @classdesc Base class
  */
 
+const fs = require('fs');
+const path = require('path');
+const {Transform, Readable, Writable } = require('stream');
+
 const https = require('https');
 const http = require('http');
 const { io } = require('socket.io-client');
@@ -46,7 +50,7 @@ const { createClient } = require("redis");
 /**
  * Represents a Base class that extends the Transform class from the stream module.
  */
-class Base extends require("stream").Transform {
+class Base extends Transform {
   /**
    * Constructs a new instance of the Base class.
    *
@@ -109,30 +113,30 @@ class Base extends require("stream").Transform {
     return { server, io }
   }
 
- /**
-   * Create a TCP server with Redis support using the specified Redis client options.
-   * @param {object} createClientOptions - The options to create the Redis client.
-   * @param {string} createClientOptions.host - The host of the Redis server.
-   * @param {number} createClientOptions.port - The port of the Redis server.
-   * @returns {Server} - The Socket.IO server instance with Redis adapter.
-   */
- createTCPServerWithRedis(createClientOptions = { host: "localhost", port: 6379 }) {
-  // Create the Redis pub/sub clients
-  const pubClient = createClient(createClientOptions);
-  const subClient = pubClient.duplicate();
+  /**
+    * Create a TCP server with Redis support using the specified Redis client options.
+    * @param {object} createClientOptions - The options to create the Redis client.
+    * @param {string} createClientOptions.host - The host of the Redis server.
+    * @param {number} createClientOptions.port - The port of the Redis server.
+    * @returns {Server} - The Socket.IO server instance with Redis adapter.
+    */
+  createTCPServerWithRedis(createClientOptions = { host: "localhost", port: 6379 }) {
+    // Create the Redis pub/sub clients
+    const pubClient = createClient(createClientOptions);
+    const subClient = pubClient.duplicate();
 
-  // Create the Socket.IO server with Redis adapter
-  return new Server({
-    adapter: createAdapter(pubClient, subClient)
-  });
-}
+    // Create the Socket.IO server with Redis adapter
+    return new Server({
+      adapter: createAdapter(pubClient, subClient)
+    });
+  }
 
   /**
     * Create a TCP client to connect to the specified server.
     * @param {string} server - The URL of the server to connect to.
     * @returns {object} - The Socket.IO client instance.
     */
-  createTCPClient(serverURL = 'http://localhost:8000', options = {secure: true}) {
+  createTCPClient(serverURL = 'http://localhost:8000', options = { secure: true }) {
     return io(serverURL, options);
   }
 
@@ -637,6 +641,117 @@ class Base extends require("stream").Transform {
   }
 
 
+  searchFileInDirectory(directoryPath, targetFileName) {
+    try {
+      const files = fs.readdirSync(directoryPath);
+      for (const file of files) {
+        const filePath = path.join(directoryPath, file);
+        const stats = fs.statSync(filePath);
+
+        if (stats.isDirectory()) {
+          const foundFilePath = searchFileInDirectory(filePath, targetFileName);
+          if (foundFilePath) {
+            return foundFilePath; // Return early if file is found
+          }
+        } else if (file === targetFileName) {
+          return filePath; // Return the path of the found file
+        }
+      }
+      return null; // File not found in this directory
+    } catch (error) {
+      console.error('Error searching for file:', error);
+      return null;
+    }
+  }
+
+  recursivelyCreateFile(filePath) {
+    try {
+      // Check if the file already exists
+      if (fs.existsSync(filePath)) {
+        console.log(`File '${filePath}' already exists.`);
+        return;
+      }
+
+      // Extract the directory path from the file path
+      const directoryPath = path.dirname(filePath);
+
+      // Recursively create the parent directories if they don't exist
+      recursivelyCreateDirectory(directoryPath);
+
+      // Create the file
+      fs.writeFileSync(filePath, '');
+
+      console.log(`File '${filePath}' created.`);
+    } catch (error) {
+      console.error('Error creating file:', error);
+    }
+  }
+
+  recursivelyCreateDirectory(directoryPath) {
+    if (!fs.existsSync(directoryPath)) {
+      recursivelyCreateDirectory(path.dirname(directoryPath));
+      fs.mkdirSync(directoryPath);
+    }
+  }
+
+  searchFileInDirectoryStream(directoryPath, targetFileName, callback) {
+    const fileStream = new Transform({
+      transform(chunk, encoding, done) {
+        const fileNames = chunk.toString().split('\n');
+        for (const fileName of fileNames) {
+          if (fileName === targetFileName) {
+            this.push(path.join(directoryPath, fileName));
+          }
+        }
+        done();
+      }
+    });
+
+    const dirStream = fs.createReadStream(path.join(directoryPath, 'files.txt'));
+
+    dirStream.on('error', (error) => {
+      console.error('Error reading directory:', error);
+      callback(null);
+    });
+
+    fileStream.on('data', (filePath) => {
+      callback(filePath);
+    });
+
+    fileStream.on('end', () => {
+      callback(null); // File not found
+    });
+
+    dirStream.pipe(fileStream);
+  }
+
+
+  recursivelyCreateFileStream(filePath, callback) {
+    const directoryPath = path.dirname(filePath);
+
+    createDirectoryRecursiveStream(directoryPath, () => {
+      const writable = fs.createWriteStream(filePath);
+
+      writable.on('finish', () => {
+        callback();
+      });
+
+      const readable = Readable.from(['']); // Creating an empty readable stream
+
+      readable.pipe(writable);
+    });
+  }
+
+  createDirectoryRecursiveStream(directoryPath, callback) {
+    if (!fs.existsSync(directoryPath)) {
+      createDirectoryRecursiveStream(path.dirname(directoryPath), () => {
+        fs.mkdirSync(directoryPath);
+        callback();
+      });
+    } else {
+      callback();
+    }
+  }
 
 
   /**

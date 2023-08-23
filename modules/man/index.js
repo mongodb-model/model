@@ -149,7 +149,7 @@ class Man extends require("../base") {
     }
   };
 
-  exampleMethod(){}
+//   exampleMethod(){}
 
 
     /**
